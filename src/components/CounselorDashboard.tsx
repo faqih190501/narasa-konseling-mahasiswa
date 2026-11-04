@@ -298,6 +298,29 @@ export default function CounselorDashboard({
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
+            {assignedTickets.length > 0 && (
+              <select
+                value={selectedTicketCode}
+                onChange={(e) => {
+                  const found = assignedTickets.find(
+                    (t) => t.ticket_code === e.target.value
+                  );
+                  if (found) selectTicket(found);
+                }}
+                className="rounded-full bg-[#F3F0E8] border border-white px-4 py-2 text-xs font-extrabold text-[#2D2A26] shadow-inner focus:bg-white focus:outline-none"
+              >
+                {assignedTickets.map((t) => (
+                  <option key={t.ticket_code} value={t.ticket_code}>
+                    {t.ticket_code} —{" "}
+                    {t.identity_disclosed && t.mahasiswa_name_decrypted
+                      ? t.mahasiswa_name_decrypted
+                      : t.mahasiswa_pseudonym}{" "}
+                    ({t.category})
+                  </option>
+                ))}
+              </select>
+            )}
+
             <button
               onClick={handleToggleOnline}
               className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-extrabold transition ${
@@ -357,91 +380,12 @@ export default function CounselorDashboard({
         </div>
       )}
 
-      {/* Main Grid: Left Queue + Right Pre-Session Brief & SOAP Notes */}
-      <div className="grid gap-6 lg:grid-cols-12">
-        {/* Left Column: Assigned Client Queue & Schedule Slots */}
-        <div className="lg:col-span-4 space-y-6">
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 className="text-sm font-bold text-slate-800">
-                Antrean Klien Ditugaskan ({assignedTickets.length})
-              </h3>
-              <span className="text-[11px] font-medium text-teal-700">
-                Diurutkan Waktu & Urgensi
-              </span>
-            </div>
-
-            <div className="mt-3 space-y-2.5">
-              {assignedTickets.length === 0 ? (
-                <div className="rounded-xl bg-slate-50 p-4 text-center text-xs text-slate-500">
-                  Belum ada tiket konseling yang ditugaskan kepada{" "}
-                  {activeCounselor?.name}.
-                </div>
-              ) : (
-                assignedTickets.map((t) => {
-                  const active = t.ticket_code === selectedTicketCode;
-                  return (
-                    <button
-                      key={t.ticket_code}
-                      onClick={() => selectTicket(t)}
-                      className={`w-full rounded-xl border p-3.5 text-left transition ${
-                        active
-                          ? "border-teal-600 bg-teal-50/70 shadow-sm ring-2 ring-teal-500/20"
-                          : "border-slate-200 bg-white hover:border-teal-300"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-extrabold text-slate-900">
-                          {t.ticket_code}
-                        </span>
-                        <span
-                          className={`rounded-full border px-2 py-0.5 text-[10px] font-bold ${urgencyBadgeColor(
-                            t.urgency_label
-                          )}`}
-                        >
-                          PHQ-4: {t.urgency_score} • {t.urgency_label}
-                        </span>
-                      </div>
-
-                      <div className="mt-1.5 text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                        {t.identity_disclosed ? (
-                          <>
-                            <UserCheck className="h-3.5 w-3.5 text-teal-600" />
-                            {t.mahasiswa_name_decrypted} ({t.mahasiswa_nim_decrypted})
-                          </>
-                        ) : (
-                          <>
-                            <EyeOff className="h-3.5 w-3.5 text-amber-600" />
-                            {t.mahasiswa_pseudonym} (Mode Samaran)
-                          </>
-                        )}
-                      </div>
-
-                      <div className="mt-1 flex items-center justify-between text-[11px] text-slate-500">
-                        <span>{t.category}</span>
-                        <span className="font-semibold text-teal-700">
-                          {t.status}
-                        </span>
-                      </div>
-                      <div className="mt-1 flex items-center gap-1 text-[11px] text-slate-500">
-                        <Clock className="h-3 w-3" />
-                        Modalitas: {t.modality_selected}
-                      </div>
-                    </button>
-                  );
-                })
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Right Column: Pre-Session Brief, Decrypted Story, SOAP Notes & Live Chat */}
-        <div className="lg:col-span-8 space-y-6">
+      {/* Full-Width Pre-Session Brief, Decrypted Story, SOAP Notes & Live Chat */}
+      <div className="w-full space-y-6">
+        <div className="space-y-6">
           {!selectedTicket ? (
             <div className="rounded-2xl border border-slate-200 bg-white p-10 text-center text-sm text-slate-500">
-              Pilih salah satu tiket klien di sebelah kiri untuk membuka{" "}
-              <strong>Pre-Session Brief</strong> dan mencatat{" "}
-              <strong>SOAP Notes</strong>.
+              Belum ada tiket konseling yang aktif untuk ditampilkan.
             </div>
           ) : (
             <>
