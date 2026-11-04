@@ -56,7 +56,6 @@ type NavKey =
   | "chatbox"
   | "prodi_konselor"
   | "mahasiswa_tiket"
-  | "absensi_jadwal"
   | "nilai_phq4"
   | "jurnal_soap"
   | "selfhelp";
@@ -188,14 +187,14 @@ export default function HomePage() {
         },
         {
           key: "chatbox",
-          label: "Skrining PHQ-4 & Jadwal",
+          label: "Skrining Mandiri PHQ-4",
           icon: Sparkles,
           badgeBg: "bg-[#E6D8F5]",
           iconColor: "text-[#7A4EB3]",
         },
         {
           key: "mahasiswa_tiket",
-          label: "Tiket & Jadwal Saya",
+          label: "Tiket Konseling Saya",
           icon: Ticket,
           badgeBg: "bg-[#FBE8C2]",
           iconColor: "text-[#C5861E]",
@@ -236,13 +235,6 @@ export default function HomePage() {
           icon: GraduationCap,
           badgeBg: "bg-[#FBE8C2]",
           iconColor: "text-[#C5861E]",
-        },
-        {
-          key: "absensi_jadwal",
-          label: "Jadwal & Kehadiran",
-          icon: CalendarCheck,
-          badgeBg: "bg-[#D5E5F6]",
-          iconColor: "text-[#3F78B5]",
         },
         {
           key: "nilai_phq4",
@@ -332,12 +324,11 @@ export default function HomePage() {
     konsultasi_admin: "Chat Konsultasi Langsung ke Admin BK",
     balas_chat: "Inbox Live Chat & Balas Pesan Mahasiswa",
     akun_mahasiswa: "Manajemen Data & Akun Mahasiswa",
-    chatbox: "Skrining PHQ-4 & Booking Jadwal Konseling",
+    chatbox: "Skrining Mandiri PHQ-4 & Triase Konseling",
     prodi_konselor: "Direktori Dosen BK & Konselor Sebaya",
     mahasiswa_tiket: isMahasiswa
-      ? "Tiket & Jadwal Konseling Saya"
+      ? "Tiket Konseling Saya"
       : "Data Klien & Tiket Konseling",
-    absensi_jadwal: "Jadwal Slot & Kehadiran Sesi",
     nilai_phq4: "Skor Skrining PHQ-4 & Analitik",
     jurnal_soap: "Jurnal Konseling & SOAP Notes",
     selfhelp: "Ruang Relaksasi & Napas 4-7-8",
@@ -1067,20 +1058,20 @@ export default function HomePage() {
                   </button>
 
                   <button
-                    onClick={() => setActiveNav("absensi_jadwal")}
+                    onClick={() => setActiveNav("balas_chat")}
                     className="clay-card-butter rounded-[28px] p-5 text-left transition hover:-translate-y-0.5"
                   >
                     <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F4B942] text-white shadow-[0_6px_14px_rgba(244,185,66,0.35)]">
-                      <Clock className="h-5 w-5" />
+                      <MessageCircleHeart className="h-5 w-5" />
                     </div>
                     <div className="mt-4 text-xs font-semibold text-[#6E644C]">
-                      Kehadiran & Triase
+                      Pesan Konsultasi
                     </div>
                     <div className="mt-1 text-3xl font-extrabold text-[#2D2A26]">
-                      {hadirPct}%
+                      {liveChatMessages.length}
                     </div>
                     <div className="mt-2 text-xs font-extrabold text-[#2A856A]">
-                      {hadirCount} Sesi Konseling Aktif
+                      Total Chat Masuk & Balasan
                     </div>
                   </button>
 
@@ -1105,16 +1096,15 @@ export default function HomePage() {
 
                 {/* 2 BOTTOM CHARTS ROW (3D Pill Bar Chart + Donut Composition Chart) */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                  {/* Left: Grafik Kehadiran & Aktivitas (3D Soft Pill Bars) */}
+                  {/* Left: Grafik Aktivitas Konseling (3D Soft Pill Bars) */}
                   <div className="clay-card-white lg:col-span-6 rounded-[30px] p-6 flex flex-col justify-between">
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <h3 className="text-base font-extrabold text-[#2D2A26]">
-                          Grafik Kehadiran & Aktivitas
+                          Grafik Aktivitas Konseling & Triase
                         </h3>
                         <p className="text-xs text-[#8C857B] mt-0.5">
-                          Persentase kehadiran & penyelesaian triase per
-                          sesi/hari
+                          Statistik konsultasi & penyelesaian skrining mahasiswa per hari
                         </p>
                       </div>
                       <span className="rounded-full bg-[#F6F4EE] border border-slate-200/70 px-3.5 py-1 text-xs font-extrabold text-[#2D2A26] shadow-sm">
@@ -1147,19 +1137,15 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  {/* Right: Komposisi Kehadiran Mahasiswa (SVG Donut Chart) */}
+                  {/* Right: Komposisi Status & Tingkat Urgensi PHQ-4 (SVG Donut Chart) */}
                   <div className="clay-card-white lg:col-span-6 rounded-[30px] p-6 flex flex-col justify-between">
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <h3 className="text-base font-extrabold text-[#2D2A26]">
-                          {donutMode === "kehadiran"
-                            ? "Komposisi Kehadiran Sesi"
-                            : "Komposisi Tingkat Urgensi PHQ-4"}
+                          Komposisi Tingkat Urgensi & Status Tiket
                         </h3>
                         <p className="text-xs text-[#8C857B] mt-0.5">
-                          {donutMode === "kehadiran"
-                            ? "Akumulasi Hadir, Reschedule, Izin & No-Show"
-                            : "Distribusi Rendah, Sedang, Tinggi & Kritis"}
+                          Distribusi penyelesaian konsultasi & skrining PHQ-4
                         </p>
                       </div>
                       <button
@@ -1217,7 +1203,7 @@ export default function HomePage() {
                             {hadirPct}%
                           </span>
                           <span className="text-xs font-semibold text-[#7A746B]">
-                            Hadir
+                            Tuntas
                           </span>
                         </div>
                       </div>
@@ -1226,25 +1212,25 @@ export default function HomePage() {
                         {[
                           {
                             color: "bg-[#559A87]",
-                            label: "Hadir (H)",
+                            label: "Sesi Aktif / Selesai",
                             val: `${hadirPct}% (${hadirCount})`,
                           },
                           {
                             color: "bg-[#F4B942]",
-                            label: "Reschedule / Sakit (S)",
+                            label: "Menunggu Tindak Lanjut",
                             val: `${reschedulePct}% (${
                               rescheduleCount || 1
                             })`,
                           },
                           {
                             color: "bg-[#689FD4]",
-                            label: "Izin (I)",
-                            val: `0% (${izinCancelCount})`,
+                            label: "Konsultasi Daring",
+                            val: `${ticketsAdminView.filter((t) => t.modality_selected.includes("Daring") || t.modality_selected.includes("Chat")).length} Tiket`,
                           },
                           {
                             color: "bg-[#EE7854]",
-                            label: "No-Show / Alfa (A)",
-                            val: `0% (${noShowCount})`,
+                            label: "Konsultasi Luring",
+                            val: `${ticketsAdminView.filter((t) => t.modality_selected.includes("Luring")).length} Tiket`,
                           },
                         ].map((row) => (
                           <div
@@ -1308,7 +1294,7 @@ export default function HomePage() {
             )}
 
             {/* ============================================================
-                VIEW 3A: TIKET & JADWAL SAYA (KHUSUS MAHASISWA)
+                VIEW 3A: TIKET KONSELING SAYA (KHUSUS MAHASISWA)
                ============================================================ */}
             {activeNav === "mahasiswa_tiket" && isMahasiswa && (
               <div className="space-y-5">
@@ -1316,11 +1302,11 @@ export default function HomePage() {
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div>
                       <h3 className="text-base font-extrabold text-[#2D2A26]">
-                        Cek Status Tiket & Jadwal Konseling Saya
+                        Cek Status Tiket Konseling Saya
                       </h3>
                       <p className="text-xs text-[#7A746B]">
-                        Masukkan kode tiket konseling Anda untuk membuka tautan
-                        Google Meet atau melakukan Reschedule Mandiri.
+                        Masukkan kode tiket konseling Anda untuk melihat status
+                        konsultasi atau membuka tautan Google Meet.
                       </p>
                     </div>
                     <div className="flex gap-2">
@@ -1352,10 +1338,6 @@ export default function HomePage() {
                           Konselor: {t.counselor_name}
                         </div>
                         <div className="text-xs text-[#4E5A54]">
-                          Jadwal: {t.schedule_day}, {t.schedule_date} (
-                          {t.schedule_start}–{t.schedule_end} WIB)
-                        </div>
-                        <div className="text-xs text-[#4E5A54]">
                           Modalitas: <strong>{t.modality_selected}</strong>
                         </div>
                         {t.meet_link && (
@@ -1381,8 +1363,7 @@ export default function HomePage() {
                ============================================================ */}
             {!isMahasiswa &&
               (activeNav === "jurnal_soap" ||
-                activeNav === "mahasiswa_tiket" ||
-                activeNav === "absensi_jadwal") && (
+                activeNav === "mahasiswa_tiket") && (
                 <CounselorDashboard
                   counselors={counselors}
                   schedules={schedules}

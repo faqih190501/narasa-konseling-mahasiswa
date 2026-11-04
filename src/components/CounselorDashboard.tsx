@@ -465,7 +465,7 @@ export default function CounselorDashboard({
                   </div>
 
                   <div className="rounded-xl bg-slate-50 p-3 border border-slate-100">
-                    <div className="text-slate-500">Modalitas & Jadwal:</div>
+                    <div className="text-slate-500">Modalitas Konseling:</div>
                     <div className="mt-1 font-bold text-slate-900">
                       {selectedTicket.modality_selected}
                     </div>
