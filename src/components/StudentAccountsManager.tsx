@@ -252,16 +252,10 @@ export default function StudentAccountsManager({
                 className="w-full rounded-2xl bg-white border border-white px-3 py-2.5 text-xs font-bold text-[#2D2A26] shadow-sm"
               >
                 <option value="BKPI (Bimbingan & Konseling Pendidikan Islam)">
-                  BKPI (Bimbingan & Konseling)
+                  BKPI (Bimbingan & Konseling Pendidikan Islam)
                 </option>
                 <option value="PIAUD (Pendidikan Islam Anak Usia Dini)">
-                  PIAUD (Pendidikan Anak Usia Dini)
-                </option>
-                <option value="PAI (Pendidikan Agama Islam)">
-                  PAI (Pendidikan Agama Islam)
-                </option>
-                <option value="Manajemen Pendidikan Islam">
-                  Manajemen Pendidikan Islam
+                  PIAUD (Pendidikan Islam Anak Usia Dini)
                 </option>
               </select>
             </div>

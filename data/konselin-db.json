@@ -53,7 +53,7 @@
       "nim_encrypted": "AES256:966609b5ae74fc28f20130a4:b004740fa854b906028672d930f085a3:ea1853eabe47fe02cc",
       "full_name_encrypted": "AES256:d156bc7037a36ea7a4017b14:13b1f4b167ff5e5ebcfe9a99d6df36cc:0f5deff651aa1271640342ba5f6181dcdf45dc5fd3",
       "pseudonym": "Bintang Utara #774",
-      "prodi_id": "PAI (Pendidikan Agama Islam)",
+      "prodi_id": "PIAUD (Pendidikan Islam Anak Usia Dini)",
       "angkatan": 2023,
       "phone_wa_encrypted": "AES256:ffd0baa5f70ad261e8a5f8c8:1e4cd4c4d934630a7cc5486f0f1442bf:4a2bf5e7993f08727bcba8c7",
       "is_anonymous": false,
@@ -782,6 +782,17 @@
       "password": "mahasiswa123",
       "status_mahasiswa": "Aktif",
       "created_at": "2026-11-01T08:00:00.000Z"
+    },
+    {
+      "id": "stu-2",
+      "nim": "240102015",
+      "full_name": "Zahra Khairunnisa",
+      "prodi_id": "PIAUD (Pendidikan Islam Anak Usia Dini)",
+      "angkatan": 2024,
+      "phone_wa": "085677889922",
+      "password": "mahasiswa123",
+      "status_mahasiswa": "Aktif",
+      "created_at": "2026-11-01T08:05:00.000Z"
     }
   ]
 }

@@ -1,0 +1,17 @@
+{
+  "name": "NARASA (Narasi Rasa) — Konseling Mahasiswa BKPI & PIAUD",
+  "short_name": "NARASA BK",
+  "description": "Sistem Chatbox Triase & Konsultasi Konseling Mahasiswa Prodi BKPI & PIAUD",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FCFBF7",
+  "theme_color": "#2E7D67",
+  "icons": [
+    {
+      "src": "/logo-narasa.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
+

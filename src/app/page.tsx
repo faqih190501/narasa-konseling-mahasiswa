@@ -29,6 +29,7 @@ import {
   Lock,
   Video,
   CheckCircle2,
+  Download,
 } from "lucide-react";
 import LoginPortal, { AuthenticatedSession } from "@/components/LoginPortal";
 import NarasaLogo from "@/components/NarasaLogo";
@@ -499,6 +500,15 @@ export default function HomePage() {
               </button>
             </div>
 
+            <a
+              href="/narasa-konseling.apk"
+              download="NARASA-Konseling-Mahasiswa.apk"
+              className="w-full rounded-full bg-[#2E7D67] hover:bg-[#256654] py-2.5 px-4 text-xs font-extrabold text-white border border-white shadow-sm flex items-center justify-center gap-2 transition active:scale-95"
+            >
+              <Download className="h-3.5 w-3.5" />
+              Download APK Android
+            </a>
+
             <button
               onClick={handleLogout}
               className="w-full rounded-full bg-white/75 hover:bg-white py-2.5 px-4 text-xs font-extrabold text-[#5C5346] border border-white shadow-sm flex items-center justify-center gap-2 transition"
@@ -599,6 +609,17 @@ export default function HomePage() {
                     </div>
                   )}
                 </div>
+
+                {/* Download APK Button in Header */}
+                <a
+                  href="/narasa-konseling.apk"
+                  download="NARASA-Konseling-Mahasiswa.apk"
+                  className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-[#2E7D67] hover:bg-[#256654] px-4 py-2.5 text-xs font-extrabold text-white shadow-sm transition active:scale-95"
+                  title="Unduh Aplikasi Android NARASA (.APK)"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  <span>Download APK</span>
+                </a>
 
                 {/* Logout / Return to Login Screen Button */}
                 <button
@@ -1050,10 +1071,10 @@ export default function HomePage() {
                       Data Program Studi
                     </div>
                     <div className="mt-1 text-3xl font-extrabold text-[#2D2A26]">
-                      4
+                      2
                     </div>
                     <div className="mt-2 text-xs font-extrabold text-[#2A856A]">
-                      Prodi Aktif Terlayani
+                      BKPI & PIAUD Aktif
                     </div>
                   </button>
 

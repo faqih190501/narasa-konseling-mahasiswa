@@ -1338,16 +1338,10 @@ export default function ChatboxWidget({
                             className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-800"
                           >
                             <option value="BKPI (Bimbingan & Konseling Pendidikan Islam)">
-                              BKPI (Bimbingan & Konseling)
+                              BKPI (Bimbingan & Konseling Pendidikan Islam)
                             </option>
                             <option value="PIAUD (Pendidikan Islam Anak Usia Dini)">
-                              PIAUD
-                            </option>
-                            <option value="PAI (Pendidikan Agama Islam)">
-                              PAI
-                            </option>
-                            <option value="Manajemen Pendidikan Islam">
-                              Manajemen Pendidikan Islam
+                              PIAUD (Pendidikan Islam Anak Usia Dini)
                             </option>
                           </select>
                         </div>
@@ -1417,12 +1411,18 @@ export default function ChatboxWidget({
                             <label className="block text-[11px] font-semibold text-slate-600 mb-1">
                               Program Studi
                             </label>
-                            <input
-                              type="text"
+                            <select
                               value={prodiInput}
                               onChange={(e) => setProdiInput(e.target.value)}
                               className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-800"
-                            />
+                            >
+                              <option value="BKPI (Bimbingan & Konseling Pendidikan Islam)">
+                                BKPI (Bimbingan & Konseling Pendidikan Islam)
+                              </option>
+                              <option value="PIAUD (Pendidikan Islam Anak Usia Dini)">
+                                PIAUD (Pendidikan Islam Anak Usia Dini)
+                              </option>
+                            </select>
                           </div>
                           <div>
                             <label className="block text-[11px] font-semibold text-slate-600 mb-1">
