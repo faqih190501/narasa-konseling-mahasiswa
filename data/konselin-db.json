@@ -1,0 +1,787 @@
+{
+  "users_mahasiswa": [
+    {
+      "id": "mhs-chat-1793766994722",
+      "nim_encrypted": "AES256:8c39ac6f30100cde0b6ac327:408dadfaf3adf1ab685d33c12919fdf5:509ffc4ad1ee3e703c87aa3939",
+      "full_name_encrypted": "AES256:4ae9dcfe88ccc64a65c8a412:348aeb7fef50f33020c6b0aad79548a2:40f56fe00b0d32d38fa554b86f6781",
+      "pseudonym": "Embun Pagi #456",
+      "prodi_id": "BKPI (Bimbingan & Konseling Pendidikan Islam)",
+      "angkatan": 2024,
+      "phone_wa_encrypted": "AES256:4708318ba81cd860db36a1c9:55eb2501743594159ec92326b7a3385a:ed",
+      "is_anonymous": true,
+      "consent_log_at": "2026-11-04T04:36:34.720Z",
+      "created_at": "2026-11-04T04:36:34.720Z"
+    },
+    {
+      "id": "mhs-chat-1793766323095",
+      "nim_encrypted": "AES256:1dddd4d9a013fbe159ec3764:34ac2e1569d7ddb50fee8a753f18cdee:c7851d9f8b1cbefe33",
+      "full_name_encrypted": "AES256:91d69dd6b8b853f608d6e5ff:e9ede370d568c3928507f42c207b572b:a5da2861a6736682c7d2103a11",
+      "pseudonym": "Rizky Pratama",
+      "prodi_id": "BKPI (Bimbingan & Konseling Pendidikan Islam)",
+      "angkatan": 2024,
+      "phone_wa_encrypted": "AES256:863b0f3f8a6fb2302ac3d7d4:9010ed849e613e283d4f6e32b10b0a96:38",
+      "is_anonymous": false,
+      "consent_log_at": "2026-11-04T04:25:23.095Z",
+      "created_at": "2026-11-04T04:25:23.095Z"
+    },
+    {
+      "id": "mhs-1",
+      "nim_encrypted": "AES256:81cb13bf2ebb4b92766183c4:e3b12ffc65336322519adc90f95aab8f:b00cbf3cd4a277c6a3",
+      "full_name_encrypted": "AES256:6363b06905af8c262a1a4a9f:628e17df73fe20f81eb158f5c45fb417:1466148b59bf61e8134de5e17c1cf1",
+      "pseudonym": "Langit Teduh #412",
+      "prodi_id": "BKPI (Bimbingan & Konseling Pendidikan Islam)",
+      "angkatan": 2022,
+      "phone_wa_encrypted": "AES256:6c351f2a66ae0b9176c1d61f:93a5454a4d7ee4b25f978cd74d937aae:073226f4aaa3aa1ec6f9cbd1",
+      "is_anonymous": false,
+      "consent_log_at": "2026-11-02T08:14:00.000Z",
+      "created_at": "2026-11-02T08:14:00.000Z"
+    },
+    {
+      "id": "mhs-2",
+      "nim_encrypted": "AES256:57f599d3faf0f77cda71f487:8ff4b37c691134482b363154ed9fbcd7:1d0eaae77656b24aee860e012b12",
+      "full_name_encrypted": "AES256:5fbec67536036cda7897a249:2257b09d9d3d963ecadcdcfa3afbfa6e:47457d00dbc3ccf563d0c484485176f51f17627cf8e28ef252",
+      "pseudonym": "Embun Pagi #209",
+      "prodi_id": "PIAUD (Pendidikan Islam Anak Usia Dini)",
+      "angkatan": 2024,
+      "phone_wa_encrypted": "AES256:abfdb1e9a01209a0c7516224:9c5a957b1817ec56bf6221fb4f98e0b7:c848147ddcf1131562ca0e77",
+      "is_anonymous": true,
+      "consent_log_at": "2026-11-03T10:20:00.000Z",
+      "created_at": "2026-11-03T10:20:00.000Z"
+    },
+    {
+      "id": "mhs-3",
+      "nim_encrypted": "AES256:966609b5ae74fc28f20130a4:b004740fa854b906028672d930f085a3:ea1853eabe47fe02cc",
+      "full_name_encrypted": "AES256:d156bc7037a36ea7a4017b14:13b1f4b167ff5e5ebcfe9a99d6df36cc:0f5deff651aa1271640342ba5f6181dcdf45dc5fd3",
+      "pseudonym": "Bintang Utara #774",
+      "prodi_id": "PAI (Pendidikan Agama Islam)",
+      "angkatan": 2023,
+      "phone_wa_encrypted": "AES256:ffd0baa5f70ad261e8a5f8c8:1e4cd4c4d934630a7cc5486f0f1442bf:4a2bf5e7993f08727bcba8c7",
+      "is_anonymous": false,
+      "consent_log_at": "2026-11-03T14:05:00.000Z",
+      "created_at": "2026-11-03T14:05:00.000Z"
+    },
+    {
+      "id": "mhs-4",
+      "nim_encrypted": "AES256:512ae7fe9d949c5a75291154:c3f7b69988f10ed0f7d9ef4331f8f31b:7fbd058bc6b2848ede",
+      "full_name_encrypted": "AES256:2b41f62f5c6a21e7e329d7de:ff5131db4d537ad7f856c6aecd666b52:72fbb5ab7acc8a9151c3922664515ce7f3aeb5ef",
+      "pseudonym": "Senja Tenang #518",
+      "prodi_id": "BKPI (Bimbingan & Konseling Pendidikan Islam)",
+      "angkatan": 2025,
+      "phone_wa_encrypted": "AES256:ab7ce28ad83d476626a3ca56:0518098550209b01016daa6326d90412:83289a1a1960779f6e6a92e5",
+      "is_anonymous": true,
+      "consent_log_at": "2026-11-03T19:30:00.000Z",
+      "created_at": "2026-11-03T19:30:00.000Z"
+    }
+  ],
+  "counselors": [
+    {
+      "id": "c-1",
+      "nip_nidn": "0412088101",
+      "name": "Dr. Hj. Siti Nurhaliza, M.Pd., Kons.",
+      "role_title": "Koordinator & Dosen BK Ahli",
+      "specialization": [
+        "Akademik & Studi",
+        "Emosi & Kesehatan Mental",
+        "Spiritual & Nilai Diri"
+      ],
+      "bio": "Konselor profesional bersertifikat dengan pengalaman 14 tahun mendampingi mahasiswa mengatasi kecemasan skripsi, krisis makna diri, dan regulasi emosi.",
+      "is_peer_counselor": false,
+      "max_daily_slots": 5,
+      "active_status": true,
+      "online_status": true,
+      "phone_piket": "6281234567801"
+    },
+    {
+      "id": "c-2",
+      "nip_nidn": "0423118702",
+      "name": "Ahmad Fauzi, M.Psi., Psikolog",
+      "role_title": "Psikolog Klinis & Dosen BK",
+      "specialization": [
+        "Emosi & Kesehatan Mental",
+        "Relasi Keluarga/Sosial",
+        "Akademik & Studi"
+      ],
+      "bio": "Fokus pada penanganan distres emosional sedang-berat, kecemasan klinis, burnout akademik, dan dinamika relasi keluarga.",
+      "is_peer_counselor": false,
+      "max_daily_slots": 4,
+      "active_status": true,
+      "online_status": true,
+      "phone_piket": "6281234567802"
+    },
+    {
+      "id": "c-3",
+      "nip_nidn": "0405049003",
+      "name": "Rina Kartika, M.Pd.",
+      "role_title": "Dosen BK Karier & Akademik",
+      "specialization": [
+        "Karier & Masa Depan",
+        "Akademik & Studi",
+        "Spiritual & Nilai Diri"
+      ],
+      "bio": "Mendampingi perencanaan karier pasca-kampus, pemetaan potensi diri, adaptasi mahasiswa baru, dan strategi penyelesaian studi.",
+      "is_peer_counselor": false,
+      "max_daily_slots": 4,
+      "active_status": true,
+      "online_status": false,
+      "phone_piket": "6281234567803"
+    },
+    {
+      "id": "c-4",
+      "nip_nidn": "PEER-202301",
+      "name": "Nadia Putri (Konselor Sebaya)",
+      "role_title": "Peer Counselor Terlatih — Prodi BKPI",
+      "specialization": [
+        "Akademik & Studi",
+        "Relasi Keluarga/Sosial",
+        "Karier & Masa Depan"
+      ],
+      "bio": "Teman sebaya terlatih di bawah supervisi Unit BK untuk ruang cerita santai, adaptasi perkuliahan, dan manajemen waktu harian.",
+      "is_peer_counselor": true,
+      "max_daily_slots": 6,
+      "active_status": true,
+      "online_status": true,
+      "phone_piket": "6281234567804"
+    },
+    {
+      "id": "c-5",
+      "nip_nidn": "PEER-202302",
+      "name": "Rizky Pratama (Konselor Sebaya)",
+      "role_title": "Peer Counselor Terlatih — Prodi BKPI",
+      "specialization": [
+        "Relasi Keluarga/Sosial",
+        "Emosi & Kesehatan Mental",
+        "Spiritual & Nilai Diri"
+      ],
+      "bio": "Pendamping sebaya untuk curhat ringan seputar pertemanan kampus, organisasi, dan menjaga keseimbangan belajar.",
+      "is_peer_counselor": true,
+      "max_daily_slots": 6,
+      "active_status": true,
+      "online_status": true,
+      "phone_piket": "6281234567805"
+    }
+  ],
+  "counselor_schedules": [
+    {
+      "id": "sch-101",
+      "counselor_id": "c-1",
+      "day_of_week": "Kamis",
+      "date_iso": "2026-11-05",
+      "start_time": "09:00",
+      "end_time": "10:00",
+      "modality_type": "Both",
+      "room_location": "Ruang BK Privat 1 (Lt. 2 Gd. Layanan Mahasiswa)",
+      "is_booked": true
+    },
+    {
+      "id": "sch-102",
+      "counselor_id": "c-1",
+      "day_of_week": "Kamis",
+      "date_iso": "2026-11-05",
+      "start_time": "10:30",
+      "end_time": "11:30",
+      "modality_type": "Both",
+      "room_location": "Ruang BK Privat 1 (Lt. 2 Gd. Layanan Mahasiswa)",
+      "is_booked": false
+    },
+    {
+      "id": "sch-103",
+      "counselor_id": "c-1",
+      "day_of_week": "Jumat",
+      "date_iso": "2026-11-06",
+      "start_time": "13:30",
+      "end_time": "14:30",
+      "modality_type": "Online",
+      "room_location": "Google Meet Virtual Room",
+      "is_booked": false
+    },
+    {
+      "id": "sch-104",
+      "counselor_id": "c-1",
+      "day_of_week": "Senin",
+      "date_iso": "2026-11-09",
+      "start_time": "09:00",
+      "end_time": "10:00",
+      "modality_type": "Both",
+      "room_location": "Ruang BK Privat 1 (Lt. 2 Gd. Layanan Mahasiswa)",
+      "is_booked": false
+    },
+    {
+      "id": "sch-201",
+      "counselor_id": "c-2",
+      "day_of_week": "Kamis",
+      "date_iso": "2026-11-05",
+      "start_time": "13:00",
+      "end_time": "14:00",
+      "modality_type": "Both",
+      "room_location": "Ruang Konseling Klinis 2 (Lt. 2 Gd. Layanan Mahasiswa)",
+      "is_booked": true
+    },
+    {
+      "id": "sch-202",
+      "counselor_id": "c-2",
+      "day_of_week": "Jumat",
+      "date_iso": "2026-11-06",
+      "start_time": "09:30",
+      "end_time": "10:30",
+      "modality_type": "Both",
+      "room_location": "Ruang Konseling Klinis 2 (Lt. 2 Gd. Layanan Mahasiswa)",
+      "is_booked": false
+    },
+    {
+      "id": "sch-203",
+      "counselor_id": "c-2",
+      "day_of_week": "Selasa",
+      "date_iso": "2026-11-10",
+      "start_time": "14:00",
+      "end_time": "15:00",
+      "modality_type": "Online",
+      "room_location": "Google Meet Virtual Room",
+      "is_booked": false
+    },
+    {
+      "id": "sch-301",
+      "counselor_id": "c-3",
+      "day_of_week": "Jumat",
+      "date_iso": "2026-11-06",
+      "start_time": "10:00",
+      "end_time": "11:00",
+      "modality_type": "Both",
+      "room_location": "Ruang Bimbingan Karier (Lt. 1 Gd. Layanan Mahasiswa)",
+      "is_booked": true
+    },
+    {
+      "id": "sch-302",
+      "counselor_id": "c-3",
+      "day_of_week": "Senin",
+      "date_iso": "2026-11-09",
+      "start_time": "13:00",
+      "end_time": "14:00",
+      "modality_type": "Both",
+      "room_location": "Ruang Bimbingan Karier (Lt. 1 Gd. Layanan Mahasiswa)",
+      "is_booked": false
+    },
+    {
+      "id": "sch-303",
+      "counselor_id": "c-3",
+      "day_of_week": "Rabu",
+      "date_iso": "2026-11-11",
+      "start_time": "10:00",
+      "end_time": "11:00",
+      "modality_type": "Online",
+      "room_location": "Google Meet Virtual Room",
+      "is_booked": false
+    },
+    {
+      "id": "sch-401",
+      "counselor_id": "c-4",
+      "day_of_week": "Kamis",
+      "date_iso": "2026-11-05",
+      "start_time": "15:30",
+      "end_time": "16:30",
+      "modality_type": "Both",
+      "room_location": "Pojok Sahabat BK / Google Meet",
+      "is_booked": true
+    },
+    {
+      "id": "sch-402",
+      "counselor_id": "c-4",
+      "day_of_week": "Jumat",
+      "date_iso": "2026-11-06",
+      "start_time": "15:00",
+      "end_time": "16:00",
+      "modality_type": "Online",
+      "room_location": "Google Meet / Chat Sebaya",
+      "is_booked": false
+    },
+    {
+      "id": "sch-403",
+      "counselor_id": "c-4",
+      "day_of_week": "Sabtu",
+      "date_iso": "2026-11-07",
+      "start_time": "10:00",
+      "end_time": "11:00",
+      "modality_type": "Online",
+      "room_location": "Google Meet / Chat Sebaya",
+      "is_booked": false
+    },
+    {
+      "id": "sch-501",
+      "counselor_id": "c-5",
+      "day_of_week": "Kamis",
+      "date_iso": "2026-11-05",
+      "start_time": "16:00",
+      "end_time": "17:00",
+      "modality_type": "Online",
+      "room_location": "Google Meet / Chat Sebaya",
+      "is_booked": false
+    },
+    {
+      "id": "sch-502",
+      "counselor_id": "c-5",
+      "day_of_week": "Senin",
+      "date_iso": "2026-11-09",
+      "start_time": "15:30",
+      "end_time": "16:30",
+      "modality_type": "Both",
+      "room_location": "Pojok Sahabat BK / Google Meet",
+      "is_booked": false
+    }
+  ],
+  "counseling_tickets": [
+    {
+      "ticket_code": "BK-20261104-6144",
+      "mahasiswa_id": "mhs-chat-1793766994722",
+      "counselor_id": "c-1",
+      "schedule_id": "sch-101",
+      "category": "Emosi & Kesehatan Mental",
+      "emotional_condition": "Konsultasi Langsung Admin (Emosi & Kesehatan Mental)",
+      "urgency_score": 4,
+      "urgency_label": "Sedang (3-5)",
+      "modality_selected": "Konsultasi Chat Anonim",
+      "status": "In-Progress",
+      "meet_link": "",
+      "room_location": "Ruang Konsultasi Langsung Admin NARASA",
+      "identity_disclosed": false,
+      "triage_duration_seconds": 30,
+      "whatsapp_notified": true,
+      "calendar_synced": true,
+      "reminder_h1_sent": false,
+      "reminder_h2h_sent": false,
+      "created_at": "2026-11-04T04:36:34.720Z"
+    },
+    {
+      "ticket_code": "BK-20261104-3619",
+      "mahasiswa_id": "mhs-chat-1793766323095",
+      "counselor_id": "c-1",
+      "schedule_id": "sch-101",
+      "category": "Akademik",
+      "emotional_condition": "Konsultasi Langsung Admin (Akademik)",
+      "urgency_score": 4,
+      "urgency_label": "Sedang (3-5)",
+      "modality_selected": "Daring - Google Meet",
+      "status": "In-Progress",
+      "meet_link": "https://meet.google.com/kns-a9b399-bk",
+      "room_location": "Ruang Konsultasi Langsung Admin NARASA",
+      "identity_disclosed": true,
+      "triage_duration_seconds": 30,
+      "whatsapp_notified": true,
+      "calendar_synced": true,
+      "reminder_h1_sent": false,
+      "reminder_h2h_sent": false,
+      "created_at": "2026-11-04T04:25:23.095Z"
+    },
+    {
+      "ticket_code": "BK-20261102-1042",
+      "mahasiswa_id": "mhs-1",
+      "counselor_id": "c-1",
+      "schedule_id": "sch-101",
+      "category": "Akademik & Studi",
+      "emotional_condition": "Lelah Akademik / Skripsi",
+      "urgency_score": 7,
+      "urgency_label": "Tinggi (6-8)",
+      "modality_selected": "Tatap Muka - Ruang BK",
+      "status": "Completed",
+      "meet_link": "",
+      "room_location": "Ruang BK Privat 1 (Lt. 2 Gd. Layanan Mahasiswa)",
+      "identity_disclosed": true,
+      "triage_duration_seconds": 125,
+      "soap_notes": {
+        "subjective": "Klien mengeluhkan kecemasan tinggi saat hendak bimbingan revisi bab 4 skripsi dan sulit tidur selama 2 minggu terakhir.",
+        "objective": "Klien tampak tegang di awal sesi namun kooperatif. Skor PHQ-4: 7 (GAD-2: 4, PHQ-2: 3).",
+        "assessment": "Academic burnout & kecemasan performa terkait penyelesaian tugas akhir.",
+        "plan": "1. Latihan teknik grounding & pernapasan 4-7-8. 2. Penyusunan micro-goals pengerjaan revisi per 3 hari. 3. Sesi evaluasi 2 minggu mendatang.",
+        "updated_at": "2026-11-03T11:00:00.000Z"
+      },
+      "csat_rating": 5,
+      "csat_feedback": "Sangat membantu, chatbox-nya menenangkan dan tidak bikin canggung waktu mau daftar.",
+      "whatsapp_notified": true,
+      "calendar_synced": true,
+      "reminder_h1_sent": true,
+      "reminder_h2h_sent": true,
+      "created_at": "2026-11-02T08:16:05.000Z"
+    },
+    {
+      "ticket_code": "BK-20261103-3819",
+      "mahasiswa_id": "mhs-2",
+      "counselor_id": "c-2",
+      "schedule_id": "sch-201",
+      "category": "Emosi & Kesehatan Mental",
+      "emotional_condition": "Sedih Berkepanjangan",
+      "urgency_score": 10,
+      "urgency_label": "Kritis (9-12)",
+      "modality_selected": "Daring - Google Meet",
+      "status": "Confirmed",
+      "meet_link": "https://meet.google.com/kns-ccbk-201",
+      "room_location": "Google Meet Virtual Room (Privat Terenkripsi)",
+      "identity_disclosed": false,
+      "triage_duration_seconds": 142,
+      "whatsapp_notified": true,
+      "calendar_synced": true,
+      "reminder_h1_sent": true,
+      "reminder_h2h_sent": false,
+      "created_at": "2026-11-03T10:22:22.000Z"
+    },
+    {
+      "ticket_code": "BK-20261103-5904",
+      "mahasiswa_id": "mhs-3",
+      "counselor_id": "c-3",
+      "schedule_id": "sch-301",
+      "category": "Karier & Masa Depan",
+      "emotional_condition": "Sedang Cemas / Overthinking",
+      "urgency_score": 4,
+      "urgency_label": "Sedang (3-5)",
+      "modality_selected": "Tatap Muka - Ruang BK",
+      "status": "Confirmed",
+      "meet_link": "",
+      "room_location": "Ruang Bimbingan Karier (Lt. 1 Gd. Layanan Mahasiswa)",
+      "identity_disclosed": true,
+      "triage_duration_seconds": 110,
+      "csat_rating": 5,
+      "csat_feedback": "Proses pemilihan jadwal cepat dan langsung dapat WA.",
+      "whatsapp_notified": true,
+      "calendar_synced": true,
+      "reminder_h1_sent": true,
+      "reminder_h2h_sent": false,
+      "created_at": "2026-11-03T14:06:50.000Z"
+    },
+    {
+      "ticket_code": "BK-20261103-7120",
+      "mahasiswa_id": "mhs-4",
+      "counselor_id": "c-4",
+      "schedule_id": "sch-401",
+      "category": "Relasi Keluarga/Sosial",
+      "emotional_condition": "Sedang Cemas / Overthinking",
+      "urgency_score": 2,
+      "urgency_label": "Rendah (0-2)",
+      "modality_selected": "Konsultasi Chat Anonim",
+      "status": "In-Progress",
+      "meet_link": "https://meet.google.com/kns-peer-401",
+      "room_location": "Live Chat Sebaya / Pojok Sahabat BK",
+      "identity_disclosed": false,
+      "triage_duration_seconds": 95,
+      "csat_rating": 4,
+      "csat_feedback": "Nyaman bisa pakai nama samaran dulu.",
+      "whatsapp_notified": true,
+      "calendar_synced": true,
+      "reminder_h1_sent": true,
+      "reminder_h2h_sent": true,
+      "created_at": "2026-11-03T19:31:35.000Z"
+    }
+  ],
+  "intake_assessments": [
+    {
+      "id": "ia-chat-1793766994723",
+      "ticket_code": "BK-20261104-6144",
+      "phq4_answers": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "phq4_score": 3,
+      "gad_score": 2,
+      "phq2_score": 1,
+      "client_story_encrypted": "AES256:8e7806299e96359e81a33b38:8e1016b7d4b2a930623e3e1491eeb9df:b58c",
+      "crisis_flag": false,
+      "crisis_keywords_detected": [],
+      "created_at": "2026-11-04T04:36:34.720Z"
+    },
+    {
+      "id": "ia-chat-1793766323097",
+      "ticket_code": "BK-20261104-3619",
+      "phq4_answers": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "phq4_score": 3,
+      "gad_score": 2,
+      "phq2_score": 1,
+      "client_story_encrypted": "AES256:1f4a2ec10b5a182fdc6911ea:ceb72db5e9c4d5896a03a8c1a9e251c8:bc6178b53e44d504dc3ee9c50d58cc04d572d11795d2944343d2f84c3f65ab9c2e43d3624bd824b1bf659352b7515a6cc1bd7cffe7084e5d984c19a48971710cc15e43a4fae626d64bcb20bd339920220e60f1c45a4a4bad612469984da68af5ba6cd65923d06f833b9a0b8be7a3e5",
+      "crisis_flag": false,
+      "crisis_keywords_detected": [],
+      "created_at": "2026-11-04T04:25:23.095Z"
+    },
+    {
+      "id": "ia-1",
+      "ticket_code": "BK-20261102-1042",
+      "phq4_answers": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "phq4_score": 7,
+      "gad_score": 4,
+      "phq2_score": 3,
+      "client_story_encrypted": "AES256:d71a8cbc695f80897ccbf5fe:243d3e3b93a12231a99a3a669ecb15a3:e5ebf2fb0931f6d4e4e361b4ce026053b59c74233c7c24b173045bad964c04c7a66c9665dfb11d18460a287159fd64e3c35cdd42e3f18f59bcf46363855cae1fc788bafff9a9470e62ab0aed8bee34f37a300afe0d1c52238b805f11604a688d5ade89178501440b327d7bc6ef30738c15715da293987e7643d293346edcd64e8201977490620ad22c111216fa9d62fe9dd28aa0a0b23a5617062d5bdd04fd36f893",
+      "crisis_flag": false,
+      "crisis_keywords_detected": [],
+      "created_at": "2026-11-02T08:16:05.000Z"
+    },
+    {
+      "id": "ia-2",
+      "ticket_code": "BK-20261103-3819",
+      "phq4_answers": [
+        3,
+        2,
+        3,
+        2
+      ],
+      "phq4_score": 10,
+      "gad_score": 5,
+      "phq2_score": 5,
+      "client_story_encrypted": "AES256:15fe8738f13722bf36687008:85fffd23628cf328008f66b5b41c66b1:6c638c56e760ca76fe73b36e0e227452c4b43314b0d19c15f0d091eea25fe90b5c53de5ec80191335f00d238a481047416d1ac614d97237b4f9cec010da80f1ba8640dff99d4dc4418e1578fa718fdc0c0628bb12fd7b453dc285f4e7d6eff9235125c22ac9050301d159a68bef57d04b770f897836da79f08a2efa2dcac3ebb13e70f09c0bc3b20780cdd3cadf8b93ca4dce01ed876e570af987b6e5262dee49216dfe0166860caba7b41d006626d187de24953819a1c93b142a3dbffa7f5ef12eef761b829e9f0f0499f8fb8ab8c96941d230de240ed7aef35",
+      "crisis_flag": false,
+      "crisis_keywords_detected": [],
+      "created_at": "2026-11-03T10:22:22.000Z"
+    },
+    {
+      "id": "ia-3",
+      "ticket_code": "BK-20261103-5904",
+      "phq4_answers": [
+        1,
+        2,
+        1,
+        0
+      ],
+      "phq4_score": 4,
+      "gad_score": 3,
+      "phq2_score": 1,
+      "client_story_encrypted": "AES256:a03d764008b2206624a25be8:813f3f2fe38a7a70d671e47232d0da72:63d44e579581cb7dd1263a9f4c2ca476e416c8fede7b059ae0b5499c5c9405f4d0a1e51acdef3c29c36078f6eedf5b7a8b68014a7f076a64b7e53071af4e20c69a5fefab8e44b969222af4cff254922d567b542fd6492ff9bccb305c169acf54ae6aa22597973e781c9912a7a8b7b50c21f27d94e5e31350709ed2b2006aec54c6858ea9450fc8a3f431c8609d3d967696ad66",
+      "crisis_flag": false,
+      "crisis_keywords_detected": [],
+      "created_at": "2026-11-03T14:06:50.000Z"
+    },
+    {
+      "id": "ia-4",
+      "ticket_code": "BK-20261103-7120",
+      "phq4_answers": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "phq4_score": 2,
+      "gad_score": 2,
+      "phq2_score": 0,
+      "client_story_encrypted": "AES256:e12d875369f46b4390ad39dd:32bb5c5176d36b998b9424a51c51de9d:4e83b3a15c91eb238783d6db7833e13b30f38b1422ce1d897598a856591945696febdead81f6b9c75e838a5ea632c97ad2cd2406b858bb2d0fa140354738e86010dd7ca068709fc25d75f30987d9f13e5843d3c3f02551fe27f87af8f5f860c04122c54ec699a610f05f3b8f1f77c00ed9c86cf00fdd8bc10b284fab28202c1a453d217da29ad4",
+      "crisis_flag": false,
+      "crisis_keywords_detected": [],
+      "created_at": "2026-11-03T19:31:35.000Z"
+    }
+  ],
+  "crisis_logs": [
+    {
+      "id": "cr-1793766143027",
+      "timestamp": "2026-11-04T04:22:23.027Z",
+      "trigger_source": "quick_button",
+      "matched_keywords": [
+        "Tombol Darurat Header"
+      ],
+      "detection_latency_ms": 0.1,
+      "pseudonym": "Naufal Rizqullah Pratama",
+      "piket_counselor_name": "Dr. Hj. Siti Nurhaliza, M.Pd., Kons.",
+      "whatsapp_alert_sent": true,
+      "status": "High-Priority Alert Terkirim"
+    },
+    {
+      "id": "cr-1793760851894",
+      "timestamp": "2026-11-04T02:54:11.894Z",
+      "trigger_source": "quick_button",
+      "matched_keywords": [
+        "Tombol Darurat Header"
+      ],
+      "detection_latency_ms": 0.1,
+      "pseudonym": "Bintang Utara #935",
+      "piket_counselor_name": "Dr. Hj. Siti Nurhaliza, M.Pd., Kons.",
+      "whatsapp_alert_sent": true,
+      "status": "High-Priority Alert Terkirim"
+    },
+    {
+      "id": "cr-1793760701271",
+      "timestamp": "2026-11-04T02:51:41.271Z",
+      "trigger_source": "keyword_watcher",
+      "matched_keywords": [
+        "bunuh diri"
+      ],
+      "detection_latency_ms": 0.1,
+      "pseudonym": "Embun Pagi #809",
+      "piket_counselor_name": "Dr. Hj. Siti Nurhaliza, M.Pd., Kons.",
+      "whatsapp_alert_sent": true,
+      "status": "High-Priority Alert Terkirim"
+    },
+    {
+      "id": "cr-1793760692204",
+      "timestamp": "2026-11-04T02:51:32.204Z",
+      "trigger_source": "keyword_watcher",
+      "matched_keywords": [
+        "bunuh diri"
+      ],
+      "detection_latency_ms": 0.1,
+      "pseudonym": "Embun Pagi #809",
+      "piket_counselor_name": "Dr. Hj. Siti Nurhaliza, M.Pd., Kons.",
+      "whatsapp_alert_sent": true,
+      "status": "High-Priority Alert Terkirim"
+    },
+    {
+      "id": "cr-1793760675075",
+      "timestamp": "2026-11-04T02:51:15.075Z",
+      "trigger_source": "keyword_watcher",
+      "matched_keywords": [
+        "bunuh diri"
+      ],
+      "detection_latency_ms": 0.1,
+      "pseudonym": "Embun Pagi #809",
+      "piket_counselor_name": "Dr. Hj. Siti Nurhaliza, M.Pd., Kons.",
+      "whatsapp_alert_sent": true,
+      "status": "High-Priority Alert Terkirim"
+    },
+    {
+      "id": "cr-1793760658124",
+      "timestamp": "2026-11-04T02:50:58.124Z",
+      "trigger_source": "keyword_watcher",
+      "matched_keywords": [
+        "tidak kuat hidup lagi"
+      ],
+      "detection_latency_ms": 1,
+      "pseudonym": "Embun Pagi #809",
+      "piket_counselor_name": "Dr. Hj. Siti Nurhaliza, M.Pd., Kons.",
+      "whatsapp_alert_sent": true,
+      "status": "High-Priority Alert Terkirim"
+    },
+    {
+      "id": "cr-101",
+      "timestamp": "2026-11-01T21:14:10.000Z",
+      "trigger_source": "keyword_watcher",
+      "matched_keywords": [
+        "tidak kuat hidup lagi"
+      ],
+      "detection_latency_ms": 0.4,
+      "pseudonym": "Samudra Biru #903",
+      "piket_counselor_name": "Ahmad Fauzi, M.Psi., Psikolog",
+      "whatsapp_alert_sent": true,
+      "status": "Ditangani Konselor Piket"
+    }
+  ],
+  "live_chat_messages": [
+    {
+      "id": "msg-1",
+      "ticket_code": "BK-20261103-7120",
+      "sender_role": "system",
+      "sender_name": "Sistem CC-Chatbox",
+      "message": "Sesi Live Chat Anonim terhubung dengan Nadia Putri (Konselor Sebaya). Identitas asli Anda tetap dirahasiakan.",
+      "created_at": "2026-11-03T19:32:00.000Z"
+    },
+    {
+      "id": "msg-2",
+      "ticket_code": "BK-20261103-7120",
+      "sender_role": "counselor",
+      "sender_name": "Nadia Putri (Konselor Sebaya)",
+      "message": "Halo Kak Senja Tenang #518! Terima kasih sudah berani cerita ya. Wajar banget kok merasa homesick di semester awal perantauan. Bagian mana yang paling bikin kakak merasa canggung di kelas saat ini?",
+      "created_at": "2026-11-03T19:33:10.000Z"
+    },
+    {
+      "id": "msg-3",
+      "ticket_code": "BK-20261103-7120",
+      "sender_role": "mahasiswa",
+      "sender_name": "Senja Tenang #518",
+      "message": "Halo Kak Nadia, iya kak setiap ada pembagian kelompok diskusi rasanya takut nggak kebagian kelompok karena teman-teman lain sudah punya circle sendiri.",
+      "created_at": "2026-11-03T19:35:00.000Z"
+    },
+    {
+      "id": "msg-1793762450734",
+      "ticket_code": "BK-20261102-1042",
+      "sender_role": "counselor",
+      "sender_name": "Dr. Hj. Siti Nurhaliza, M.Pd., Kons.",
+      "message": "hai",
+      "created_at": "2026-11-04T03:20:50.734Z"
+    },
+    {
+      "id": "msg-1793765641103",
+      "ticket_code": "BK-20261103-3819",
+      "sender_role": "mahasiswa",
+      "sender_name": "Senja Tenang #412",
+      "message": "Halo Admin BK, apakah saya bisa konsultasi singkat lewat chat sekarang?",
+      "created_at": "2026-11-04T04:14:01.103Z"
+    },
+    {
+      "id": "msg-1793765641288",
+      "ticket_code": "BK-20261103-3819",
+      "sender_role": "counselor",
+      "sender_name": "Admin Utama BK NARASA",
+      "message": "Halo Senja Tenang #412, tentu bisa! Saya Admin BK yang sedang bertugas. Silakan ceritakan apa yang sedang kamu rasakan.",
+      "created_at": "2026-11-04T04:14:01.288Z"
+    },
+    {
+      "id": "msg-1793766272398",
+      "ticket_code": "BK-20261104-7250",
+      "sender_role": "counselor",
+      "sender_name": "Admin Utama BK NARASA",
+      "message": "Waalaikumsalam Rizky! Silakan ceritakan bagian skripsi mana yang sedang terkendala, atau klik tombol Google Meet di atas jika ingin diskusi langsung.",
+      "created_at": "2026-11-04T04:24:32.398Z"
+    },
+    {
+      "id": "msg-1793766323097",
+      "ticket_code": "BK-20261104-3619",
+      "sender_role": "mahasiswa",
+      "sender_name": "Rizky Pratama",
+      "message": "Assalamualaikum Admin BK, saya Rizky Pratama ingin konsultasi langsung terkait kendala penyusunan skripsi saya.",
+      "created_at": "2026-11-04T04:25:23.095Z"
+    },
+    {
+      "id": "msg-1793766323193",
+      "ticket_code": "BK-20261104-3619",
+      "sender_role": "counselor",
+      "sender_name": "Admin Utama BK NARASA",
+      "message": "Waalaikumsalam Rizky! Silakan ceritakan bagian skripsi mana yang sedang terkendala, atau klik tombol Google Meet di atas jika ingin diskusi langsung.",
+      "created_at": "2026-11-04T04:25:23.193Z"
+    },
+    {
+      "id": "msg-1793766975890",
+      "ticket_code": "BK-20261104-3619",
+      "sender_role": "mahasiswa",
+      "sender_name": "Naufal Rizqullah Pratama",
+      "message": "hai",
+      "created_at": "2026-11-04T04:36:15.890Z"
+    },
+    {
+      "id": "msg-1793766994723",
+      "ticket_code": "BK-20261104-6144",
+      "sender_role": "mahasiswa",
+      "sender_name": "Embun Pagi #456",
+      "message": "ha",
+      "created_at": "2026-11-04T04:36:34.720Z"
+    },
+    {
+      "id": "msg-1793767012029",
+      "ticket_code": "BK-20261104-3619",
+      "sender_role": "counselor",
+      "sender_name": "Admin Utama NARASA (Admin BK)",
+      "message": "Halo Kak, Admin BK NARASA di sini. Aku sedang membaca ceritamu ya, silakan ceritakan lebih lanjut dengan tenang.",
+      "created_at": "2026-11-04T04:36:52.029Z"
+    }
+  ],
+  "metrics": {
+    "total_chat_sessions_opened": 54,
+    "total_consents_accepted": 50,
+    "total_tickets_completed_booking": 39,
+    "baseline_noshow_rate_percent": 28,
+    "current_noshow_rate_percent": 11,
+    "last_auto_purge_at": "2026-11-04T00:00:00.000Z"
+  },
+  "student_accounts": [
+    {
+      "id": "stu-1",
+      "nim": "230101001",
+      "full_name": "Naufal Rizqullah Pratama",
+      "prodi_id": "BKPI (Bimbingan & Konseling Pendidikan Islam)",
+      "angkatan": 2023,
+      "phone_wa": "081288990011",
+      "password": "mahasiswa123",
+      "status_mahasiswa": "Aktif",
+      "created_at": "2026-11-01T08:00:00.000Z"
+    }
+  ]
+}
