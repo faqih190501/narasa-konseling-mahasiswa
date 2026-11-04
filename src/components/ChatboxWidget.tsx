@@ -427,13 +427,6 @@ export default function ChatboxWidget({
       return;
     }
 
-    if (!selectedCounselorId || !selectedScheduleId) {
-      setBookingError(
-        "Silakan pilih Konselor dan Slot Waktu yang tersedia terlebih dahulu."
-      );
-      return;
-    }
-
     setIsSubmittingBooking(true);
     const triageSeconds = Math.max(
       18,
@@ -458,8 +451,8 @@ export default function ChatboxWidget({
           client_story: clientStory,
           phq4_answers: phqAnswers,
           modality_selected: modalitySelected,
-          counselor_id: selectedCounselorId,
-          schedule_id: selectedScheduleId,
+          counselor_id: selectedCounselorId || counselors[0]?.id || "c-1",
+          schedule_id: selectedScheduleId || schedules[0]?.id || "sch-101",
           triage_duration_seconds: triageSeconds,
         }),
       });
@@ -476,18 +469,15 @@ export default function ChatboxWidget({
 
       appendMessage(
         "user",
-        `Konfirmasi Jadwal: ${modalitySelected} bersama ${
-          data.counselor?.name || "Konselor"
-        } (${data.schedule?.day_of_week}, ${data.schedule?.date_iso} • ${
-          data.schedule?.start_time
-        }-${data.schedule?.end_time} WIB)`
+        `Konfirmasi Konsultasi: ${modalitySelected} bersama Admin Utama BK NARASA`
       );
       appendMessage(
         "bot",
-        `Tiket Konselingmu (${data.ticket.ticket_code}) telah berhasil diterbitkan! Notifikasi konfirmasi WhatsApp dan undangan Google Calendar telah dikirimkan dalam 0.4 detik. Sembari menunggu jadwal sesimu, kamu bisa mencoba panduan relaksasi napas 4-7-8 di bawah ini atau memulai Live Chat dengan konselor.`,
+        `Tiket Konselingmu (${data.ticket.ticket_code}) telah berhasil diterbitkan! Kamu sekarang terhubung langsung dengan Admin BK NARASA. Sembari menunggu balasan Admin, kamu bisa membuka Live Chat di bawah ini atau mencoba panduan relaksasi napas 4-7-8.`,
         "Tahap 5 Selesai • Tiket Diterbitkan (FR-06)"
       );
       setStage(6);
+      setLiveChatOpen(true);
       onDataChanged();
     } catch {
       setBookingError("Terjadi gangguan jaringan saat menerbitkan tiket.");
@@ -1506,130 +1496,6 @@ export default function ChatboxWidget({
                     </div>
                   </div>
 
-                  {/* Pilihan Konselor & Slot Jadwal Real-Time (FR-05) */}
-                  <div className="rounded-2xl border border-slate-200 bg-white p-4 space-y-4">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600">
-                      C. Pilih Konselor & Slot Waktu Ketersediaan (FR-05 Anti Double-Booking)
-                    </h4>
-
-                    <div className="grid gap-2.5 sm:grid-cols-2">
-                      {counselors.map((c) => {
-                        const openCount = schedules.filter(
-                          (s) => s.counselor_id === c.id && !s.is_booked
-                        ).length;
-                        const isSelected = selectedCounselorId === c.id;
-                        const isRecommended =
-                          phqSummary.phq4_score >= 6
-                            ? !c.is_peer_counselor
-                            : true;
-
-                        return (
-                          <button
-                            key={c.id}
-                            type="button"
-                            onClick={() => {
-                              setSelectedCounselorId(c.id);
-                              const firstSlot = schedules.find(
-                                (s) => s.counselor_id === c.id && !s.is_booked
-                              );
-                              setSelectedScheduleId(firstSlot ? firstSlot.id : "");
-                            }}
-                            className={`rounded-xl border p-3.5 text-left transition ${
-                              isSelected
-                                ? "border-teal-600 bg-teal-50/70 ring-2 ring-teal-500/20"
-                                : "border-slate-200 bg-white hover:border-teal-300"
-                            }`}
-                          >
-                            <div className="flex items-center justify-between gap-2">
-                              <span
-                                className={`rounded-md px-2 py-0.5 text-[10px] font-bold ${
-                                  c.is_peer_counselor
-                                    ? "bg-sky-100 text-sky-800"
-                                    : "bg-teal-100 text-teal-800"
-                                }`}
-                              >
-                                {c.is_peer_counselor
-                                  ? "Konselor Sebaya (Peer Support)"
-                                  : "Dosen BK / Konselor Ahli"}
-                              </span>
-                              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-500">
-                                <span
-                                  className={`h-2 w-2 rounded-full ${
-                                    c.online_status
-                                      ? "bg-emerald-500"
-                                      : "bg-slate-300"
-                                  }`}
-                                />
-                                {openCount} Slot Kosong
-                              </span>
-                            </div>
-                            <div className="mt-1.5 text-sm font-bold text-slate-900">
-                              {c.name}
-                            </div>
-                            <div className="text-[11px] text-slate-500">
-                              Keahlian: {c.specialization.join(" • ")}
-                            </div>
-                            {!isRecommended && (
-                              <div className="mt-1 text-[10px] font-semibold text-amber-700">
-                                *Skor PHQ-4 Anda cukup tinggi, disarankan memilih Dosen BK Ahli.
-                              </div>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-
-                    {/* Daftar Slot Waktu untuk Konselor Terpilih */}
-                    {selectedCounselorId && (
-                      <div className="pt-2 border-t border-slate-100">
-                        <label className="block text-xs font-semibold text-slate-700 mb-2">
-                          Slot Jadwal Kosong — {currentCounselor?.name}:
-                        </label>
-                        {availableSlotsForCounselor.length === 0 ? (
-                          <div className="rounded-xl bg-amber-50 p-3 text-xs text-amber-800">
-                            Seluruh slot konselor ini sedang penuh. Silakan pilih konselor
-                            lain di atas.
-                          </div>
-                        ) : (
-                          <div className="grid gap-2 sm:grid-cols-3">
-                            {availableSlotsForCounselor.map((slot) => (
-                              <button
-                                key={slot.id}
-                                type="button"
-                                onClick={() => setSelectedScheduleId(slot.id)}
-                                className={`flex flex-col rounded-xl border p-3 text-left transition ${
-                                  selectedScheduleId === slot.id
-                                    ? "border-teal-600 bg-teal-600 text-white shadow-sm"
-                                    : "border-slate-200 bg-slate-50/70 text-slate-800 hover:border-teal-400"
-                                }`}
-                              >
-                                <div className="flex items-center justify-between text-xs font-bold">
-                                  <span>
-                                    {slot.day_of_week}, {slot.date_iso}
-                                  </span>
-                                  <Calendar className="h-3.5 w-3.5 opacity-80" />
-                                </div>
-                                <div className="mt-1 flex items-center gap-1 text-xs font-semibold">
-                                  <Clock className="h-3.5 w-3.5 opacity-80" />
-                                  {slot.start_time} – {slot.end_time} WIB
-                                </div>
-                                <span
-                                  className={`mt-1 text-[10px] ${
-                                    selectedScheduleId === slot.id
-                                      ? "text-teal-100"
-                                      : "text-slate-500"
-                                  }`}
-                                >
-                                  Modalitas: {slot.modality_type}
-                                </span>
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
                   {bookingError && (
                     <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-xs font-medium text-rose-800">
                       {bookingError}
@@ -1638,14 +1504,14 @@ export default function ChatboxWidget({
 
                   <div className="flex items-center justify-end">
                     <button
-                      disabled={isSubmittingBooking || !selectedScheduleId}
+                      disabled={isSubmittingBooking}
                       onClick={handleConfirmBooking}
                       className="inline-flex items-center gap-2 rounded-xl bg-teal-600 px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-teal-700 disabled:opacity-40"
                     >
                       <CheckCircle2 className="h-4 w-4" />
                       {isSubmittingBooking
-                        ? "Mengunci Slot & Menerbitkan Tiket..."
-                        : "Konfirmasi Jadwal & Terbitkan Tiket Konseling"}
+                        ? "Menerbitkan Tiket Konsultasi..."
+                        : "Konfirmasi & Terbitkan Tiket Konsultasi Admin BK"}
                     </button>
                   </div>
                 </div>

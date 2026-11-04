@@ -265,26 +265,20 @@ export async function POST(req: NextRequest) {
       triage_duration_seconds = 105,
     } = body;
 
-    // Validate & lock schedule slot (anti double-booking FR-05)
-    const schedule = db.counselor_schedules.find((s) => s.id === schedule_id);
-    if (!schedule) {
-      return NextResponse.json(
-        { ok: false, error: "Slot jadwal tidak ditemukan." },
-        { status: 400 }
-      );
-    }
-    if (schedule.is_booked) {
-      return NextResponse.json(
-        {
-          ok: false,
-          error:
-            "Maaf, slot jadwal ini baru saja dipesan oleh mahasiswa lain. Silakan pilih slot waktu lainnya.",
-        },
-        { status: 409 }
-      );
-    }
-
-    schedule.is_booked = true;
+    // Schedule slot is optional (Direct Admin Consultation without slot restriction)
+    const schedule =
+      db.counselor_schedules.find((s) => s.id === schedule_id) ||
+      db.counselor_schedules[0] || {
+        id: "sch-direct",
+        counselor_id: counselor_id || "c-1",
+        day_of_week: "Setiap Hari",
+        date_iso: new Date().toISOString().slice(0, 10),
+        start_time: "08:00",
+        end_time: "16:00",
+        modality_type: "Both" as ScheduleModality,
+        room_location: "Ruang BK Privat (Lt. 2 Gd. Layanan Mahasiswa)",
+        is_booked: false,
+      };
 
     // Evaluate PHQ-4 & Crisis scan
     const cleanAnswers: [number, number, number, number] = Array.isArray(

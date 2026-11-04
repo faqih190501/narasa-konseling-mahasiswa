@@ -425,108 +425,12 @@ export default function CounselorDashboard({
                       </div>
                       <div className="mt-1 flex items-center gap-1 text-[11px] text-slate-500">
                         <Clock className="h-3 w-3" />
-                        {t.schedule_day}, {t.schedule_date} ({t.schedule_start}–
-                        {t.schedule_end})
+                        Modalitas: {t.modality_selected}
                       </div>
                     </button>
                   );
                 })
               )}
-            </div>
-          </div>
-
-          {/* Manajemen Jadwal & Slot Konselor (FR-05) */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm space-y-3">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
-              <h3 className="text-sm font-bold text-slate-800">
-                Slot Ketersediaan Jadwal (FR-05)
-              </h3>
-              <span className="text-[11px] text-slate-500">
-                Kuota Harian Maks: {activeCounselor?.max_daily_slots} Sesi
-              </span>
-            </div>
-
-            <div className="space-y-1.5 max-h-44 overflow-y-auto">
-              {counselorSchedules.map((s) => (
-                <div
-                  key={s.id}
-                  className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-3 py-2 text-xs"
-                >
-                  <div>
-                    <div className="font-bold text-slate-800">
-                      {s.day_of_week}, {s.date_iso} ({s.start_time}–{s.end_time})
-                    </div>
-                    <div className="text-[10px] text-slate-500">
-                      Modalitas: {s.modality_type}
-                    </div>
-                  </div>
-                  <span
-                    className={`rounded-md px-2 py-0.5 text-[10px] font-bold ${
-                      s.is_booked
-                        ? "bg-amber-100 text-amber-800"
-                        : "bg-emerald-100 text-emerald-800"
-                    }`}
-                  >
-                    {s.is_booked ? "Terkunci (Booked)" : "Tersedia"}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            {/* Tambah Slot Jadwal Baru */}
-            <div className="pt-2 border-t border-slate-100 space-y-2">
-              <div className="text-xs font-bold text-slate-700">
-                + Tambah Slot Waktu Ketersediaan Baru:
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <input
-                  type="text"
-                  value={newSlotDay}
-                  onChange={(e) => setNewSlotDay(e.target.value)}
-                  placeholder="Hari (mis: Rabu)"
-                  className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs"
-                />
-                <input
-                  type="date"
-                  value={newSlotDate}
-                  onChange={(e) => setNewSlotDate(e.target.value)}
-                  className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs"
-                />
-                <input
-                  type="text"
-                  value={newSlotStart}
-                  onChange={(e) => setNewSlotStart(e.target.value)}
-                  placeholder="Mulai (09:00)"
-                  className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs"
-                />
-                <input
-                  type="text"
-                  value={newSlotEnd}
-                  onChange={(e) => setNewSlotEnd(e.target.value)}
-                  placeholder="Selesai (10:00)"
-                  className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs"
-                />
-              </div>
-              <div className="flex items-center gap-2">
-                <select
-                  value={newSlotModality}
-                  onChange={(e) =>
-                    setNewSlotModality(e.target.value as ScheduleModality)
-                  }
-                  className="flex-1 rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs"
-                >
-                  <option value="Both">Online & Tatap Muka (Both)</option>
-                  <option value="Online">Hanya Daring (Online)</option>
-                  <option value="Offline">Hanya Tatap Muka (Offline)</option>
-                </select>
-                <button
-                  onClick={handleAddSlot}
-                  className="inline-flex items-center gap-1 rounded-lg bg-teal-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-teal-700"
-                >
-                  <CalendarPlus className="h-3.5 w-3.5" />
-                  Tambah Slot
-                </button>
-              </div>
             </div>
           </div>
         </div>

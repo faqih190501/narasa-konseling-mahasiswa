@@ -781,16 +781,16 @@ export default function HomePage() {
                     className="clay-card-peach rounded-[28px] p-5 text-left transition hover:-translate-y-0.5"
                   >
                     <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#EE7854] text-white shadow-md">
-                      <CalendarCheck className="h-5 w-5" />
+                      <Sparkles className="h-5 w-5" />
                     </div>
                     <div className="mt-4 text-xs font-semibold text-[#6E5C56]">
-                      Slot Jadwal Kosong
+                      Skrining Mandiri
                     </div>
-                    <div className="mt-1 text-3xl font-extrabold text-[#2D2A26]">
-                      {openSlotsCount}
+                    <div className="mt-1 text-2xl font-extrabold text-[#2D2A26]">
+                      PHQ-4
                     </div>
                     <div className="mt-2 text-xs font-extrabold text-[#2A856A]">
-                      Tatap Muka & Google Meet
+                      Cek Kondisi Emosimu →
                     </div>
                   </button>
 
