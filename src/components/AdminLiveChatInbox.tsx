@@ -11,6 +11,7 @@ import {
   UserCheck,
   EyeOff,
   RefreshCw,
+  ArrowLeft,
 } from "lucide-react";
 import { DecryptedTicketView, LiveChatMessage } from "@/lib/types";
 
@@ -40,6 +41,7 @@ export default function AdminLiveChatInbox({
   const [replyInput, setReplyInput] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isSending, setIsSending] = useState<boolean>(false);
+  const [mobileShowChat, setMobileShowChat] = useState<boolean>(false);
   const chatBottomRef = useRef<HTMLDivElement | null>(null);
 
   // Auto-select first ticket if none selected
@@ -121,21 +123,20 @@ export default function AdminLiveChatInbox({
     });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Top Hero Banner */}
-      <div className="clay-hero-peach rounded-[30px] p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="clay-hero-peach rounded-[24px] sm:rounded-[30px] p-4 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/85 px-3.5 py-1 text-[11px] font-extrabold text-[#C46A4E]">
-            <Sparkles className="h-3.5 w-3.5" />
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/85 px-3 sm:px-3.5 py-1 text-[10.5px] sm:text-[11px] font-extrabold text-[#C46A4E]">
+            <Sparkles className="h-3.5 w-3.5 shrink-0" />
             Live Chat Real-Time 2 Arah (FR-10 • Mahasiswa ⇄ Admin BK)
           </span>
-          <h2 className="mt-2 text-xl sm:text-2xl font-extrabold text-[#2D2A26]">
+          <h2 className="mt-2 text-lg sm:text-2xl font-extrabold text-[#2D2A26]">
             Kotak Masuk & Balas Chat Mahasiswa Secara Langsung 💬
           </h2>
           <p className="mt-1 text-xs sm:text-[13px] text-[#5F544E] max-w-2xl">
-            Pilih percakapan mahasiswa di sebelah kiri untuk membaca keluhan
-            awal dan langsung mengirim balasan chat secara real-time ke layar
-            mahasiswa.
+            Pilih percakapan mahasiswa untuk membaca keluhan awal dan langsung
+            mengirim balasan chat secara real-time ke layar mahasiswa.
           </p>
         </div>
 
@@ -148,10 +149,14 @@ export default function AdminLiveChatInbox({
         </button>
       </div>
 
-      {/* Main Split Chat Layout */}
-      <div className="grid gap-6 lg:grid-cols-12 items-stretch">
+      {/* Main Split Chat Layout (Mobile List/Chat Toggle + Desktop Side-by-Side) */}
+      <div className="grid gap-5 sm:gap-6 lg:grid-cols-12 items-stretch">
         {/* LEFT 4 COLS: DAFTAR PERCAKAPAN MAHASISWA */}
-        <div className="clay-card-white lg:col-span-4 rounded-[30px] p-5 flex flex-col justify-between">
+        <div
+          className={`clay-card-white lg:col-span-4 rounded-[24px] sm:rounded-[30px] p-4 sm:p-5 flex-col justify-between ${
+            mobileShowChat ? "hidden lg:flex" : "flex"
+          }`}
+        >
           <div>
             <div className="flex items-center justify-between border-b border-slate-100 pb-3.5">
               <h3 className="text-sm font-extrabold text-[#2D2A26]">
@@ -186,7 +191,10 @@ export default function AdminLiveChatInbox({
                 return (
                   <button
                     key={t.ticket_code}
-                    onClick={() => setSelectedTicketCode(t.ticket_code)}
+                    onClick={() => {
+                      setSelectedTicketCode(t.ticket_code);
+                      setMobileShowChat(true);
+                    }}
                     className={`w-full rounded-[22px] p-3.5 text-left transition border-2 ${
                       isSelected
                         ? "clay-card-mint border-white ring-2 ring-[#559A87]/30"
@@ -239,7 +247,11 @@ export default function AdminLiveChatInbox({
         </div>
 
         {/* RIGHT 8 COLS: RUANG BALAS CHAT MAHASISWA REAL-TIME */}
-        <div className="clay-card-white lg:col-span-8 rounded-[30px] p-6 flex flex-col justify-between min-h-[600px]">
+        <div
+          className={`clay-card-white lg:col-span-8 min-w-0 rounded-[24px] sm:rounded-[30px] p-4 sm:p-6 flex-col justify-between min-h-[500px] sm:min-h-[600px] ${
+            mobileShowChat ? "flex" : "hidden lg:flex"
+          }`}
+        >
           {!selectedTicket ? (
             <div className="m-auto text-center text-sm text-[#8C857B]">
               Pilih salah satu mahasiswa di sebelah kiri untuk mulai membalas
@@ -249,24 +261,34 @@ export default function AdminLiveChatInbox({
             <>
               {/* Top Student Info Context Header */}
               <div className="border-b border-slate-100 pb-4 space-y-3">
+                {/* Mobile Back to Conversation List Button */}
+                <button
+                  type="button"
+                  onClick={() => setMobileShowChat(false)}
+                  className="lg:hidden inline-flex items-center gap-1.5 rounded-full bg-[#F3F0E8] hover:bg-[#E2F1EC] px-3.5 py-1.5 text-xs font-extrabold text-[#2D2A26] transition"
+                >
+                  <ArrowLeft className="h-3.5 w-3.5 text-[#559A87]" />
+                  <span>Daftar Chat ({filteredTickets.length})</span>
+                </button>
+
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#DCEEE7] text-[#2E7D67] font-extrabold text-base shadow-sm">
-                      <MessageSquareHeart className="h-6 w-6" />
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-2xl bg-[#DCEEE7] text-[#2E7D67] font-extrabold text-base shadow-sm">
+                      <MessageSquareHeart className="h-5 w-5 sm:h-6 sm:w-6" />
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-base font-extrabold text-[#2D2A26]">
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                        <h3 className="text-sm sm:text-base font-extrabold text-[#2D2A26] break-words">
                           {selectedTicket.identity_disclosed &&
                           selectedTicket.mahasiswa_name_decrypted
                             ? `${selectedTicket.mahasiswa_name_decrypted} (NIM: ${selectedTicket.mahasiswa_nim_decrypted})`
                             : `${selectedTicket.mahasiswa_pseudonym} (Mode Samaran)`}
                         </h3>
-                        <span className="rounded-full bg-[#F9E69B] px-2.5 py-0.5 text-[10.5px] font-extrabold text-[#6E5611]">
+                        <span className="rounded-full bg-[#F9E69B] px-2.5 py-0.5 text-[10px] sm:text-[10.5px] font-extrabold text-[#6E5611]">
                           {selectedTicket.urgency_label}
                         </span>
                       </div>
-                      <p className="text-xs text-[#6E6A63]">
+                      <p className="text-[11px] sm:text-xs text-[#6E6A63]">
                         Tiket: <strong>{selectedTicket.ticket_code}</strong> •{" "}
                         {selectedTicket.mahasiswa_prodi} • Topik:{" "}
                         <strong>{selectedTicket.category}</strong>
@@ -384,7 +406,7 @@ export default function AdminLiveChatInbox({
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2 sm:gap-2.5">
                   <input
                     type="text"
                     value={replyInput}
@@ -395,17 +417,18 @@ export default function AdminLiveChatInbox({
                         handleSendAdminReply();
                       }
                     }}
-                    placeholder={`Ketik balasan langsung untuk ${selectedTicket.mahasiswa_pseudonym}...`}
-                    className="flex-1 rounded-full bg-[#F3F0E8] border border-white px-5 py-3 text-xs sm:text-sm font-semibold text-[#2D2A26] placeholder-[#969086] shadow-inner focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#559A87]"
+                    placeholder={`Balas ${selectedTicket.mahasiswa_pseudonym}...`}
+                    className="flex-1 min-w-0 rounded-full bg-[#F3F0E8] border border-white px-4 sm:px-5 py-3 text-xs sm:text-sm font-semibold text-[#2D2A26] placeholder-[#969086] shadow-inner focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#559A87]"
                   />
                   <button
                     type="button"
                     disabled={isSending || !replyInput.trim()}
                     onClick={() => handleSendAdminReply()}
-                    className="clay-btn-coral inline-flex items-center gap-2 rounded-full px-6 py-3 text-xs sm:text-sm font-extrabold text-white transition active:scale-95 disabled:opacity-40"
+                    className="clay-btn-coral shrink-0 inline-flex items-center gap-1.5 sm:gap-2 rounded-full px-4 sm:px-6 py-3 text-xs sm:text-sm font-extrabold text-white transition active:scale-95 disabled:opacity-40"
                   >
-                    <Send className="h-4 w-4" />
-                    <span>Kirim Balasan</span>
+                    <Send className="h-4 w-4 shrink-0" />
+                    <span className="hidden sm:inline">Kirim Balasan</span>
+                    <span className="sm:hidden">Kirim</span>
                   </button>
                 </div>
               </div>

@@ -30,6 +30,8 @@ import {
   Video,
   CheckCircle2,
   Download,
+  Menu,
+  X,
 } from "lucide-react";
 import LoginPortal, { AuthenticatedSession } from "@/components/LoginPortal";
 import NarasaLogo from "@/components/NarasaLogo";
@@ -83,6 +85,7 @@ export default function HomePage() {
   const [showNotifPopover, setShowNotifPopover] = useState<boolean>(false);
   const [donutMode, setDonutMode] = useState<"kehadiran" | "phq4">("kehadiran");
   const [floatingWidgetOpen, setFloatingWidgetOpen] = useState<boolean>(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   // Student Ticket Lookup State
   const [ticketLookupInput, setTicketLookupInput] = useState<string>(
@@ -112,11 +115,13 @@ export default function HomePage() {
   const handleLoginSuccess = (authSession: AuthenticatedSession) => {
     setSession(authSession);
     setActiveNav("dashboard");
+    setMobileMenuOpen(false);
   };
 
   const handleLogout = () => {
     setSession(null);
     setFloatingWidgetOpen(false);
+    setMobileMenuOpen(false);
   };
 
   // If not logged in, render the Dual Login Portal (Mahasiswa vs Admin/Konselor)
@@ -336,12 +341,162 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen p-3 sm:p-5 lg:p-7 flex items-stretch justify-center">
-      <div className="w-full max-w-[1440px] flex flex-col lg:flex-row gap-5 lg:gap-6">
+    <div className="min-h-[100dvh] p-2.5 sm:p-5 lg:p-7 pb-24 lg:pb-7 flex items-stretch justify-center">
+      <div className="w-full max-w-[1440px] flex flex-col lg:flex-row gap-3.5 sm:gap-5 lg:gap-6">
         {/* ============================================================
-            LEFT FLOATING SAGE-MINT SIDEBAR (Matches Reference Image + NARASA Logo)
+            MOBILE TOP STICKY APP BAR (Handphone & Tablet < lg)
            ============================================================ */}
-        <aside className="clay-sidebar w-full lg:w-[272px] shrink-0 rounded-[34px] p-5 flex flex-col justify-between no-print">
+        <div className="lg:hidden sticky top-2 z-30 clay-sidebar rounded-[24px] px-3.5 py-2.5 flex items-center justify-between gap-2 shadow-md no-print">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#FCFBF8] border border-white text-[#2D2A26] shadow-sm active:scale-95"
+              aria-label="Buka Menu Navigasi"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+            <div className="h-9 w-9 shrink-0 rounded-xl bg-[#FCFBF8] border border-white p-1 flex items-center justify-center shadow-sm">
+              <img
+                src="/logo-narasa.jpg"
+                alt="NARASA"
+                className="h-full w-full object-contain"
+              />
+            </div>
+            <div className="min-w-0">
+              <div className="text-xs font-extrabold text-[#2D2A26] truncate">
+                {headerTitleMap[activeNav]}
+              </div>
+              <div className="text-[10px] font-semibold text-[#4E5A54] truncate">
+                {session.displayName.split(",")[0]} •{" "}
+                {isMahasiswa ? "Mahasiswa" : "Admin BK"}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-1.5 shrink-0">
+            <a
+              href="/narasa-konseling.apk"
+              download="NARASA-Konseling-Mahasiswa.apk"
+              className="flex h-9 items-center gap-1 rounded-full bg-[#2E7D67] px-3 text-[10.5px] font-extrabold text-white shadow-sm active:scale-95"
+              title="Download APK Android"
+            >
+              <Download className="h-3.5 w-3.5" />
+              <span>APK</span>
+            </a>
+            <button
+              type="button"
+              onClick={() => setShowNotifPopover(!showNotifPopover)}
+              className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#FCFBF8] border border-white text-[#5C5346] shadow-sm"
+              aria-label="Notifikasi"
+            >
+              <Bell className="h-4 w-4 fill-[#6B5A4C]" />
+              <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#E66A46] text-[9px] font-extrabold text-white ring-1 ring-white">
+                2
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {/* ============================================================
+            MOBILE SLIDE-OVER NAVIGATION DRAWER (Handphone & Tablet < lg)
+           ============================================================ */}
+        {mobileMenuOpen && (
+          <div className="fixed inset-0 z-50 lg:hidden flex no-print">
+            <div
+              className="fixed inset-0 bg-black/40 backdrop-blur-xs"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+            <div className="relative z-10 w-[84vw] max-w-[310px] h-full clay-sidebar p-5 flex flex-col justify-between overflow-y-auto shadow-2xl">
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-4">
+                  <div className="rounded-[18px] bg-[#FCFBF8]/95 px-3 py-2 border border-white shadow-sm">
+                    <NarasaLogo
+                      size="sm"
+                      showText={true}
+                      subtitle="Narasi Rasa • BK Kampus"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-white/85 text-[#2D2A26] shadow-sm"
+                    aria-label="Tutup Menu"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+
+                {/* Compact Profile Row inside Mobile Drawer */}
+                <div className="mb-4 rounded-[22px] bg-white/70 border border-white p-3.5 flex items-center gap-3">
+                  <div className="relative h-12 w-12 shrink-0 rounded-full bg-[#F5E1D6] border-2 border-white flex items-center justify-center font-extrabold text-sm text-[#6C4A32]">
+                    {session.displayName.slice(0, 2).toUpperCase()}
+                    <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-[#2EB886] ring-2 ring-white" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-xs font-extrabold text-[#2D2A26] truncate">
+                      {session.displayName}
+                    </div>
+                    <div className="text-[10.5px] font-semibold text-[#5E6A64] truncate">
+                      {session.subRoleLabel}
+                    </div>
+                  </div>
+                </div>
+
+                <nav className="space-y-1.5">
+                  {navItems.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = activeNav === item.key;
+                    return (
+                      <button
+                        key={item.key}
+                        onClick={() => {
+                          setActiveNav(item.key);
+                          setMobileMenuOpen(false);
+                        }}
+                        className={`w-full flex items-center gap-3 rounded-[18px] px-3.5 py-2.5 text-left text-xs transition-all ${
+                          isActive
+                            ? "bg-[#FCFBF7] font-extrabold text-[#2D2A26] shadow-md"
+                            : "font-semibold text-[#414844] hover:bg-white/45"
+                        }`}
+                      >
+                        <span
+                          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${item.badgeBg} ${item.iconColor} shadow-sm`}
+                        >
+                          <Icon className="h-4 w-4" />
+                        </span>
+                        <span className="truncate">{item.label}</span>
+                      </button>
+                    );
+                  })}
+                </nav>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-white/60 space-y-2.5">
+                <a
+                  href="/narasa-konseling.apk"
+                  download="NARASA-Konseling-Mahasiswa.apk"
+                  className="w-full rounded-full bg-[#2E7D67] hover:bg-[#256654] py-2.5 px-4 text-xs font-extrabold text-white border border-white shadow-sm flex items-center justify-center gap-2 transition active:scale-95"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  Download APK Android
+                </a>
+                <button
+                  onClick={handleLogout}
+                  className="w-full rounded-full bg-white/85 hover:bg-white py-2.5 px-4 text-xs font-extrabold text-[#5C5346] border border-white shadow-sm flex items-center justify-center gap-2 transition"
+                >
+                  <LogOut className="h-3.5 w-3.5 text-[#D9603B]" />
+                  Keluar / Ganti Akun
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ============================================================
+            LEFT FLOATING SAGE-MINT SIDEBAR (Desktop Mode >= lg)
+           ============================================================ */}
+        <aside className="clay-sidebar hidden lg:flex lg:w-[272px] lg:sticky lg:top-6 lg:self-start shrink-0 rounded-[34px] p-5 flex-col justify-between no-print">
           <div>
             {/* Official NARASA Brand Pill at Top of Sidebar */}
             <div className="mb-3 rounded-[22px] bg-[#FCFBF8]/90 px-3.5 py-2.5 border border-white shadow-sm flex items-center justify-center">
@@ -520,13 +675,13 @@ export default function HomePage() {
         </aside>
 
         {/* ============================================================
-            RIGHT MAIN CREAM SHELL (Matches Reference Image)
+            RIGHT MAIN CREAM SHELL (Responsive Desktop & Handphone)
            ============================================================ */}
-        <main className="clay-shell flex-1 rounded-[36px] p-5 sm:p-7 lg:p-8 flex flex-col justify-between overflow-hidden">
-          <div className="space-y-6">
+        <main className="clay-shell flex-1 min-w-0 rounded-[26px] sm:rounded-[36px] p-3.5 sm:p-7 lg:p-8 flex flex-col justify-between overflow-hidden">
+          <div className="space-y-5 sm:space-y-6">
             {/* TOP HEADER BAR */}
-            <header className="flex flex-wrap items-center justify-between gap-4 no-print">
-              <div className="flex flex-wrap items-center gap-3">
+            <header className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center justify-between gap-3 sm:gap-4 no-print">
+              <div className="hidden lg:flex flex-wrap items-center gap-3">
                 <div className="h-11 w-11 shrink-0 rounded-2xl bg-[#FCFBF8] border-2 border-white shadow-sm p-1 flex items-center justify-center overflow-hidden">
                   <img
                     src="/logo-narasa.jpg"
@@ -546,9 +701,9 @@ export default function HomePage() {
                 </span>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center justify-between sm:justify-end gap-2.5 sm:gap-3 w-full lg:w-auto">
                 {/* Search Input Pill */}
-                <div className="relative flex items-center">
+                <div className="relative flex items-center flex-1 sm:flex-initial">
                   <Search className="absolute left-3.5 h-4 w-4 text-[#8C867E]" />
                   <input
                     type="text"
@@ -556,18 +711,18 @@ export default function HomePage() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder={
                       isMahasiswa
-                        ? "Cari kode tiket atau nama konselor..."
+                        ? "Cari kode tiket atau konselor..."
                         : "Cari klien samaran, tiket, materi..."
                     }
-                    className="w-52 sm:w-64 rounded-full bg-[#F3F0E8] border border-white pl-9 pr-4 py-2.5 text-xs font-medium text-[#2D2A26] placeholder-[#969086] shadow-inner focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#E88A6B]/40"
+                    className="w-full sm:w-64 rounded-full bg-[#F3F0E8] border border-white pl-9 pr-4 py-2.5 text-xs font-medium text-[#2D2A26] placeholder-[#969086] shadow-inner focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#E88A6B]/40"
                   />
                 </div>
 
-                {/* Notification Bell with Badge '2' */}
+                {/* Notification Bell with Badge '2' (Desktop + Shared Popover) */}
                 <div className="relative">
                   <button
                     onClick={() => setShowNotifPopover(!showNotifPopover)}
-                    className="relative flex h-11 w-11 items-center justify-center rounded-full bg-[#F3F0E8] border border-white text-[#5C5346] shadow-sm hover:bg-white transition"
+                    className="hidden lg:flex relative h-11 w-11 items-center justify-center rounded-full bg-[#F3F0E8] border border-white text-[#5C5346] shadow-sm hover:bg-white transition"
                     title="Notifikasi Sistem & Pengingat Jadwal"
                   >
                     <Bell className="h-4 w-4 fill-[#6B5A4C]" />
@@ -577,7 +732,7 @@ export default function HomePage() {
                   </button>
 
                   {showNotifPopover && (
-                    <div className="absolute right-0 mt-2 w-80 rounded-3xl bg-white p-4 shadow-2xl border border-slate-100 z-50 text-xs space-y-2.5">
+                    <div className="fixed lg:absolute right-3 lg:right-0 top-16 lg:top-auto lg:mt-2 w-[calc(100vw-1.5rem)] max-w-xs sm:w-80 rounded-3xl bg-white p-4 shadow-2xl border border-slate-100 z-50 text-xs space-y-2.5">
                       <div className="flex items-center justify-between font-extrabold text-[#2D2A26] border-b pb-2">
                         <span>Notifikasi Layanan BK</span>
                         <button
@@ -624,7 +779,7 @@ export default function HomePage() {
                 {/* Logout / Return to Login Screen Button */}
                 <button
                   onClick={handleLogout}
-                  className="flex h-11 w-11 items-center justify-center rounded-full bg-[#DCEEE7] border border-white text-[#2E7D67] shadow-sm hover:bg-[#CBE5DC] transition"
+                  className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full bg-[#DCEEE7] border border-white text-[#2E7D67] shadow-sm hover:bg-[#CBE5DC] transition"
                   title="Keluar & Kembali ke Halaman Login Mahasiswa / Admin"
                 >
                   <LogOut className="h-4 w-4" />
@@ -768,74 +923,74 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                {/* 4 Pastel Clay Stat Cards for Mahasiswa */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+                {/* 4 Pastel Clay Stat Cards for Mahasiswa (2x2 on Phone, 4 cols on Desktop) */}
+                <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-5">
                   <button
                     onClick={() => setActiveNav("konsultasi_admin")}
-                    className="clay-card-mint rounded-[28px] p-5 text-left transition hover:-translate-y-0.5"
+                    className="clay-card-mint rounded-[22px] sm:rounded-[28px] p-3.5 sm:p-5 text-left transition hover:-translate-y-0.5"
                   >
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#559A87] text-white shadow-md">
-                      <MessageCircleHeart className="h-5 w-5" />
+                    <div className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-[#559A87] text-white shadow-md">
+                      <MessageCircleHeart className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
-                    <div className="mt-4 text-xs font-semibold text-[#5E6E68]">
+                    <div className="mt-3 sm:mt-4 text-[11px] sm:text-xs font-semibold text-[#5E6E68]">
                       Chat Konsultasi Admin
                     </div>
-                    <div className="mt-1 text-2xl font-extrabold text-[#2D2A26]">
+                    <div className="mt-0.5 sm:mt-1 text-lg sm:text-2xl font-extrabold text-[#2D2A26]">
                       Online 24/7
                     </div>
-                    <div className="mt-2 text-xs font-extrabold text-[#2A856A]">
-                      Klik untuk Chat Langsung →
+                    <div className="mt-1.5 sm:mt-2 text-[10.5px] sm:text-xs font-extrabold text-[#2A856A]">
+                      Chat Langsung →
                     </div>
                   </button>
 
                   <button
                     onClick={() => setActiveNav("chatbox")}
-                    className="clay-card-peach rounded-[28px] p-5 text-left transition hover:-translate-y-0.5"
+                    className="clay-card-peach rounded-[22px] sm:rounded-[28px] p-3.5 sm:p-5 text-left transition hover:-translate-y-0.5"
                   >
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#EE7854] text-white shadow-md">
-                      <Sparkles className="h-5 w-5" />
+                    <div className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-[#EE7854] text-white shadow-md">
+                      <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
-                    <div className="mt-4 text-xs font-semibold text-[#6E5C56]">
+                    <div className="mt-3 sm:mt-4 text-[11px] sm:text-xs font-semibold text-[#6E5C56]">
                       Skrining Mandiri
                     </div>
-                    <div className="mt-1 text-2xl font-extrabold text-[#2D2A26]">
+                    <div className="mt-0.5 sm:mt-1 text-lg sm:text-2xl font-extrabold text-[#2D2A26]">
                       PHQ-4
                     </div>
-                    <div className="mt-2 text-xs font-extrabold text-[#2A856A]">
-                      Cek Kondisi Emosimu →
+                    <div className="mt-1.5 sm:mt-2 text-[10.5px] sm:text-xs font-extrabold text-[#2A856A]">
+                      Cek Emosimu →
                     </div>
                   </button>
 
                   <button
                     onClick={() => setActiveNav("selfhelp")}
-                    className="clay-card-butter rounded-[28px] p-5 text-left transition hover:-translate-y-0.5"
+                    className="clay-card-butter rounded-[22px] sm:rounded-[28px] p-3.5 sm:p-5 text-left transition hover:-translate-y-0.5"
                   >
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F4B942] text-white shadow-md">
-                      <Wind className="h-5 w-5" />
+                    <div className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-[#F4B942] text-white shadow-md">
+                      <Wind className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
-                    <div className="mt-4 text-xs font-semibold text-[#6E644C]">
+                    <div className="mt-3 sm:mt-4 text-[11px] sm:text-xs font-semibold text-[#6E644C]">
                       Relaksasi Mandiri
                     </div>
-                    <div className="mt-1 text-3xl font-extrabold text-[#2D2A26]">
+                    <div className="mt-0.5 sm:mt-1 text-xl sm:text-3xl font-extrabold text-[#2D2A26]">
                       4-7-8
                     </div>
-                    <div className="mt-2 text-xs font-extrabold text-[#2A856A]">
-                      Audio 432Hz & Grounding
+                    <div className="mt-1.5 sm:mt-2 text-[10.5px] sm:text-xs font-extrabold text-[#2A856A]">
+                      Audio & Napas
                     </div>
                   </button>
 
-                  <div className="clay-card-sky rounded-[28px] p-5 text-left">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#689FD4] text-white shadow-md">
-                      <Lock className="h-5 w-5" />
+                  <div className="clay-card-sky rounded-[22px] sm:rounded-[28px] p-3.5 sm:p-5 text-left">
+                    <div className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-[#689FD4] text-white shadow-md">
+                      <Lock className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
-                    <div className="mt-4 text-xs font-semibold text-[#556678]">
+                    <div className="mt-3 sm:mt-4 text-[11px] sm:text-xs font-semibold text-[#556678]">
                       Perlindungan Privasi
                     </div>
-                    <div className="mt-1 text-3xl font-extrabold text-[#2D2A26]">
+                    <div className="mt-0.5 sm:mt-1 text-xl sm:text-3xl font-extrabold text-[#2D2A26]">
                       100%
                     </div>
-                    <div className="mt-2 text-xs font-extrabold text-[#4E647E]">
-                      Terenkripsi AES-256
+                    <div className="mt-1.5 sm:mt-2 text-[10.5px] sm:text-xs font-extrabold text-[#4E647E]">
+                      Enkripsi AES-256
                     </div>
                   </div>
                 </div>
@@ -1040,76 +1195,76 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                {/* 4 PASTEL CLAY STAT CARDS ROW */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+                {/* 4 PASTEL CLAY STAT CARDS ROW (2x2 on Phone, 4 cols on Desktop) */}
+                <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-5">
                   <button
                     onClick={() => setActiveNav("akun_mahasiswa")}
-                    className="clay-card-mint rounded-[28px] p-5 text-left transition hover:-translate-y-0.5"
+                    className="clay-card-mint rounded-[22px] sm:rounded-[28px] p-3.5 sm:p-5 text-left transition hover:-translate-y-0.5"
                   >
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#559A87] text-white shadow-[0_6px_14px_rgba(85,154,135,0.35)]">
-                      <GraduationCap className="h-5 w-5" />
+                    <div className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-[#559A87] text-white shadow-[0_6px_14px_rgba(85,154,135,0.35)]">
+                      <GraduationCap className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
-                    <div className="mt-4 text-xs font-semibold text-[#5E6E68]">
+                    <div className="mt-3 sm:mt-4 text-[11px] sm:text-xs font-semibold text-[#5E6E68]">
                       Total Mahasiswa
                     </div>
-                    <div className="mt-1 text-3xl font-extrabold text-[#2D2A26]">
+                    <div className="mt-0.5 sm:mt-1 text-2xl sm:text-3xl font-extrabold text-[#2D2A26]">
                       {studentAccounts.length}
                     </div>
-                    <div className="mt-2 text-xs font-extrabold text-[#2A856A]">
-                      Mahasiswa Aktif Terdaftar
+                    <div className="mt-1.5 sm:mt-2 text-[10.5px] sm:text-xs font-extrabold text-[#2A856A]">
+                      Mahasiswa Terdaftar
                     </div>
                   </button>
 
                   <button
                     onClick={() => setActiveNav("nilai_phq4")}
-                    className="clay-card-peach rounded-[28px] p-5 text-left transition hover:-translate-y-0.5"
+                    className="clay-card-peach rounded-[22px] sm:rounded-[28px] p-3.5 sm:p-5 text-left transition hover:-translate-y-0.5"
                   >
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#EE7854] text-white shadow-[0_6px_14px_rgba(238,120,84,0.35)]">
-                      <Monitor className="h-5 w-5" />
+                    <div className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-[#EE7854] text-white shadow-[0_6px_14px_rgba(238,120,84,0.35)]">
+                      <Monitor className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
-                    <div className="mt-4 text-xs font-semibold text-[#6E5C56]">
-                      Data Program Studi
+                    <div className="mt-3 sm:mt-4 text-[11px] sm:text-xs font-semibold text-[#6E5C56]">
+                      Program Studi
                     </div>
-                    <div className="mt-1 text-3xl font-extrabold text-[#2D2A26]">
+                    <div className="mt-0.5 sm:mt-1 text-2xl sm:text-3xl font-extrabold text-[#2D2A26]">
                       2
                     </div>
-                    <div className="mt-2 text-xs font-extrabold text-[#2A856A]">
+                    <div className="mt-1.5 sm:mt-2 text-[10.5px] sm:text-xs font-extrabold text-[#2A856A]">
                       BKPI & PIAUD Aktif
                     </div>
                   </button>
 
                   <button
                     onClick={() => setActiveNav("balas_chat")}
-                    className="clay-card-butter rounded-[28px] p-5 text-left transition hover:-translate-y-0.5"
+                    className="clay-card-butter rounded-[22px] sm:rounded-[28px] p-3.5 sm:p-5 text-left transition hover:-translate-y-0.5"
                   >
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F4B942] text-white shadow-[0_6px_14px_rgba(244,185,66,0.35)]">
-                      <MessageCircleHeart className="h-5 w-5" />
+                    <div className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-[#F4B942] text-white shadow-[0_6px_14px_rgba(244,185,66,0.35)]">
+                      <MessageCircleHeart className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
-                    <div className="mt-4 text-xs font-semibold text-[#6E644C]">
+                    <div className="mt-3 sm:mt-4 text-[11px] sm:text-xs font-semibold text-[#6E644C]">
                       Pesan Konsultasi
                     </div>
-                    <div className="mt-1 text-3xl font-extrabold text-[#2D2A26]">
+                    <div className="mt-0.5 sm:mt-1 text-2xl sm:text-3xl font-extrabold text-[#2D2A26]">
                       {liveChatMessages.length}
                     </div>
-                    <div className="mt-2 text-xs font-extrabold text-[#2A856A]">
-                      Total Chat Masuk & Balasan
+                    <div className="mt-1.5 sm:mt-2 text-[10.5px] sm:text-xs font-extrabold text-[#2A856A]">
+                      Chat Masuk & Balasan
                     </div>
                   </button>
 
                   <button
                     onClick={() => setActiveNav("jurnal_soap")}
-                    className="clay-card-sky rounded-[28px] p-5 text-left transition hover:-translate-y-0.5"
+                    className="clay-card-sky rounded-[22px] sm:rounded-[28px] p-3.5 sm:p-5 text-left transition hover:-translate-y-0.5"
                   >
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#689FD4] text-white shadow-[0_6px_14px_rgba(104,159,212,0.35)]">
-                      <Flame className="h-5 w-5 fill-white" />
+                    <div className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-[#689FD4] text-white shadow-[0_6px_14px_rgba(104,159,212,0.35)]">
+                      <Flame className="h-4 w-4 sm:h-5 sm:w-5 fill-white" />
                     </div>
-                    <div className="mt-4 text-xs font-semibold text-[#556678]">
+                    <div className="mt-3 sm:mt-4 text-[11px] sm:text-xs font-semibold text-[#556678]">
                       Jurnal & SOAP BK
                     </div>
-                    <div className="mt-1 text-3xl font-extrabold text-[#2D2A26]">
+                    <div className="mt-0.5 sm:mt-1 text-2xl sm:text-3xl font-extrabold text-[#2D2A26]">
                       {ticketsAdminView.length}
                     </div>
-                    <div className="mt-2 text-xs font-extrabold text-[#4E647E]">
+                    <div className="mt-1.5 sm:mt-2 text-[10.5px] sm:text-xs font-extrabold text-[#4E647E]">
                       Pertemuan Tercatat
                     </div>
                   </button>
@@ -1508,13 +1663,13 @@ export default function HomePage() {
       </div>
 
       {/* Floating Responsive Web Widget Popup Launcher */}
-      <div className="fixed bottom-5 right-5 z-40 no-print">
+      <div className="fixed bottom-20 right-3 lg:bottom-5 lg:right-5 z-40 no-print">
         {floatingWidgetOpen ? (
-          <div className="w-[370px] sm:w-[430px] max-h-[84vh] overflow-y-auto rounded-[32px] border-2 border-white bg-[#FCFBF7] shadow-2xl">
-            <div className="flex items-center justify-between bg-gradient-to-r from-[#559A87] to-[#EE7854] px-5 py-3 text-white">
+          <div className="w-[calc(100vw-1.5rem)] sm:w-[430px] max-h-[74vh] lg:max-h-[84vh] overflow-y-auto rounded-[28px] sm:rounded-[32px] border-2 border-white bg-[#FCFBF7] shadow-2xl">
+            <div className="flex items-center justify-between bg-gradient-to-r from-[#559A87] to-[#EE7854] px-4 sm:px-5 py-3 text-white">
               <span className="text-xs font-extrabold flex items-center gap-1.5">
                 <Sparkles className="h-3.5 w-3.5" />
-                Widget Chatbox Konseling Kampus 24/7
+                Widget Chatbox Konseling 24/7
               </span>
               <button
                 onClick={() => setFloatingWidgetOpen(false)}
@@ -1538,13 +1693,124 @@ export default function HomePage() {
         ) : (
           <button
             onClick={() => setFloatingWidgetOpen(true)}
-            className="clay-btn-coral flex items-center gap-2.5 rounded-full px-5 py-3.5 text-xs font-extrabold text-white transition hover:scale-105"
+            className="clay-btn-coral flex items-center gap-2 rounded-full px-4 py-3 sm:px-5 sm:py-3.5 text-xs font-extrabold text-white transition hover:scale-105 shadow-lg"
           >
-            <MessageCircleHeart className="h-5 w-5" />
-            <span>Chatbox Triase Cepat</span>
+            <MessageCircleHeart className="h-5 w-5 shrink-0" />
+            <span className="hidden sm:inline">Chatbox Triase Cepat</span>
+            <span className="sm:hidden">Triase</span>
           </button>
         )}
       </div>
+
+      {/* ============================================================
+          FIXED BOTTOM TAB NAVIGATION BAR (Handphone & Tablet < lg)
+         ============================================================ */}
+      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-[#FCFBF7]/95 backdrop-blur-md border-t border-[#E5E0D5] shadow-[0_-8px_24px_rgba(90,80,65,0.12)] px-2 pt-1.5 pb-safe no-print">
+        {isMahasiswa ? (
+          <div className="grid grid-cols-5 gap-1">
+            {(
+              [
+                { key: "dashboard" as NavKey, label: "Beranda", icon: Home },
+                {
+                  key: "konsultasi_admin" as NavKey,
+                  label: "Chat Admin",
+                  icon: MessageCircleHeart,
+                },
+                { key: "chatbox" as NavKey, label: "PHQ-4", icon: Sparkles },
+                {
+                  key: "mahasiswa_tiket" as NavKey,
+                  label: "Tiket",
+                  icon: Ticket,
+                },
+                { key: "selfhelp" as NavKey, label: "Relaksasi", icon: Wind },
+              ] as const
+            ).map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeNav === tab.key;
+              return (
+                <button
+                  key={tab.key}
+                  type="button"
+                  onClick={() => setActiveNav(tab.key)}
+                  className={`flex flex-col items-center justify-center rounded-2xl py-1.5 px-1 transition ${
+                    isActive
+                      ? "bg-[#E2F1EC] text-[#2E7D67] font-extrabold"
+                      : "text-[#6E6A63] font-semibold"
+                  }`}
+                >
+                  <Icon
+                    className={`h-4 w-4 ${
+                      isActive ? "text-[#2E7D67]" : "text-[#7A746B]"
+                    }`}
+                  />
+                  <span className="mt-0.5 text-[10px] leading-tight truncate max-w-full">
+                    {tab.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="grid grid-cols-5 gap-1">
+            {(
+              [
+                { key: "dashboard" as NavKey, label: "Dashboard", icon: Home },
+                {
+                  key: "balas_chat" as NavKey,
+                  label: "Balas Chat",
+                  icon: MessageCircleHeart,
+                },
+                {
+                  key: "akun_mahasiswa" as NavKey,
+                  label: "Mahasiswa",
+                  icon: Users,
+                },
+                {
+                  key: "jurnal_soap" as NavKey,
+                  label: "SOAP BK",
+                  icon: BookOpenCheck,
+                },
+              ] as const
+            ).map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeNav === tab.key;
+              return (
+                <button
+                  key={tab.key}
+                  type="button"
+                  onClick={() => setActiveNav(tab.key)}
+                  className={`flex flex-col items-center justify-center rounded-2xl py-1.5 px-1 transition ${
+                    isActive
+                      ? "bg-[#E2F1EC] text-[#2E7D67] font-extrabold"
+                      : "text-[#6E6A63] font-semibold"
+                  }`}
+                >
+                  <Icon
+                    className={`h-4 w-4 ${
+                      isActive ? "text-[#2E7D67]" : "text-[#7A746B]"
+                    }`}
+                  />
+                  <span className="mt-0.5 text-[10px] leading-tight truncate max-w-full">
+                    {tab.label}
+                  </span>
+                </button>
+              );
+            })}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              className={`flex flex-col items-center justify-center rounded-2xl py-1.5 px-1 transition ${
+                mobileMenuOpen
+                  ? "bg-[#FCE8DF] text-[#D9603B] font-extrabold"
+                  : "text-[#6E6A63] font-semibold"
+              }`}
+            >
+              <Menu className="h-4 w-4 text-[#7A746B]" />
+              <span className="mt-0.5 text-[10px] leading-tight">Menu</span>
+            </button>
+          </div>
+        )}
+      </nav>
     </div>
   );
 }

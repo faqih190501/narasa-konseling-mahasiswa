@@ -333,47 +333,47 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
   };
 
   return (
-    <div className="min-h-screen p-4 sm:p-6 lg:p-10 flex items-center justify-center">
-      <div className="w-full max-w-[1220px] grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+    <div className="min-h-[100dvh] p-3 sm:p-6 lg:p-10 flex items-center justify-center">
+      <div className="w-full max-w-[1220px] grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-stretch">
         {/* ============================================================
-            LEFT COLUMN: WARM CLAYMORPHIC BRANDING & NARASA LOGO
+            LEFT COLUMN (Desktop Left / Mobile Bottom): WARM CLAYMORPHIC BRANDING & NARASA LOGO
            ============================================================ */}
-        <div className="clay-sidebar lg:col-span-5 rounded-[36px] p-7 sm:p-8 flex flex-col justify-between relative overflow-hidden">
+        <div className="order-2 lg:order-1 clay-sidebar lg:col-span-5 rounded-[28px] sm:rounded-[36px] p-5 sm:p-8 flex flex-col justify-between relative overflow-hidden">
           <div>
             {/* Top Official NARASA Brand Header */}
             <div className="flex items-center justify-between gap-3">
-              <div className="rounded-[24px] bg-[#FCFBF8]/95 px-4 py-2.5 border-2 border-white shadow-[0_10px_24px_rgba(95,75,55,0.12)]">
+              <div className="rounded-[20px] sm:rounded-[24px] bg-[#FCFBF8]/95 px-3.5 sm:px-4 py-2 sm:py-2.5 border-2 border-white shadow-[0_10px_24px_rgba(95,75,55,0.12)]">
                 <NarasaLogo
                   size="md"
                   showText={true}
                   subtitle="Ruang Aman Bimbingan & Konseling"
                 />
               </div>
-              <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-white/85 px-3 py-1 text-[10.5px] font-extrabold text-[#2E7D67] shadow-sm">
+              <span className="inline-flex items-center gap-1 rounded-full bg-white/85 px-2.5 sm:px-3 py-1 text-[10px] sm:text-[10.5px] font-extrabold text-[#2E7D67] shadow-sm shrink-0">
                 <Sparkles className="h-3 w-3 text-[#EE7854]" />
                 24/7 Aktif
               </span>
             </div>
 
             {/* Brand Title */}
-            <h1 className="mt-5 text-2xl sm:text-3xl font-extrabold text-[#2D2A26] leading-tight">
+            <h1 className="mt-4 sm:mt-5 text-xl sm:text-3xl font-extrabold text-[#2D2A26] leading-tight">
               Ruang Aman Cerita & Penjadwalan Konseling{" "}
               <span className="text-[#6C4A32]">NARASA</span>{" "}
-              <span className="text-lg font-bold text-[#559A87]">
+              <span className="text-base sm:text-lg font-bold text-[#559A87]">
                 (Narasi Rasa)
               </span>{" "}
               ☀️
             </h1>
-            <p className="mt-2.5 text-xs sm:text-[13.5px] text-[#4E5A54] leading-relaxed">
+            <p className="mt-2 sm:mt-2.5 text-xs sm:text-[13.5px] text-[#4E5A54] leading-relaxed">
               Gerbang layanan konseling kampus berbasis percakapan interaktif,
               skrining mandiri <strong>PHQ-4</strong>, dan perlindungan privasi{" "}
               <strong>AES-256</strong> sesuai Kode Etik Bimbingan & Konseling.
             </p>
 
             {/* Center Cute Claymorphic Illustration Card with Large NARASA Logo */}
-            <div className="mt-6 clay-hero-peach rounded-[28px] p-5 flex items-center justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <div className="h-24 w-24 shrink-0 rounded-[24px] bg-[#FCFBF8] border-2 border-white shadow-[0_10px_24px_rgba(108,74,50,0.18)] flex items-center justify-center p-2 overflow-hidden">
+            <div className="mt-5 sm:mt-6 clay-hero-peach rounded-[24px] sm:rounded-[28px] p-4 sm:p-5 flex items-center justify-between gap-3 sm:gap-4">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="h-16 w-16 sm:h-24 sm:w-24 shrink-0 rounded-[20px] sm:rounded-[24px] bg-[#FCFBF8] border-2 border-white shadow-[0_10px_24px_rgba(108,74,50,0.18)] flex items-center justify-center p-1.5 sm:p-2 overflow-hidden">
                   <img
                     src="/logo-narasa.jpg"
                     alt="Logo NARASA - Narasi Rasa"
@@ -381,15 +381,16 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                   />
                 </div>
                 <div>
-                  <span className="rounded-full bg-white/85 px-2.5 py-0.5 text-[10px] font-extrabold text-[#6C4A32]">
+                  <span className="inline-block rounded-full bg-white/85 px-2.5 py-0.5 text-[9.5px] sm:text-[10px] font-extrabold text-[#6C4A32]">
                     NARASA • Zero-Stigma Entry
                   </span>
-                  <h3 className="mt-1 text-sm font-extrabold text-[#2D2A26]">
+                  <h3 className="mt-1 text-xs sm:text-sm font-extrabold text-[#2D2A26]">
                     Setiap Rasa Punya Cerita
                   </h3>
-                  <p className="mt-0.5 text-[11.5px] text-[#5F544E] leading-snug">
-                    Bisa masuk dengan akun <strong>SSO SIAKAD</strong> atau{" "}
-                    <strong>Mode Samaran Anonim</strong> tanpa takut dinilai.
+                  <p className="mt-0.5 text-[11px] sm:text-[11.5px] text-[#5F544E] leading-snug">
+                    Bisa masuk dengan akun <strong>SSO SIAKAD</strong>,{" "}
+                    <strong>Buat Akun Sendiri</strong>, atau{" "}
+                    <strong>Mode Samaran Anonim</strong>.
                   </p>
                 </div>
               </div>
@@ -419,37 +420,37 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
             </div>
 
             {/* 3 Pastel Feature Mini-Cards */}
-            <div className="mt-5 grid grid-cols-3 gap-3 text-center">
-              <div className="rounded-2xl bg-white/75 p-3 border border-white shadow-sm">
-                <div className="text-xs font-extrabold text-[#2E7D67]">
+            <div className="mt-4 sm:mt-5 grid grid-cols-3 gap-2 sm:gap-3 text-center">
+              <div className="rounded-2xl bg-white/75 p-2.5 sm:p-3 border border-white shadow-sm">
+                <div className="text-[11px] sm:text-xs font-extrabold text-[#2E7D67]">
                   AES-256
                 </div>
-                <div className="mt-0.5 text-[10.5px] font-semibold text-[#5C6660]">
+                <div className="mt-0.5 text-[9.5px] sm:text-[10.5px] font-semibold text-[#5C6660] leading-tight">
                   Data & Cerita Terenkripsi
                 </div>
               </div>
-              <div className="rounded-2xl bg-white/75 p-3 border border-white shadow-sm">
-                <div className="text-xs font-extrabold text-[#D9603B]">
+              <div className="rounded-2xl bg-white/75 p-2.5 sm:p-3 border border-white shadow-sm">
+                <div className="text-[11px] sm:text-xs font-extrabold text-[#D9603B]">
                   PHQ-4 Smart
                 </div>
-                <div className="mt-0.5 text-[10.5px] font-semibold text-[#5C6660]">
+                <div className="mt-0.5 text-[9.5px] sm:text-[10.5px] font-semibold text-[#5C6660] leading-tight">
                   Skrining & Triase Otomatis
                 </div>
               </div>
-              <div className="rounded-2xl bg-white/75 p-3 border border-white shadow-sm">
-                <div className="text-xs font-extrabold text-[#B8831D]">
+              <div className="rounded-2xl bg-white/75 p-2.5 sm:p-3 border border-white shadow-sm">
+                <div className="text-[11px] sm:text-xs font-extrabold text-[#B8831D]">
                   Kode Etik BK
                 </div>
-                <div className="mt-0.5 text-[10.5px] font-semibold text-[#5C6660]">
+                <div className="mt-0.5 text-[9.5px] sm:text-[10.5px] font-semibold text-[#5C6660] leading-tight">
                   Rahasia & Bebas Stigma
                 </div>
               </div>
             </div>
 
             {/* Download Aplikasi Android (.APK) Card */}
-            <div className="mt-5 rounded-[24px] bg-gradient-to-r from-[#E2F1EC] to-[#FCFBF8] border-2 border-white p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="mt-4 sm:mt-5 rounded-[22px] sm:rounded-[24px] bg-gradient-to-r from-[#E2F1EC] to-[#FCFBF8] border-2 border-white p-3.5 sm:p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#2E7D67] text-white shadow-sm">
+                <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl bg-[#2E7D67] text-white shadow-sm">
                   <Smartphone className="h-5 w-5" />
                 </div>
                 <div>
@@ -464,7 +465,7 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
               <a
                 href="/narasa-konseling.apk"
                 download="NARASA-Konseling-Mahasiswa.apk"
-                className="shrink-0 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#2E7D67] hover:bg-[#256654] px-4 py-2.5 text-xs font-extrabold text-white shadow-md transition active:scale-95"
+                className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#2E7D67] hover:bg-[#256654] px-4 py-2.5 text-xs font-extrabold text-white shadow-md transition active:scale-95"
               >
                 <Download className="h-3.5 w-3.5" />
                 Download APK
@@ -473,8 +474,8 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
           </div>
 
           {/* Bottom Crisis Hotline Box (FR-02 Always Accessible without Login) */}
-          <div className="mt-6 rounded-[24px] bg-white/85 border-2 border-white p-4 shadow-sm">
-            <div className="flex items-center justify-between gap-3">
+          <div className="mt-5 sm:mt-6 rounded-[22px] sm:rounded-[24px] bg-white/85 border-2 border-white p-3.5 sm:p-4 shadow-sm">
+            <div className="flex flex-col xs:flex-row sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-rose-100 text-rose-600">
                   <AlertTriangle className="h-5 w-5" />
@@ -490,7 +491,7 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
               </div>
               <a
                 href="tel:119"
-                className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-rose-600 px-3.5 py-2 text-xs font-extrabold text-white shadow-sm hover:bg-rose-700"
+                className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-1.5 rounded-full bg-rose-600 px-3.5 py-2 text-xs font-extrabold text-white shadow-sm hover:bg-rose-700"
               >
                 <PhoneCall className="h-3.5 w-3.5" />
                 119 ext. 8
@@ -500,41 +501,53 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
         </div>
 
         {/* ============================================================
-            RIGHT COLUMN: DUAL LOGIN PORTAL (MAHASISWA vs ADMIN)
+            RIGHT COLUMN (Desktop Right / Mobile Top): DUAL LOGIN PORTAL (MAHASISWA vs ADMIN)
            ============================================================ */}
-        <div className="clay-shell lg:col-span-7 rounded-[36px] p-6 sm:p-9 flex flex-col justify-between">
+        <div className="order-1 lg:order-2 clay-shell lg:col-span-7 rounded-[28px] sm:rounded-[36px] p-4 sm:p-8 lg:p-9 flex flex-col justify-between">
           <div>
             {/* Role Portal Switcher Tabs */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#ECE8DF] pb-5">
-              <div className="flex items-center gap-3.5">
-                <div className="h-14 w-14 shrink-0 rounded-2xl bg-[#FCFBF8] border-2 border-white shadow-[0_8px_18px_rgba(108,74,50,0.14)] p-1.5 flex items-center justify-center">
-                  <img
-                    src="/logo-narasa.jpg"
-                    alt="NARASA"
-                    className="h-full w-full object-contain"
-                  />
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4 border-b border-[#ECE8DF] pb-4 sm:pb-5">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-3">
+                  <div className="h-12 w-12 sm:h-14 sm:w-14 shrink-0 rounded-2xl bg-[#FCFBF8] border-2 border-white shadow-[0_8px_18px_rgba(108,74,50,0.14)] p-1.5 flex items-center justify-center">
+                    <img
+                      src="/logo-narasa.jpg"
+                      alt="NARASA"
+                      className="h-full w-full object-contain"
+                    />
+                  </div>
+                  <div>
+                    <span className="inline-block rounded-full bg-[#F9E69B] px-2.5 sm:px-3 py-0.5 text-[9.5px] sm:text-[10px] font-extrabold uppercase tracking-wider text-[#6E5611]">
+                      PORTAL RESMI NARASA
+                    </span>
+                    <h2 className="mt-0.5 sm:mt-1 text-lg sm:text-2xl font-extrabold text-[#2D2A26]">
+                      {activeTab === "mahasiswa"
+                        ? "Login Mahasiswa"
+                        : "Login Admin BK"}
+                    </h2>
+                  </div>
                 </div>
-                <div>
-                  <span className="rounded-full bg-[#F9E69B] px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-[#6E5611]">
-                    PORTAL RESMI NARASA • NARASI RASA
-                  </span>
-                  <h2 className="mt-1 text-xl sm:text-2xl font-extrabold text-[#2D2A26]">
-                    {activeTab === "mahasiswa"
-                      ? "Login Mahasiswa"
-                      : "Login Admin BK"}
-                  </h2>
-                </div>
+
+                {/* Quick Download APK Pill on Handphone Top Right */}
+                <a
+                  href="/narasa-konseling.apk"
+                  download="NARASA-Konseling-Mahasiswa.apk"
+                  className="lg:hidden shrink-0 inline-flex items-center gap-1 rounded-full bg-[#2E7D67] px-3 py-1.5 text-[10.5px] font-extrabold text-white shadow-sm active:scale-95"
+                >
+                  <Download className="h-3 w-3" />
+                  <span>APK</span>
+                </a>
               </div>
 
-              {/* Pill Tab Selector: Hanya Mahasiswa & Admin */}
-              <div className="inline-flex rounded-full bg-[#F2EFE8] p-1.5 border border-white shadow-inner">
+              {/* Pill Tab Selector: Hanya Mahasiswa & Admin (Full-width 2-col on Handphone, pill on Desktop) */}
+              <div className="grid grid-cols-2 sm:inline-flex w-full sm:w-auto rounded-full bg-[#F2EFE8] p-1.5 border border-white shadow-inner">
                 <button
                   type="button"
                   onClick={() => {
                     setActiveTab("mahasiswa");
                     setErrorMsg(null);
                   }}
-                  className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-extrabold transition-all ${
+                  className={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 sm:py-2 text-xs font-extrabold transition-all ${
                     activeTab === "mahasiswa"
                       ? "clay-btn-coral text-white shadow-md"
                       : "text-[#5C564F] hover:text-[#2D2A26]"
@@ -549,7 +562,7 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                     setActiveTab("admin");
                     setErrorMsg(null);
                   }}
-                  className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-extrabold transition-all ${
+                  className={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 sm:py-2 text-xs font-extrabold transition-all ${
                     activeTab === "admin"
                       ? "bg-[#559A87] text-white shadow-md"
                       : "text-[#5C564F] hover:text-[#2D2A26]"
@@ -562,12 +575,12 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
             </div>
 
             {/* ============================================================
-                TAB 1: FORM LOGIN MAHASISWA (SSO SIAKAD & MODE SAMARAN ANONIM)
+                TAB 1: FORM LOGIN MAHASISWA (SSO SIAKAD, BUAT AKUN SENDIRI & MODE SAMARAN ANONIM)
                ============================================================ */}
             {activeTab === "mahasiswa" ? (
-              <form onSubmit={handleMahasiswaSubmit} className="mt-6 space-y-5">
-                {/* 3 Pilihan Mode Mahasiswa: Masuk Akun, Buat Akun Baru, Mode Anonim */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <form onSubmit={handleMahasiswaSubmit} className="mt-4 sm:mt-6 space-y-4 sm:space-y-5">
+                {/* 3 Pilihan Mode Mahasiswa: Masuk Akun, Buat Akun Baru, Mode Anonim (Side-by-side 3 cols on Phone & Desktop!) */}
+                <div className="grid grid-cols-3 gap-2 sm:gap-3">
                   <button
                     type="button"
                     onClick={() => {
@@ -575,25 +588,25 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                       setErrorMsg(null);
                       setSuccessMsg(null);
                     }}
-                    className={`rounded-[22px] p-3.5 text-left border-2 transition ${
+                    className={`rounded-[18px] sm:rounded-[22px] p-2.5 sm:p-3.5 text-left border-2 transition ${
                       mhsEntryMode === "sso"
                         ? "clay-card-mint border-white ring-2 ring-[#559A87]/30"
                         : "bg-[#F7F5F0] border-transparent opacity-75 hover:opacity-100"
                     }`}
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#559A87] text-white">
-                        <UserCheck className="h-4 w-4" />
+                    <div className="flex items-center justify-between gap-1">
+                      <span className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-xl bg-[#559A87] text-white">
+                        <UserCheck className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       </span>
-                      <span className="rounded-full bg-white/80 px-2.5 py-0.5 text-[10px] font-extrabold text-[#2E7D67]">
+                      <span className="hidden sm:inline-block rounded-full bg-white/80 px-2.5 py-0.5 text-[10px] font-extrabold text-[#2E7D67]">
                         Login
                       </span>
                     </div>
-                    <div className="mt-2 text-xs font-extrabold text-[#2D2A26]">
+                    <div className="mt-1.5 sm:mt-2 text-[11px] sm:text-xs font-extrabold text-[#2D2A26] leading-tight">
                       Masuk Akun
                     </div>
-                    <div className="text-[11px] text-[#5E6E68]">
-                      Sudah punya akun NIM
+                    <div className="mt-0.5 text-[9.5px] sm:text-[11px] text-[#5E6E68] leading-tight">
+                      Pakai NIM
                     </div>
                   </button>
 
@@ -604,25 +617,25 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                       setErrorMsg(null);
                       setSuccessMsg(null);
                     }}
-                    className={`rounded-[22px] p-3.5 text-left border-2 transition ${
+                    className={`rounded-[18px] sm:rounded-[22px] p-2.5 sm:p-3.5 text-left border-2 transition ${
                       mhsEntryMode === "daftar"
                         ? "clay-card-sky border-white ring-2 ring-[#689FD4]/40"
                         : "bg-[#F7F5F0] border-transparent opacity-75 hover:opacity-100"
                     }`}
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#4F86BE] text-white">
-                        <UserPlus className="h-4 w-4" />
+                    <div className="flex items-center justify-between gap-1">
+                      <span className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-xl bg-[#4F86BE] text-white">
+                        <UserPlus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       </span>
-                      <span className="rounded-full bg-white/85 px-2.5 py-0.5 text-[10px] font-extrabold text-[#2D5F91]">
+                      <span className="hidden sm:inline-block rounded-full bg-white/85 px-2.5 py-0.5 text-[10px] font-extrabold text-[#2D5F91]">
                         Daftar Baru
                       </span>
                     </div>
-                    <div className="mt-2 text-xs font-extrabold text-[#2D2A26]">
-                      Buat Akun Sendiri
+                    <div className="mt-1.5 sm:mt-2 text-[11px] sm:text-xs font-extrabold text-[#2D2A26] leading-tight">
+                      Buat Akun
                     </div>
-                    <div className="text-[11px] text-[#4E647E]">
-                      Daftar mandiri BKPI / PIAUD
+                    <div className="mt-0.5 text-[9.5px] sm:text-[11px] text-[#4E647E] leading-tight">
+                      Daftar sendiri
                     </div>
                   </button>
 
@@ -633,25 +646,25 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                       setErrorMsg(null);
                       setSuccessMsg(null);
                     }}
-                    className={`rounded-[22px] p-3.5 text-left border-2 transition ${
+                    className={`rounded-[18px] sm:rounded-[22px] p-2.5 sm:p-3.5 text-left border-2 transition ${
                       mhsEntryMode === "anonim"
                         ? "clay-card-peach border-white ring-2 ring-[#EE7854]/30"
                         : "bg-[#F7F5F0] border-transparent opacity-75 hover:opacity-100"
                     }`}
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#EE7854] text-white">
-                        <HeartHandshake className="h-4 w-4" />
+                    <div className="flex items-center justify-between gap-1">
+                      <span className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-xl bg-[#EE7854] text-white">
+                        <HeartHandshake className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       </span>
-                      <span className="rounded-full bg-white/80 px-2.5 py-0.5 text-[10px] font-extrabold text-[#C45534]">
+                      <span className="hidden sm:inline-block rounded-full bg-white/80 px-2.5 py-0.5 text-[10px] font-extrabold text-[#C45534]">
                         Anonim
                       </span>
                     </div>
-                    <div className="mt-2 text-xs font-extrabold text-[#2D2A26]">
-                      Mode Samaran
+                    <div className="mt-1.5 sm:mt-2 text-[11px] sm:text-xs font-extrabold text-[#2D2A26] leading-tight">
+                      Samaran
                     </div>
-                    <div className="text-[11px] text-[#6E5C56]">
-                      Tanpa NIM • Rahasia 100%
+                    <div className="mt-0.5 text-[9.5px] sm:text-[11px] text-[#6E5C56] leading-tight">
+                      Tanpa NIM
                     </div>
                   </button>
                 </div>

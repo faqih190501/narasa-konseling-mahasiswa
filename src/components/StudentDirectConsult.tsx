@@ -201,9 +201,9 @@ export default function StudentDirectConsult({
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Top Hero Banner: Ruang Konsultasi Langsung ke Admin BK */}
-      <div className="clay-hero-peach rounded-[30px] p-6 border-2 border-white shadow-sm">
+      <div className="clay-hero-peach rounded-[24px] sm:rounded-[30px] p-4 sm:p-6 border-2 border-white shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#FCFBF8] p-1.5 shadow-md border-2 border-white">
@@ -293,10 +293,10 @@ export default function StudentDirectConsult({
         </div>
       )}
 
-      {/* Main 2-Column Direct Consultation Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* LEFT COLUMN (4 cols): Pengaturan Topik, Mode Konsultasi & Daftar Sesi Saya */}
-        <div className="lg:col-span-4 space-y-5">
+      {/* Main 2-Column Direct Consultation Layout (Chat First on Handphone, Side-by-Side on Desktop) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
+        {/* LEFT COLUMN ON DESKTOP / SECOND ON PHONE (4 cols): Pengaturan Topik, Mode Konsultasi & Daftar Sesi Saya */}
+        <div className="order-2 lg:order-1 lg:col-span-4 space-y-5">
           {/* Card 1: Identitas & Pilihan Mode Konsultasi ke Admin */}
           <div className="clay-card-white rounded-[28px] p-5 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -468,9 +468,9 @@ export default function StudentDirectConsult({
           </div>
         </div>
 
-        {/* RIGHT COLUMN (8 cols): Ruang Obrolan Konsultasi Langsung 2 Arah dengan Admin */}
-        <div className="lg:col-span-8">
-          <div className="clay-card-white rounded-[30px] p-5 sm:p-6 flex flex-col justify-between min-h-[600px]">
+        {/* RIGHT COLUMN ON DESKTOP / FIRST ON PHONE (8 cols): Ruang Obrolan Konsultasi Langsung 2 Arah dengan Admin */}
+        <div className="order-1 lg:order-2 lg:col-span-8 min-w-0">
+          <div className="clay-card-white rounded-[24px] sm:rounded-[30px] p-4 sm:p-6 flex flex-col justify-between min-h-[480px] sm:min-h-[600px]">
             {/* Top Chat Room Header */}
             <div className="border-b border-[#ECE8DF] pb-4 flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-3">
@@ -614,7 +614,7 @@ export default function StudentDirectConsult({
 
             {/* Bottom Message Composer */}
             <div className="space-y-2.5 pt-2 border-t border-[#ECE8DF]">
-              <div className="flex gap-2.5">
+              <div className="flex gap-2 sm:gap-2.5">
                 <input
                   type="text"
                   value={messageInput}
@@ -625,17 +625,22 @@ export default function StudentDirectConsult({
                       handleSendConsultationMessage();
                     }
                   }}
-                  placeholder="Tulis pesan atau curhatan konsultasi langsung ke Admin BK (Tekan Enter untuk kirim)..."
-                  className="flex-1 rounded-2xl bg-[#F3F0E8] border border-white px-4 py-3.5 text-xs sm:text-sm font-medium text-[#2D2A26] placeholder-[#969086] shadow-inner focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#559A87]/40"
+                  placeholder="Tulis pesan konsultasi ke Admin BK..."
+                  className="flex-1 min-w-0 rounded-2xl bg-[#F3F0E8] border border-white px-3.5 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-sm font-medium text-[#2D2A26] placeholder-[#969086] shadow-inner focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#559A87]/40"
                 />
                 <button
                   type="button"
                   disabled={isSending || !messageInput.trim()}
                   onClick={() => handleSendConsultationMessage()}
-                  className="clay-btn-coral rounded-2xl px-6 py-3.5 text-xs sm:text-sm font-extrabold text-white flex items-center gap-2 transition disabled:opacity-45"
+                  className="clay-btn-coral shrink-0 rounded-2xl px-4 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm font-extrabold text-white flex items-center gap-1.5 sm:gap-2 transition disabled:opacity-45"
                 >
-                  <Send className="h-4 w-4" />
-                  <span>{isSending ? "Mengirim..." : "Kirim ke Admin"}</span>
+                  <Send className="h-4 w-4 shrink-0" />
+                  <span className="hidden sm:inline">
+                    {isSending ? "Mengirim..." : "Kirim ke Admin"}
+                  </span>
+                  <span className="sm:hidden">
+                    {isSending ? "..." : "Kirim"}
+                  </span>
                 </button>
               </div>
 
