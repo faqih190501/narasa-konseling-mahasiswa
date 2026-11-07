@@ -20,6 +20,7 @@ import {
   UserPlus,
   CheckCircle2,
   Gamepad2,
+  FileText,
   X,
 } from "lucide-react";
 import { generateCalmPseudonym } from "@/lib/triage-engine";
@@ -1134,6 +1135,14 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
           <div className="mt-6 pt-4 border-t border-[#ECE8DF] flex flex-wrap items-center justify-between gap-2 text-[11px] font-semibold text-[#8C857B]">
             <span>🔒 Terenkripsi End-to-End AES-256-GCM • Prodi: BKPI & PIAUD</span>
             <div className="flex flex-wrap items-center gap-2">
+              <a
+                href="/Kesimpulan-Aplikasi-NARASA.pdf"
+                download="Kesimpulan-Aplikasi-NARASA-Konseling-Mahasiswa.pdf"
+                className="inline-flex items-center gap-1.5 rounded-full bg-[#F3ECFA] hover:bg-[#E7DBF6] px-3.5 py-1 text-[11px] font-extrabold text-[#5E3594] transition"
+              >
+                <FileText className="h-3.5 w-3.5" />
+                PDF Kesimpulan
+              </a>
               <button
                 type="button"
                 onClick={() => setShowGameModal(true)}
