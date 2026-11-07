@@ -26,3 +26,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# android apk build artifacts & keystores
+/android-apk/build/
+*.keystore
+*.jks
+*.idsig
+
+

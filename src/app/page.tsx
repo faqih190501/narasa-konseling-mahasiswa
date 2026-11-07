@@ -86,6 +86,7 @@ export default function HomePage() {
   const [donutMode, setDonutMode] = useState<"kehadiran" | "phq4">("kehadiran");
   const [floatingWidgetOpen, setFloatingWidgetOpen] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const [isApkMode, setIsApkMode] = useState<boolean>(false);
 
   // Student Ticket Lookup State
   const [ticketLookupInput, setTicketLookupInput] = useState<string>(
@@ -110,18 +111,41 @@ export default function HomePage() {
 
   useEffect(() => {
     loadState();
+    try {
+      const ua = navigator.userAgent || "";
+      const params = new URLSearchParams(window.location.search);
+      const isStandalone =
+        window.matchMedia?.("(display-mode: standalone)").matches ||
+        ua.includes("NarasaAndroidAPK") ||
+        params.get("source") === "apk";
+      setIsApkMode(Boolean(isStandalone));
+
+      const savedSession = localStorage.getItem("narasa_active_session");
+      if (savedSession) {
+        const parsed = JSON.parse(savedSession);
+        if (parsed && parsed.role && parsed.displayName) {
+          setSession(parsed);
+        }
+      }
+    } catch {}
   }, [loadState]);
 
   const handleLoginSuccess = (authSession: AuthenticatedSession) => {
     setSession(authSession);
     setActiveNav("dashboard");
     setMobileMenuOpen(false);
+    try {
+      localStorage.setItem("narasa_active_session", JSON.stringify(authSession));
+    } catch {}
   };
 
   const handleLogout = () => {
     setSession(null);
     setFloatingWidgetOpen(false);
     setMobileMenuOpen(false);
+    try {
+      localStorage.removeItem("narasa_active_session");
+    } catch {}
   };
 
   // If not logged in, render the Dual Login Portal (Mahasiswa vs Admin/Konselor)
@@ -375,15 +399,17 @@ export default function HomePage() {
           </div>
 
           <div className="flex items-center gap-1.5 shrink-0">
-            <a
-              href="/narasa-konseling.apk"
-              download="NARASA-Konseling-Mahasiswa.apk"
-              className="flex h-9 items-center gap-1 rounded-full bg-[#2E7D67] px-3 text-[10.5px] font-extrabold text-white shadow-sm active:scale-95"
-              title="Download APK Android"
-            >
-              <Download className="h-3.5 w-3.5" />
-              <span>APK</span>
-            </a>
+            {!isApkMode && (
+              <a
+                href="/narasa-konseling.apk"
+                download="NARASA-Konseling-Mahasiswa.apk"
+                className="flex h-9 items-center gap-1 rounded-full bg-[#2E7D67] px-3 text-[10.5px] font-extrabold text-white shadow-sm active:scale-95"
+                title="Download APK Android"
+              >
+                <Download className="h-3.5 w-3.5" />
+                <span>APK</span>
+              </a>
+            )}
             <button
               type="button"
               onClick={() => setShowNotifPopover(!showNotifPopover)}
@@ -473,14 +499,16 @@ export default function HomePage() {
               </div>
 
               <div className="mt-6 pt-4 border-t border-white/60 space-y-2.5">
-                <a
-                  href="/narasa-konseling.apk"
-                  download="NARASA-Konseling-Mahasiswa.apk"
-                  className="w-full rounded-full bg-[#2E7D67] hover:bg-[#256654] py-2.5 px-4 text-xs font-extrabold text-white border border-white shadow-sm flex items-center justify-center gap-2 transition active:scale-95"
-                >
-                  <Download className="h-3.5 w-3.5" />
-                  Download APK Android
-                </a>
+                {!isApkMode && (
+                  <a
+                    href="/narasa-konseling.apk"
+                    download="NARASA-Konseling-Mahasiswa.apk"
+                    className="w-full rounded-full bg-[#2E7D67] hover:bg-[#256654] py-2.5 px-4 text-xs font-extrabold text-white border border-white shadow-sm flex items-center justify-center gap-2 transition active:scale-95"
+                  >
+                    <Download className="h-3.5 w-3.5" />
+                    Download APK Android
+                  </a>
+                )}
                 <button
                   onClick={handleLogout}
                   className="w-full rounded-full bg-white/85 hover:bg-white py-2.5 px-4 text-xs font-extrabold text-[#5C5346] border border-white shadow-sm flex items-center justify-center gap-2 transition"
@@ -655,14 +683,16 @@ export default function HomePage() {
               </button>
             </div>
 
-            <a
-              href="/narasa-konseling.apk"
-              download="NARASA-Konseling-Mahasiswa.apk"
-              className="w-full rounded-full bg-[#2E7D67] hover:bg-[#256654] py-2.5 px-4 text-xs font-extrabold text-white border border-white shadow-sm flex items-center justify-center gap-2 transition active:scale-95"
-            >
-              <Download className="h-3.5 w-3.5" />
-              Download APK Android
-            </a>
+            {!isApkMode && (
+              <a
+                href="/narasa-konseling.apk"
+                download="NARASA-Konseling-Mahasiswa.apk"
+                className="w-full rounded-full bg-[#2E7D67] hover:bg-[#256654] py-2.5 px-4 text-xs font-extrabold text-white border border-white shadow-sm flex items-center justify-center gap-2 transition active:scale-95"
+              >
+                <Download className="h-3.5 w-3.5" />
+                Download APK Android
+              </a>
+            )}
 
             <button
               onClick={handleLogout}
@@ -766,15 +796,17 @@ export default function HomePage() {
                 </div>
 
                 {/* Download APK Button in Header */}
-                <a
-                  href="/narasa-konseling.apk"
-                  download="NARASA-Konseling-Mahasiswa.apk"
-                  className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-[#2E7D67] hover:bg-[#256654] px-4 py-2.5 text-xs font-extrabold text-white shadow-sm transition active:scale-95"
-                  title="Unduh Aplikasi Android NARASA (.APK)"
-                >
-                  <Download className="h-3.5 w-3.5" />
-                  <span>Download APK</span>
-                </a>
+                {!isApkMode && (
+                  <a
+                    href="/narasa-konseling.apk"
+                    download="NARASA-Konseling-Mahasiswa.apk"
+                    className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-[#2E7D67] hover:bg-[#256654] px-4 py-2.5 text-xs font-extrabold text-white shadow-sm transition active:scale-95"
+                    title="Unduh Aplikasi Android NARASA (.APK)"
+                  >
+                    <Download className="h-3.5 w-3.5" />
+                    <span>Download APK</span>
+                  </a>
+                )}
 
                 {/* Logout / Return to Login Screen Button */}
                 <button

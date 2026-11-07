@@ -79,9 +79,19 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [studentAccounts, setStudentAccounts] = useState<StudentAccount[]>([]);
+  const [isApkMode, setIsApkMode] = useState<boolean>(false);
 
   useEffect(() => {
     setPseudonym(generateCalmPseudonym());
+    try {
+      const ua = navigator.userAgent || "";
+      const params = new URLSearchParams(window.location.search);
+      const isStandalone =
+        window.matchMedia?.("(display-mode: standalone)").matches ||
+        ua.includes("NarasaAndroidAPK") ||
+        params.get("source") === "apk";
+      setIsApkMode(Boolean(isStandalone));
+    } catch {}
     let localAccounts: StudentAccount[] = [];
     try {
       const saved = localStorage.getItem("narasa_registered_students");
@@ -455,21 +465,27 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                 </div>
                 <div>
                   <div className="text-xs font-extrabold text-[#2D2A26]">
-                    Aplikasi Mobile NARASA (Android)
+                    {isApkMode
+                      ? "Aplikasi Android NARASA Aktif ✓"
+                      : "Aplikasi Mobile NARASA (Android v1.2)"}
                   </div>
                   <div className="text-[11px] font-semibold text-[#4E5A54]">
-                    Unduh file installer .APK untuk ponsel Android Anda
+                    {isApkMode
+                      ? "Anda sedang mengakses NARASA melalui aplikasi mobile resmi"
+                      : "Installer .APK resmi bertanda tangan digital (Android 7.0 – 16)"}
                   </div>
                 </div>
               </div>
-              <a
-                href="/narasa-konseling.apk"
-                download="NARASA-Konseling-Mahasiswa.apk"
-                className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#2E7D67] hover:bg-[#256654] px-4 py-2.5 text-xs font-extrabold text-white shadow-md transition active:scale-95"
-              >
-                <Download className="h-3.5 w-3.5" />
-                Download APK
-              </a>
+              {!isApkMode && (
+                <a
+                  href="/narasa-konseling.apk"
+                  download="NARASA-Konseling-Mahasiswa.apk"
+                  className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#2E7D67] hover:bg-[#256654] px-4 py-2.5 text-xs font-extrabold text-white shadow-md transition active:scale-95"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  Download APK
+                </a>
+              )}
             </div>
           </div>
 
@@ -529,14 +545,21 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                 </div>
 
                 {/* Quick Download APK Pill on Handphone Top Right */}
-                <a
-                  href="/narasa-konseling.apk"
-                  download="NARASA-Konseling-Mahasiswa.apk"
-                  className="lg:hidden shrink-0 inline-flex items-center gap-1 rounded-full bg-[#2E7D67] px-3 py-1.5 text-[10.5px] font-extrabold text-white shadow-sm active:scale-95"
-                >
-                  <Download className="h-3 w-3" />
-                  <span>APK</span>
-                </a>
+                {isApkMode ? (
+                  <span className="lg:hidden shrink-0 inline-flex items-center gap-1 rounded-full bg-[#E2F1EC] px-2.5 py-1 text-[10px] font-extrabold text-[#2E7D67]">
+                    <Smartphone className="h-3 w-3" />
+                    <span>App v1.2</span>
+                  </span>
+                ) : (
+                  <a
+                    href="/narasa-konseling.apk"
+                    download="NARASA-Konseling-Mahasiswa.apk"
+                    className="lg:hidden shrink-0 inline-flex items-center gap-1 rounded-full bg-[#2E7D67] px-3 py-1.5 text-[10.5px] font-extrabold text-white shadow-sm active:scale-95"
+                  >
+                    <Download className="h-3 w-3" />
+                    <span>APK</span>
+                  </a>
+                )}
               </div>
 
               {/* Pill Tab Selector: Hanya Mahasiswa & Admin (Full-width 2-col on Handphone, pill on Desktop) */}
@@ -1081,14 +1104,21 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
           {/* Footer Note inside Login Card */}
           <div className="mt-6 pt-4 border-t border-[#ECE8DF] flex flex-wrap items-center justify-between gap-2 text-[11px] font-semibold text-[#8C857B]">
             <span>🔒 Terenkripsi End-to-End AES-256-GCM • Prodi: BKPI & PIAUD</span>
-            <a
-              href="/narasa-konseling.apk"
-              download="NARASA-Konseling-Mahasiswa.apk"
-              className="inline-flex items-center gap-1.5 rounded-full bg-[#E2F1EC] hover:bg-[#D1E8E0] px-3.5 py-1 text-[11px] font-extrabold text-[#2E7D67] transition"
-            >
-              <Download className="h-3.5 w-3.5" />
-              Download APK Android
-            </a>
+            {isApkMode ? (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#E2F1EC] px-3.5 py-1 text-[11px] font-extrabold text-[#2E7D67]">
+                <Smartphone className="h-3.5 w-3.5" />
+                Android App NARASA Aktif
+              </span>
+            ) : (
+              <a
+                href="/narasa-konseling.apk"
+                download="NARASA-Konseling-Mahasiswa.apk"
+                className="inline-flex items-center gap-1.5 rounded-full bg-[#E2F1EC] hover:bg-[#D1E8E0] px-3.5 py-1 text-[11px] font-extrabold text-[#2E7D67] transition"
+              >
+                <Download className="h-3.5 w-3.5" />
+                Download APK Android
+              </a>
+            )}
           </div>
         </div>
       </div>

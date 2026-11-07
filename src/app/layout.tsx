@@ -21,8 +21,11 @@ export const metadata: Metadata = {
     title: "NARASA BK",
   },
   icons: {
-    icon: "/logo-narasa.jpg",
-    apple: "/logo-narasa.jpg",
+    icon: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: "/icon-192.png",
   },
 };
 
@@ -35,6 +38,17 @@ export default function RootLayout({
     <html lang="id">
       <body className="antialiased overflow-x-hidden selection:bg-[#6E7D68] selection:text-white">
         {children}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js').catch(function() {});
+                });
+              }
+            `,
+          }}
+        />
       </body>
     </html>
   );
