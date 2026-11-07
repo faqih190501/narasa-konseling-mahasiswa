@@ -705,7 +705,7 @@ export async function POST(req: NextRequest) {
         sender_role: "system" as const,
         sender_name: "Protokol Krisis NARASA",
         message:
-          "PERINGATAN KESELAMATAN: Kami mendeteksi sinyal bahaya diri pada pesanmu. Kamu sangat berharga dan tidak sendirian. Admin & Konselor Piket telah menerima notifikasi prioritas tinggi. Hubungi Hotline 119 ext. 8 sekarang.",
+          "PERINGATAN KESELAMATAN: Kami mendeteksi sinyal bahaya diri pada pesanmu. Kamu sangat berharga dan tidak sendirian. Admin BK NARASA telah menerima notifikasi prioritas tinggi. Hubungi Hotline 119 ext. 8 sekarang.",
         created_at: new Date().toISOString(),
       };
       db.live_chat_messages.push(autoReply);

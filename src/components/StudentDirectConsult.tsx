@@ -268,7 +268,7 @@ export default function StudentDirectConsult({
               <AlertTriangle className="h-6 w-6 shrink-0 text-rose-600 mt-0.5" />
               <div>
                 <h3 className="text-sm font-extrabold text-rose-950">
-                  Kamu Tidak Sendirian — Admin & Konselor Piket Siap Mendampingimu Sekarang
+                  Kamu Tidak Sendirian — Admin BK NARASA Siap Mendampingimu Sekarang
                 </h3>
                 <p className="text-xs text-rose-800 mt-0.5">
                   Kami mendeteksi sinyal kondisi darurat ({crisisBanner.keywords.join(", ")}). Admin BK telah menerima peringatan prioritas tinggi. Silakan hubungi nomor darurat di samping jika butuh pertolongan segera.

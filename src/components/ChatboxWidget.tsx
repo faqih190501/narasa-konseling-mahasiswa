@@ -777,9 +777,8 @@ export default function ChatboxWidget({
                 <p className="text-sm text-slate-700 leading-relaxed">
                   Aku mendengar betapa berat dan menyakitkannya beban yang sedang kamu
                   rasakan saat ini. Terima kasih karena masih bertahan hingga detik ini.
-                  Kamu tidak harus memikul rasa sakit ini sendirian—ada tim Konselor
-                  Jaga Kampus dan pendamping profesional yang peduli dan siap
-                  mendengarkanmu sekarang juga tanpa menghakimi.
+                  Kamu tidak harus memikul rasa sakit ini sendirian—Admin BK NARASA dan
+                  layanan darurat siap mendengarkanmu sekarang juga tanpa menghakimi.
                 </p>
                 <div className="rounded-xl bg-rose-50/80 p-3 text-xs text-rose-900 border border-rose-200">
                   <strong>Sinyal Terdeteksi:</strong>{" "}
@@ -788,71 +787,58 @@ export default function ChatboxWidget({
                 </div>
               </div>
 
-              {/* (2) Tombol Panggilan Cepat (Click-to-Call) ke Konselor Jaga & Hotline 119 ext. 8 */}
+              {/* (2) Tombol Panggilan Cepat ke Hotline 119 ext. 8 & Chat Langsung Admin BK */}
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
                 <a
-                  href={`tel:+${crisisDetails.piketPhone}`}
+                  href="tel:119"
                   className="flex items-center justify-center gap-2.5 rounded-2xl bg-rose-600 px-4 py-4 text-sm font-bold text-white shadow-md transition hover:bg-rose-700"
                 >
                   <PhoneCall className="h-5 w-5 animate-bounce" />
                   <div className="text-left">
                     <div className="text-xs font-normal opacity-90">
-                      Click-to-Call Konselor Jaga Kampus
-                    </div>
-                    <div>Hubungi {crisisDetails.piketName.split(",")[0]}</div>
-                  </div>
-                </a>
-
-                <a
-                  href="tel:119"
-                  className="flex items-center justify-center gap-2.5 rounded-2xl bg-slate-900 px-4 py-4 text-sm font-bold text-white shadow-md transition hover:bg-slate-800"
-                >
-                  <PhoneCall className="h-5 w-5 text-emerald-400" />
-                  <div className="text-left">
-                    <div className="text-xs font-normal text-slate-300">
                       Hotline Kesehatan Jiwa Nasional 24 Jam
                     </div>
                     <div>Panggil 119 (ext. 8 - SEJIWA)</div>
                   </div>
                 </a>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCrisisLocked(false);
+                    setLiveChatOpen(true);
+                  }}
+                  className="flex items-center justify-center gap-2.5 rounded-2xl bg-[#2E7D67] px-4 py-4 text-sm font-bold text-white shadow-md transition hover:bg-[#256654]"
+                >
+                  <MessageCircleHeart className="h-5 w-5" />
+                  <div className="text-left">
+                    <div className="text-xs font-normal opacity-90">
+                      Konsultasi Darurat Real-Time
+                    </div>
+                    <div>Chat Langsung Admin BK</div>
+                  </div>
+                </button>
               </div>
 
-              {/* (3) Status High-Priority Alert ke WhatsApp & Dashboard Konselor Piket */}
-              <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4">
-                <div className="flex items-start gap-3">
-                  <Radio className="h-5 w-5 shrink-0 text-amber-600 mt-0.5 animate-pulse" />
-                  <div className="text-xs text-amber-950 space-y-1">
-                    <div className="font-bold">
-                      High-Priority Alert Telah Dikirim ke WhatsApp & Dashboard Konselor Piket ({crisisDetails.alertTimestamp})
-                    </div>
-                    <p className="text-amber-800">
-                      Konselor Piket (<strong>{crisisDetails.piketName}</strong>) telah
-                      menerima notifikasi darurat prioritas tinggi. Kamu juga dapat
-                      langsung membuka chat WhatsApp darurat di bawah ini:
-                    </p>
-                    <div className="pt-2 flex flex-wrap gap-2">
-                      <a
-                        href={`https://wa.me/${crisisDetails.piketPhone}?text=${encodeURIComponent(
-                          `Halo Konselor Piket Kampus, saya (${pseudonym}) sedang berada dalam kondisi krisis darurat dan butuh pendampingan segera.`
-                        )}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700"
-                      >
-                        Chat WhatsApp Konselor Piket Sekarang
-                      </a>
-                      <button
-                        onClick={() => setShowCrisisSelfHelp(!showCrisisSelfHelp)}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-teal-300 bg-white px-3 py-1.5 text-xs font-semibold text-teal-800 hover:bg-teal-50"
-                      >
-                        <Wind className="h-3.5 w-3.5" />
-                        {showCrisisSelfHelp
-                          ? "Tutup Panduan Napas"
-                          : "Buka Panduan Napas Penenang 4-7-8"}
-                      </button>
-                    </div>
+              {/* (3) Panduan Napas Penenang 4-7-8 */}
+              <div className="mt-5 rounded-xl border border-teal-200 bg-teal-50/70 p-4 flex flex-wrap items-center justify-between gap-3">
+                <div className="text-xs text-teal-950">
+                  <div className="font-bold">
+                    Bantuan Penenang Mandiri ({crisisDetails.alertTimestamp})
                   </div>
+                  <p className="text-teal-800 mt-0.5">
+                    Notifikasi prioritas telah dikirim ke Admin BK NARASA. Sambil menunggu, kamu bisa melakukan relaksasi napas 4-7-8.
+                  </p>
                 </div>
+                <button
+                  onClick={() => setShowCrisisSelfHelp(!showCrisisSelfHelp)}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-teal-300 bg-white px-3.5 py-2 text-xs font-semibold text-teal-800 hover:bg-teal-50"
+                >
+                  <Wind className="h-3.5 w-3.5" />
+                  {showCrisisSelfHelp
+                    ? "Tutup Panduan Napas"
+                    : "Buka Panduan Napas Penenang 4-7-8"}
+                </button>
               </div>
 
               {showCrisisSelfHelp && (

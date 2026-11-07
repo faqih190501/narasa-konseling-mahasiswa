@@ -343,43 +343,6 @@ export default function CounselorDashboard({
         </div>
       </div>
 
-      {/* High-Priority Crisis Escalation Feed (FR-02) */}
-      {crisisLogs.length > 0 && (
-        <div className="rounded-2xl border-2 border-rose-400 bg-rose-50/90 p-4 shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-2 text-sm font-bold text-rose-900">
-              <ShieldAlert className="h-5 w-5 text-rose-600 animate-pulse" />
-              Log Peringatan Prioritas Tinggi (Red-Flag Crisis Protocol FR-02)
-            </div>
-            <span className="rounded-full bg-white px-3 py-0.5 text-xs font-bold text-rose-700">
-              Total Trigger Darurat: {crisisLogs.length}
-            </span>
-          </div>
-          <div className="mt-2.5 grid gap-2 sm:grid-cols-2">
-            {crisisLogs.slice(0, 2).map((log) => (
-              <div
-                key={log.id}
-                className="flex items-center justify-between rounded-xl bg-white p-3 text-xs border border-rose-200"
-              >
-                <div>
-                  <div className="font-bold text-slate-900">
-                    Klien: {log.pseudonym} • Kata Kunci: &ldquo;
-                    {log.matched_keywords.join(", ")}&rdquo;
-                  </div>
-                  <div className="text-slate-500 mt-0.5">
-                    Konselor Piket: {log.piket_counselor_name} • Kecepatan
-                    Deteksi: {log.detection_latency_ms} ms
-                  </div>
-                </div>
-                <span className="rounded-lg bg-rose-100 px-2.5 py-1 font-bold text-rose-800">
-                  {log.status}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Full-Width Pre-Session Brief, Decrypted Story, SOAP Notes & Live Chat */}
       <div className="w-full space-y-6">
         <div className="space-y-6">
