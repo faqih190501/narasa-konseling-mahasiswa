@@ -1,4 +1,4 @@
-const CACHE_NAME = "narasa-bk-v2";
+const CACHE_NAME = "narasa-bk-v3";
 const PRECACHE_URLS = ["/", "/manifest.json", "/icon-192.png", "/icon-512.png", "/logo-narasa.jpg"];
 
 self.addEventListener("install", (event) => {
@@ -21,13 +21,12 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   const { request } = event;
-  if (request.method !== "GET") return;
+  if (request.method !== "GET" || request.mode !== "navigate") return;
   const url = new URL(request.url);
   if (url.pathname.startsWith("/api/") || url.pathname.endsWith(".apk")) {
     return;
   }
   event.respondWith(
-    fetch(request).catch(() => caches.match(request).then((res) => res || caches.match("/")))
+    fetch(request).catch(() => caches.match("/"))
   );
 });
-

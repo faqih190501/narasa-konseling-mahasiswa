@@ -478,8 +478,8 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
               </div>
               {!isApkMode && (
                 <a
-                  href="/narasa-konseling.apk"
-                  download="NARASA-Konseling-Mahasiswa.apk"
+                  href="/narasa-konseling-v2.apk"
+                  download="NARASA-Konseling-v2.apk"
                   className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#2E7D67] hover:bg-[#256654] px-4 py-2.5 text-xs font-extrabold text-white shadow-md transition active:scale-95"
                 >
                   <Download className="h-3.5 w-3.5" />
@@ -552,8 +552,8 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                   </span>
                 ) : (
                   <a
-                    href="/narasa-konseling.apk"
-                    download="NARASA-Konseling-Mahasiswa.apk"
+                    href="/narasa-konseling-v2.apk"
+                    download="NARASA-Konseling-v2.apk"
                     className="lg:hidden shrink-0 inline-flex items-center gap-1 rounded-full bg-[#2E7D67] px-3 py-1.5 text-[10.5px] font-extrabold text-white shadow-sm active:scale-95"
                   >
                     <Download className="h-3 w-3" />
@@ -1111,8 +1111,8 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
               </span>
             ) : (
               <a
-                href="/narasa-konseling.apk"
-                download="NARASA-Konseling-Mahasiswa.apk"
+                href="/narasa-konseling-v2.apk"
+                download="NARASA-Konseling-v2.apk"
                 className="inline-flex items-center gap-1.5 rounded-full bg-[#E2F1EC] hover:bg-[#D1E8E0] px-3.5 py-1 text-[11px] font-extrabold text-[#2E7D67] transition"
               >
                 <Download className="h-3.5 w-3.5" />

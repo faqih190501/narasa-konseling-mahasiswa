@@ -401,8 +401,8 @@ export default function HomePage() {
           <div className="flex items-center gap-1.5 shrink-0">
             {!isApkMode && (
               <a
-                href="/narasa-konseling.apk"
-                download="NARASA-Konseling-Mahasiswa.apk"
+                href="/narasa-konseling-v2.apk"
+                download="NARASA-Konseling-v2.apk"
                 className="flex h-9 items-center gap-1 rounded-full bg-[#2E7D67] px-3 text-[10.5px] font-extrabold text-white shadow-sm active:scale-95"
                 title="Download APK Android"
               >
@@ -501,8 +501,8 @@ export default function HomePage() {
               <div className="mt-6 pt-4 border-t border-white/60 space-y-2.5">
                 {!isApkMode && (
                   <a
-                    href="/narasa-konseling.apk"
-                    download="NARASA-Konseling-Mahasiswa.apk"
+                    href="/narasa-konseling-v2.apk"
+                    download="NARASA-Konseling-v2.apk"
                     className="w-full rounded-full bg-[#2E7D67] hover:bg-[#256654] py-2.5 px-4 text-xs font-extrabold text-white border border-white shadow-sm flex items-center justify-center gap-2 transition active:scale-95"
                   >
                     <Download className="h-3.5 w-3.5" />
@@ -685,8 +685,8 @@ export default function HomePage() {
 
             {!isApkMode && (
               <a
-                href="/narasa-konseling.apk"
-                download="NARASA-Konseling-Mahasiswa.apk"
+                href="/narasa-konseling-v2.apk"
+                download="NARASA-Konseling-v2.apk"
                 className="w-full rounded-full bg-[#2E7D67] hover:bg-[#256654] py-2.5 px-4 text-xs font-extrabold text-white border border-white shadow-sm flex items-center justify-center gap-2 transition active:scale-95"
               >
                 <Download className="h-3.5 w-3.5" />
@@ -798,8 +798,8 @@ export default function HomePage() {
                 {/* Download APK Button in Header */}
                 {!isApkMode && (
                   <a
-                    href="/narasa-konseling.apk"
-                    download="NARASA-Konseling-Mahasiswa.apk"
+                    href="/narasa-konseling-v2.apk"
+                    download="NARASA-Konseling-v2.apk"
                     className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-[#2E7D67] hover:bg-[#256654] px-4 py-2.5 text-xs font-extrabold text-white shadow-sm transition active:scale-95"
                     title="Unduh Aplikasi Android NARASA (.APK)"
                   >

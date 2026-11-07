@@ -4,7 +4,7 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: "/narasa-konseling.apk",
+        source: "/:apkFile(narasa-konseling.*\\.apk)",
         headers: [
           {
             key: "Content-Type",
@@ -12,11 +12,11 @@ const nextConfig = {
           },
           {
             key: "Content-Disposition",
-            value: 'attachment; filename="NARASA-Konseling-Mahasiswa.apk"',
+            value: 'attachment; filename="NARASA-Konseling-v2.apk"',
           },
           {
             key: "Cache-Control",
-            value: "public, max-age=0, must-revalidate",
+            value: "no-store, no-cache, must-revalidate",
           },
         ],
       },
