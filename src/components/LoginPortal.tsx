@@ -500,10 +500,10 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                 </div>
                 <div>
                   <div className="text-xs font-extrabold text-[#2D2A26]">
-                    Zona Game Fokus & Relaksasi Pikiran
+                    6 Game Edukasi Konseling, BKPI & PIAUD
                   </div>
                   <div className="text-[11px] font-semibold text-[#5F544E]">
-                    Memori Emosi, Tangkap Fokus & Tantangan CBT (BKPI & PIAUD)
+                    Lab Mikro-Konseling, Teori Piaget & BK, Detektif Emosi, CBT & Fokus
                   </div>
                 </div>
               </div>

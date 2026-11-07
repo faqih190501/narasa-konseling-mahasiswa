@@ -1045,13 +1045,13 @@ export default function HomePage() {
                       <Gamepad2 className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
                     <div className="mt-3 sm:mt-4 text-[11px] sm:text-xs font-semibold text-[#556678]">
-                      Game Fokus & CBT
+                      Game Edukasi & BK
                     </div>
                     <div className="mt-0.5 sm:mt-1 text-xl sm:text-3xl font-extrabold text-[#2D2A26]">
-                      3 Game
+                      6 Game
                     </div>
                     <div className="mt-1.5 sm:mt-2 text-[10.5px] sm:text-xs font-extrabold text-[#2A856A]">
-                      Main Sekarang →
+                      Main & Belajar →
                     </div>
                   </button>
                 </div>
