@@ -367,7 +367,7 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
 
             {/* Brand Title */}
             <h1 className="mt-4 sm:mt-5 text-xl sm:text-3xl font-extrabold text-[#2D2A26] leading-tight">
-              Ruang Aman Cerita & Penjadwalan Konseling{" "}
+              Ruang Aman Cerita & Konseling{" "}
               <span className="text-[#6C4A32]">NARASA</span>{" "}
               <span className="text-base sm:text-lg font-bold text-[#559A87]">
                 (Narasi Rasa)
