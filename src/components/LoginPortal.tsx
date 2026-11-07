@@ -17,6 +17,8 @@ import {
   Crown,
   Download,
   Smartphone,
+  UserPlus,
+  CheckCircle2,
 } from "lucide-react";
 import { generateCalmPseudonym } from "@/lib/triage-engine";
 import { StudentAccount } from "@/lib/types";
@@ -39,8 +41,10 @@ interface Props {
 export default function LoginPortal({ onLoginSuccess }: Props) {
   const [activeTab, setActiveTab] = useState<"mahasiswa" | "admin">("mahasiswa");
 
-  // Mahasiswa Login State
-  const [mhsEntryMode, setMhsEntryMode] = useState<"sso" | "anonim">("sso");
+  // Mahasiswa Login / Daftar / Anonim State
+  const [mhsEntryMode, setMhsEntryMode] = useState<
+    "sso" | "daftar" | "anonim"
+  >("sso");
   const [nim, setNim] = useState<string>("230101001");
   const [mhsPassword, setMhsPassword] = useState<string>("mahasiswa123");
   const [mhsName, setMhsName] = useState<string>("Naufal Rizqullah Pratama");
@@ -49,6 +53,17 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
   );
   const [mhsAngkatan, setMhsAngkatan] = useState<number>(2023);
   const [pseudonym, setPseudonym] = useState<string>("Langit Teduh #412");
+
+  // Mahasiswa Self-Registration State (Buat Akun Sendiri)
+  const [regNim, setRegNim] = useState<string>("");
+  const [regName, setRegName] = useState<string>("");
+  const [regProdi, setRegProdi] = useState<string>(
+    "BKPI (Bimbingan & Konseling Pendidikan Islam)"
+  );
+  const [regAngkatan, setRegAngkatan] = useState<number>(2024);
+  const [regPhoneWa, setRegPhoneWa] = useState<string>("");
+  const [regPassword, setRegPassword] = useState<string>("");
+  const [regConfirmPassword, setRegConfirmPassword] = useState<string>("");
 
   // Admin Login State (Hanya Admin)
   const [adminUsername, setAdminUsername] = useState<string>(
@@ -61,17 +76,37 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [studentAccounts, setStudentAccounts] = useState<StudentAccount[]>([]);
 
   useEffect(() => {
     setPseudonym(generateCalmPseudonym());
+    let localAccounts: StudentAccount[] = [];
+    try {
+      const saved = localStorage.getItem("narasa_registered_students");
+      if (saved) localAccounts = JSON.parse(saved);
+    } catch {}
+
     fetch("/api/state")
       .then((r) => r.json())
       .then((d) => {
-        if (Array.isArray(d.student_accounts) && d.student_accounts.length > 0) {
-          setStudentAccounts(d.student_accounts);
-          const first = d.student_accounts[0];
+        const serverList: StudentAccount[] = Array.isArray(d.student_accounts)
+          ? d.student_accounts
+          : [];
+        const merged = [...serverList];
+        for (const loc of localAccounts) {
+          if (
+            !merged.some(
+              (s) => s.nim.toLowerCase() === loc.nim.toLowerCase()
+            )
+          ) {
+            merged.unshift(loc);
+          }
+        }
+        if (merged.length > 0) {
+          setStudentAccounts(merged);
+          const first = merged[0];
           setNim(first.nim);
           setMhsName(first.full_name);
           setMhsProdi(first.prodi_id);
@@ -79,7 +114,9 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
           setMhsPassword(first.password || "mahasiswa123");
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        if (localAccounts.length > 0) setStudentAccounts(localAccounts);
+      });
   }, []);
 
   const handleSelectDemoMahasiswa = (
@@ -96,12 +133,15 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
     setMhsAngkatan(demoAngkatan);
     setMhsPassword(demoPassword || "mahasiswa123");
     setErrorMsg(null);
+    setSuccessMsg(null);
   };
 
   const handleMahasiswaSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
+    setSuccessMsg(null);
 
+    // MODE 1: SAMARAN ANONIM
     if (mhsEntryMode === "anonim") {
       onLoginSuccess({
         role: "mahasiswa",
@@ -115,47 +155,161 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
       return;
     }
 
+    // MODE 2: DAFTAR AKUN MAHASISWA BARU (BUAT AKUN SENDIRI)
+    if (mhsEntryMode === "daftar") {
+      const cleanNim = regNim.trim();
+      const cleanName = regName.trim();
+      const cleanPwd = regPassword.trim();
+
+      if (!cleanNim || !cleanName) {
+        setErrorMsg("Mohon lengkapi NIM dan Nama Lengkap Anda terlebih dahulu.");
+        return;
+      }
+      if (cleanPwd.length < 4) {
+        setErrorMsg("Kata sandi minimal 4 karakter.");
+        return;
+      }
+      if (cleanPwd !== regConfirmPassword.trim()) {
+        setErrorMsg("Konfirmasi kata sandi tidak sama dengan kata sandi baru.");
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        const res = await fetch("/api/state", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "register_student_account",
+            nim: cleanNim,
+            full_name: cleanName,
+            prodi_id: regProdi,
+            angkatan: regAngkatan,
+            phone_wa: regPhoneWa.trim() || "081200000000",
+            password: cleanPwd,
+          }),
+        });
+        const data = await res.json();
+        if (!data.ok) {
+          setErrorMsg(data.error || "Gagal mendaftarkan akun mahasiswa.");
+          setIsLoading(false);
+          return;
+        }
+
+        const created: StudentAccount = data.student;
+        try {
+          const prevRaw = localStorage.getItem("narasa_registered_students");
+          const prevList: StudentAccount[] = prevRaw ? JSON.parse(prevRaw) : [];
+          const updated = [
+            created,
+            ...prevList.filter(
+              (item) => item.nim.toLowerCase() !== created.nim.toLowerCase()
+            ),
+          ];
+          localStorage.setItem(
+            "narasa_registered_students",
+            JSON.stringify(updated)
+          );
+        } catch {}
+
+        setStudentAccounts((prev) => [created, ...prev]);
+
+        onLoginSuccess({
+          role: "mahasiswa",
+          subRoleLabel: `Mahasiswa Aktif • Angkatan ${created.angkatan}`,
+          displayName: created.full_name,
+          identifier: created.nim,
+          prodi: created.prodi_id,
+          angkatan: created.angkatan,
+          isAnonymous: false,
+        });
+      } catch {
+        setErrorMsg("Terjadi gangguan jaringan saat membuat akun baru.");
+      } finally {
+        setIsLoading(false);
+      }
+      return;
+    }
+
+    // MODE 3: LOGIN AKUN MAHASISWA
     if (!nim.trim() || !mhsPassword.trim()) {
-      setErrorMsg("Mohon masukkan NIM dan Kata Sandi SSO SIAKAD Anda.");
+      setErrorMsg("Mohon masukkan NIM dan Kata Sandi Akun Mahasiswa Anda.");
       return;
     }
 
     setIsLoading(true);
     try {
+      const cleanNim = nim.trim();
+      const cleanPwd = mhsPassword.trim();
+
       const res = await fetch("/api/state", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          action: "sso_lookup",
-          nim: nim.trim(),
-          full_name: mhsName,
-          prodi_id: mhsProdi,
+          action: "login_student",
+          nim: cleanNim,
+          password: cleanPwd,
         }),
       });
       const data = await res.json();
-      const profile = data.profile;
 
-      onLoginSuccess({
-        role: "mahasiswa",
-        subRoleLabel: `Mahasiswa Aktif • Angkatan ${
-          profile?.angkatan || mhsAngkatan
-        }`,
-        displayName: profile?.full_name || mhsName || `Mahasiswa (${nim})`,
-        identifier: profile?.nim || nim,
-        prodi: profile?.prodi_id || mhsProdi,
-        angkatan: profile?.angkatan || mhsAngkatan,
-        isAnonymous: false,
-      });
+      if (data.ok && data.student) {
+        const s: StudentAccount = data.student;
+        onLoginSuccess({
+          role: "mahasiswa",
+          subRoleLabel: `Mahasiswa Aktif • Angkatan ${s.angkatan}`,
+          displayName: s.full_name,
+          identifier: s.nim,
+          prodi: s.prodi_id,
+          angkatan: s.angkatan,
+          isAnonymous: false,
+        });
+        return;
+      }
+
+      // Fallback check in localStorage (if serverless cold start reset memory)
+      const localMatch = studentAccounts.find(
+        (item) => item.nim.toLowerCase() === cleanNim.toLowerCase()
+      );
+      if (localMatch) {
+        if (localMatch.password && localMatch.password !== cleanPwd) {
+          setErrorMsg("Kata sandi yang Anda masukkan tidak sesuai.");
+          setIsLoading(false);
+          return;
+        }
+        // Re-sync to server
+        await fetch("/api/state", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "register_student_account",
+            nim: localMatch.nim,
+            full_name: localMatch.full_name,
+            prodi_id: localMatch.prodi_id,
+            angkatan: localMatch.angkatan,
+            phone_wa: localMatch.phone_wa,
+            password: localMatch.password || cleanPwd,
+          }),
+        }).catch(() => {});
+
+        onLoginSuccess({
+          role: "mahasiswa",
+          subRoleLabel: `Mahasiswa Aktif • Angkatan ${localMatch.angkatan}`,
+          displayName: localMatch.full_name,
+          identifier: localMatch.nim,
+          prodi: localMatch.prodi_id,
+          angkatan: localMatch.angkatan,
+          isAnonymous: false,
+        });
+        return;
+      }
+
+      setErrorMsg(
+        data.error ||
+          `NIM ${cleanNim} belum terdaftar. Silakan klik "Buat Akun Baru" untuk membuat akun mahasiswa sendiri.`
+      );
     } catch {
-      onLoginSuccess({
-        role: "mahasiswa",
-        subRoleLabel: `Mahasiswa Aktif • Angkatan ${mhsAngkatan}`,
-        displayName: mhsName || `Mahasiswa (${nim})`,
-        identifier: nim,
-        prodi: mhsProdi,
-        angkatan: mhsAngkatan,
-        isAnonymous: false,
-      });
+      setErrorMsg("Terjadi kesalahan saat memverifikasi akun mahasiswa.");
     } finally {
       setIsLoading(false);
     }
@@ -412,11 +566,15 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                ============================================================ */}
             {activeTab === "mahasiswa" ? (
               <form onSubmit={handleMahasiswaSubmit} className="mt-6 space-y-5">
-                {/* Mode Pilihan Identitas Mahasiswa (FR-04) */}
-                <div className="grid grid-cols-2 gap-3">
+                {/* 3 Pilihan Mode Mahasiswa: Masuk Akun, Buat Akun Baru, Mode Anonim */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <button
                     type="button"
-                    onClick={() => setMhsEntryMode("sso")}
+                    onClick={() => {
+                      setMhsEntryMode("sso");
+                      setErrorMsg(null);
+                      setSuccessMsg(null);
+                    }}
                     className={`rounded-[22px] p-3.5 text-left border-2 transition ${
                       mhsEntryMode === "sso"
                         ? "clay-card-mint border-white ring-2 ring-[#559A87]/30"
@@ -428,20 +586,53 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                         <UserCheck className="h-4 w-4" />
                       </span>
                       <span className="rounded-full bg-white/80 px-2.5 py-0.5 text-[10px] font-extrabold text-[#2E7D67]">
-                        SSO SIAKAD
+                        Login
                       </span>
                     </div>
                     <div className="mt-2 text-xs font-extrabold text-[#2D2A26]">
-                      Akun Resmi Mahasiswa
+                      Masuk Akun
                     </div>
                     <div className="text-[11px] text-[#5E6E68]">
-                      Untuk sesi Tatap Muka / Google Meet
+                      Sudah punya akun NIM
                     </div>
                   </button>
 
                   <button
                     type="button"
-                    onClick={() => setMhsEntryMode("anonim")}
+                    onClick={() => {
+                      setMhsEntryMode("daftar");
+                      setErrorMsg(null);
+                      setSuccessMsg(null);
+                    }}
+                    className={`rounded-[22px] p-3.5 text-left border-2 transition ${
+                      mhsEntryMode === "daftar"
+                        ? "clay-card-sky border-white ring-2 ring-[#689FD4]/40"
+                        : "bg-[#F7F5F0] border-transparent opacity-75 hover:opacity-100"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#4F86BE] text-white">
+                        <UserPlus className="h-4 w-4" />
+                      </span>
+                      <span className="rounded-full bg-white/85 px-2.5 py-0.5 text-[10px] font-extrabold text-[#2D5F91]">
+                        Daftar Baru
+                      </span>
+                    </div>
+                    <div className="mt-2 text-xs font-extrabold text-[#2D2A26]">
+                      Buat Akun Sendiri
+                    </div>
+                    <div className="text-[11px] text-[#4E647E]">
+                      Daftar mandiri BKPI / PIAUD
+                    </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMhsEntryMode("anonim");
+                      setErrorMsg(null);
+                      setSuccessMsg(null);
+                    }}
                     className={`rounded-[22px] p-3.5 text-left border-2 transition ${
                       mhsEntryMode === "anonim"
                         ? "clay-card-peach border-white ring-2 ring-[#EE7854]/30"
@@ -453,24 +644,36 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                         <HeartHandshake className="h-4 w-4" />
                       </span>
                       <span className="rounded-full bg-white/80 px-2.5 py-0.5 text-[10px] font-extrabold text-[#C45534]">
-                        FR-04 Anonim
+                        Anonim
                       </span>
                     </div>
                     <div className="mt-2 text-xs font-extrabold text-[#2D2A26]">
-                      Mode Samaran (Anonim)
+                      Mode Samaran
                     </div>
                     <div className="text-[11px] text-[#6E5C56]">
-                      Tanpa NIM • Bebas Stigma 100%
+                      Tanpa NIM • Rahasia 100%
                     </div>
                   </button>
                 </div>
 
                 {mhsEntryMode === "sso" ? (
                   <>
-                    {/* Quick Registered Student Accounts from Admin DB */}
+                    {/* Quick Registered Student Accounts from DB */}
                     <div className="rounded-2xl bg-[#F6F3EC] p-3.5 border border-white">
-                      <div className="text-[11px] font-extrabold text-[#6E6A63] mb-2">
-                        ⚡ Pilih Akun Mahasiswa Terdaftar ({studentAccounts.length} Akun):
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                        <span className="text-[11px] font-extrabold text-[#6E6A63]">
+                          ⚡ Pilih Cepat Akun Terdaftar ({studentAccounts.length} Akun):
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setMhsEntryMode("daftar");
+                            setErrorMsg(null);
+                          }}
+                          className="text-[11px] font-extrabold text-[#2E7D67] hover:underline"
+                        >
+                          + Belum punya akun? Buat Akun Sendiri
+                        </button>
                       </div>
                       <div className="flex flex-wrap gap-2">
                         {studentAccounts.map((item) => (
@@ -501,7 +704,7 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
                         <label className="block text-xs font-extrabold text-[#2D2A26] mb-1.5">
-                          NIM Mahasiswa (SIAKAD)
+                          NIM Mahasiswa
                         </label>
                         <input
                           type="text"
@@ -514,7 +717,7 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
 
                       <div>
                         <label className="block text-xs font-extrabold text-[#2D2A26] mb-1.5">
-                          Kata Sandi SSO SIAKAD
+                          Kata Sandi Akun Mahasiswa
                         </label>
                         <div className="relative">
                           <input
@@ -538,27 +741,61 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                         </div>
                       </div>
                     </div>
-
-                    <div className="grid gap-4 sm:grid-cols-2">
+                  </>
+                ) : mhsEntryMode === "daftar" ? (
+                  /* Form Pendaftaran Mandiri Mahasiswa (Buat Akun Sendiri) */
+                  <div className="rounded-[26px] bg-[#EEF5FB] border-2 border-white p-5 space-y-4 shadow-sm">
+                    <div className="flex items-center justify-between border-b border-white/80 pb-3">
                       <div>
-                        <label className="block text-xs font-extrabold text-[#2D2A26] mb-1.5">
-                          Nama Mahasiswa (Dienkripsi AES-256)
+                        <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#2D5F91]">
+                          Pendaftaran Mandiri Mahasiswa
+                        </span>
+                        <h4 className="text-base font-extrabold text-[#2D2A26]">
+                          Buat Akun Konseling Mahasiswa Baru
+                        </h4>
+                      </div>
+                      <span className="rounded-full bg-white px-3 py-1 text-[10px] font-extrabold text-[#2E7D67]">
+                        Langsung Aktif ✓
+                      </span>
+                    </div>
+
+                    <div className="grid gap-3.5 sm:grid-cols-2">
+                      <div>
+                        <label className="block text-xs font-extrabold text-[#2D2A26] mb-1">
+                          NIM Mahasiswa <span className="text-rose-600">*</span>
                         </label>
                         <input
                           type="text"
-                          value={mhsName}
-                          onChange={(e) => setMhsName(e.target.value)}
-                          className="w-full rounded-2xl bg-[#F3F0E8] border border-white px-4 py-3 text-xs font-semibold text-[#2D2A26] shadow-inner"
+                          value={regNim}
+                          onChange={(e) => setRegNim(e.target.value)}
+                          placeholder="Masukkan NIM Anda (cth: 240101055)"
+                          className="w-full rounded-2xl bg-white border border-white px-4 py-2.5 text-xs font-bold text-[#2D2A26] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#4F86BE]"
                         />
                       </div>
+
                       <div>
-                        <label className="block text-xs font-extrabold text-[#2D2A26] mb-1.5">
-                          Program Studi
+                        <label className="block text-xs font-extrabold text-[#2D2A26] mb-1">
+                          Nama Lengkap <span className="text-rose-600">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          value={regName}
+                          onChange={(e) => setRegName(e.target.value)}
+                          placeholder="Masukkan nama lengkap sesuai KTM"
+                          className="w-full rounded-2xl bg-white border border-white px-4 py-2.5 text-xs font-bold text-[#2D2A26] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#4F86BE]"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid gap-3.5 sm:grid-cols-3">
+                      <div className="sm:col-span-2">
+                        <label className="block text-xs font-extrabold text-[#2D2A26] mb-1">
+                          Program Studi <span className="text-rose-600">*</span>
                         </label>
                         <select
-                          value={mhsProdi}
-                          onChange={(e) => setMhsProdi(e.target.value)}
-                          className="w-full rounded-2xl bg-[#F3F0E8] border border-white px-4 py-3 text-xs font-semibold text-[#2D2A26] shadow-inner"
+                          value={regProdi}
+                          onChange={(e) => setRegProdi(e.target.value)}
+                          className="w-full rounded-2xl bg-white border border-white px-3.5 py-2.5 text-xs font-bold text-[#2D2A26] shadow-sm"
                         >
                           <option value="BKPI (Bimbingan & Konseling Pendidikan Islam)">
                             BKPI (Bimbingan & Konseling Pendidikan Islam)
@@ -568,8 +805,66 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                           </option>
                         </select>
                       </div>
+
+                      <div>
+                        <label className="block text-xs font-extrabold text-[#2D2A26] mb-1">
+                          Angkatan
+                        </label>
+                        <select
+                          value={regAngkatan}
+                          onChange={(e) => setRegAngkatan(Number(e.target.value))}
+                          className="w-full rounded-2xl bg-white border border-white px-3.5 py-2.5 text-xs font-bold text-[#2D2A26] shadow-sm"
+                        >
+                          <option value={2022}>2022</option>
+                          <option value={2023}>2023</option>
+                          <option value={2024}>2024</option>
+                          <option value={2025}>2025</option>
+                          <option value={2026}>2026</option>
+                        </select>
+                      </div>
                     </div>
-                  </>
+
+                    <div className="grid gap-3.5 sm:grid-cols-3">
+                      <div>
+                        <label className="block text-xs font-extrabold text-[#2D2A26] mb-1">
+                          No. WhatsApp (Opsional)
+                        </label>
+                        <input
+                          type="text"
+                          value={regPhoneWa}
+                          onChange={(e) => setRegPhoneWa(e.target.value)}
+                          placeholder="0812xxxxxxxx"
+                          className="w-full rounded-2xl bg-white border border-white px-3.5 py-2.5 text-xs font-bold text-[#2D2A26] shadow-sm"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-extrabold text-[#2D2A26] mb-1">
+                          Buat Kata Sandi <span className="text-rose-600">*</span>
+                        </label>
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          value={regPassword}
+                          onChange={(e) => setRegPassword(e.target.value)}
+                          placeholder="Min. 4 karakter"
+                          className="w-full rounded-2xl bg-white border border-white px-3.5 py-2.5 text-xs font-bold text-[#2D2A26] shadow-sm"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-extrabold text-[#2D2A26] mb-1">
+                          Ulangi Kata Sandi <span className="text-rose-600">*</span>
+                        </label>
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          value={regConfirmPassword}
+                          onChange={(e) => setRegConfirmPassword(e.target.value)}
+                          placeholder="Ketik ulang sandi"
+                          className="w-full rounded-2xl bg-white border border-white px-3.5 py-2.5 text-xs font-bold text-[#2D2A26] shadow-sm"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 ) : (
                   /* Mode Samaran Anonim (FR-04) */
                   <div className="clay-card-butter rounded-[26px] p-5 space-y-4">
@@ -625,6 +920,13 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                   </div>
                 )}
 
+                {successMsg && (
+                  <div className="rounded-2xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-xs font-bold text-emerald-800 flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
+                    {successMsg}
+                  </div>
+                )}
+
                 {errorMsg && (
                   <div className="rounded-2xl bg-rose-50 border border-rose-200 px-4 py-3 text-xs font-bold text-rose-700">
                     {errorMsg}
@@ -637,8 +939,12 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                   className="w-full clay-btn-coral rounded-full py-3.5 px-6 text-sm font-extrabold text-white flex items-center justify-center gap-2 transition active:scale-98"
                 >
                   <span>
-                    {mhsEntryMode === "sso"
-                      ? "Masuk Portal Mahasiswa (SSO SIAKAD)"
+                    {isLoading
+                      ? "Memproses..."
+                      : mhsEntryMode === "sso"
+                      ? "Masuk Portal Mahasiswa"
+                      : mhsEntryMode === "daftar"
+                      ? "Daftar Akun Baru & Masuk Sekarang"
                       : `Masuk Ruang Aman Sebagai "${pseudonym}"`}
                   </span>
                   <ArrowRight className="h-4 w-4" />

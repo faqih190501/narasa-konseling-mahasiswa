@@ -770,8 +770,8 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  // 13. Admin: Tambah Akun Mahasiswa Baru
-  if (action === "add_student_account") {
+  // 13. Admin / Mahasiswa Mandiri: Tambah / Daftar Akun Mahasiswa Baru
+  if (action === "add_student_account" || action === "register_student_account") {
     const {
       nim,
       full_name,
@@ -788,6 +788,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (!password || String(password).trim().length < 4) {
+      return NextResponse.json(
+        { ok: false, error: "Kata sandi minimal 4 karakter." },
+        { status: 400 }
+      );
+    }
+
     const cleanNim = String(nim).trim();
     const exists = (db.student_accounts || []).some(
       (s) => s.nim.toLowerCase() === cleanNim.toLowerCase()
@@ -796,21 +803,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           ok: false,
-          error: `Mahasiswa dengan NIM ${cleanNim} sudah terdaftar di dalam sistem.`,
+          error: `Mahasiswa dengan NIM ${cleanNim} sudah terdaftar. Silakan langsung masuk di tab Login.`,
         },
         { status: 409 }
       );
     }
 
+    const allowedProdi =
+      prodi_id === "PIAUD (Pendidikan Islam Anak Usia Dini)"
+        ? "PIAUD (Pendidikan Islam Anak Usia Dini)"
+        : "BKPI (Bimbingan & Konseling Pendidikan Islam)";
+
     const newAccount = {
       id: `stu-${Date.now()}`,
       nim: cleanNim,
       full_name: String(full_name).trim(),
-      prodi_id:
-        prodi_id || "BKPI (Bimbingan & Konseling Pendidikan Islam)",
+      prodi_id: allowedProdi,
       angkatan: Number(angkatan) || 2024,
       phone_wa: String(phone_wa || "081200000000").trim(),
-      password: String(password || "mahasiswa123").trim(),
+      password: String(password).trim(),
       status_mahasiswa: "Aktif" as const,
       created_at: new Date().toISOString(),
     };
@@ -825,6 +836,46 @@ export async function POST(req: NextRequest) {
       ok: true,
       student: newAccount,
       student_accounts: db.student_accounts,
+    });
+  }
+
+  // 14. Login Akun Mahasiswa (Verifikasi NIM & Kata Sandi)
+  if (action === "login_student") {
+    const { nim, password } = body;
+    const cleanNim = String(nim || "").trim();
+    const cleanPassword = String(password || "").trim();
+
+    if (!cleanNim || !cleanPassword) {
+      return NextResponse.json(
+        { ok: false, error: "Mohon isi NIM dan Kata Sandi terlebih dahulu." },
+        { status: 400 }
+      );
+    }
+
+    const account = (db.student_accounts || []).find(
+      (s) => s.nim.toLowerCase() === cleanNim.toLowerCase()
+    );
+
+    if (!account) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: `NIM ${cleanNim} belum terdaftar. Silakan klik tombol "Buat Akun Baru" untuk mendaftar sendiri.`,
+        },
+        { status: 404 }
+      );
+    }
+
+    if (account.password && account.password !== cleanPassword) {
+      return NextResponse.json(
+        { ok: false, error: "Kata sandi yang Anda masukkan tidak sesuai." },
+        { status: 401 }
+      );
+    }
+
+    return NextResponse.json({
+      ok: true,
+      student: account,
     });
   }
 
