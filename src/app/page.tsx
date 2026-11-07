@@ -30,6 +30,7 @@ import {
   Video,
   CheckCircle2,
   Download,
+  Gamepad2,
   Menu,
   X,
 } from "lucide-react";
@@ -37,6 +38,7 @@ import LoginPortal, { AuthenticatedSession } from "@/components/LoginPortal";
 import NarasaLogo from "@/components/NarasaLogo";
 import ChatboxWidget from "@/components/ChatboxWidget";
 import SelfHelpModule from "@/components/SelfHelpModule";
+import MindfulGamesModule from "@/components/MindfulGamesModule";
 import CounselorDashboard from "@/components/CounselorDashboard";
 import AdminAnalyticsDashboard from "@/components/AdminAnalyticsDashboard";
 import StudentAccountsManager from "@/components/StudentAccountsManager";
@@ -61,7 +63,8 @@ type NavKey =
   | "mahasiswa_tiket"
   | "nilai_phq4"
   | "jurnal_soap"
-  | "selfhelp";
+  | "selfhelp"
+  | "games";
 
 export default function HomePage() {
   // Authentication Session (Null = Show Login Portal for Mahasiswa & Admin)
@@ -236,6 +239,13 @@ export default function HomePage() {
           badgeBg: "bg-[#D5E5F6]",
           iconColor: "text-[#3F78B5]",
         },
+        {
+          key: "games",
+          label: "Game Kognitif & Fokus",
+          icon: Gamepad2,
+          badgeBg: "bg-[#FCE6D4]",
+          iconColor: "text-[#D9603B]",
+        },
       ]
     : [
         {
@@ -293,6 +303,13 @@ export default function HomePage() {
           icon: HeartPulse,
           badgeBg: "bg-[#D6EFEA]",
           iconColor: "text-[#2B7A78]",
+        },
+        {
+          key: "games",
+          label: "Game Kognitif & CBT",
+          icon: Gamepad2,
+          badgeBg: "bg-[#FCE6D4]",
+          iconColor: "text-[#D9603B]",
         },
       ];
 
@@ -362,6 +379,7 @@ export default function HomePage() {
     nilai_phq4: "Skor Skrining PHQ-4 & Analitik",
     jurnal_soap: "Jurnal Konseling & SOAP Notes",
     selfhelp: "Ruang Relaksasi & Napas 4-7-8",
+    games: "Zona Game Kognitif & Relaksasi NARASA",
   };
 
   return (
@@ -905,7 +923,15 @@ export default function HomePage() {
                             className="clay-btn-white inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-extrabold text-[#2D2A26] transition hover:bg-white active:scale-95"
                           >
                             <Play className="h-3.5 w-3.5 text-[#4E9682]" />
-                            Skrining PHQ-4 & Booking Jadwal
+                            Skrining PHQ-4
+                          </button>
+
+                          <button
+                            onClick={() => setActiveNav("games")}
+                            className="inline-flex items-center gap-2 rounded-full bg-[#2E7D67] hover:bg-[#256654] px-5 py-2.5 text-xs font-extrabold text-white shadow-sm transition active:scale-95"
+                          >
+                            <Gamepad2 className="h-3.5 w-3.5" />
+                            Mainkan Game Fokus
                           </button>
                         </div>
                       </div>
@@ -1011,20 +1037,23 @@ export default function HomePage() {
                     </div>
                   </button>
 
-                  <div className="clay-card-sky rounded-[22px] sm:rounded-[28px] p-3.5 sm:p-5 text-left">
+                  <button
+                    onClick={() => setActiveNav("games")}
+                    className="clay-card-sky rounded-[22px] sm:rounded-[28px] p-3.5 sm:p-5 text-left transition hover:-translate-y-0.5"
+                  >
                     <div className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-[#689FD4] text-white shadow-md">
-                      <Lock className="h-4 w-4 sm:h-5 sm:w-5" />
+                      <Gamepad2 className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
                     <div className="mt-3 sm:mt-4 text-[11px] sm:text-xs font-semibold text-[#556678]">
-                      Perlindungan Privasi
+                      Game Fokus & CBT
                     </div>
                     <div className="mt-0.5 sm:mt-1 text-xl sm:text-3xl font-extrabold text-[#2D2A26]">
-                      100%
+                      3 Game
                     </div>
-                    <div className="mt-1.5 sm:mt-2 text-[10.5px] sm:text-xs font-extrabold text-[#4E647E]">
-                      Enkripsi AES-256
+                    <div className="mt-1.5 sm:mt-2 text-[10.5px] sm:text-xs font-extrabold text-[#2A856A]">
+                      Main Sekarang →
                     </div>
-                  </div>
+                  </button>
                 </div>
 
                 {/* Direct 2-Way Consultation Room with Admin on Student Dashboard */}
@@ -1675,6 +1704,13 @@ export default function HomePage() {
                 VIEW 6: SELF-HELP & GROUNDING EXERCISE 4-7-8 (FR-09)
                ============================================================ */}
             {activeNav === "selfhelp" && <SelfHelpModule />}
+
+            {/* ============================================================
+                VIEW 7: ZONA GAME KOGNITIF, FOKUS & REFRAMING CBT
+               ============================================================ */}
+            {activeNav === "games" && (
+              <MindfulGamesModule studentName={session.displayName} />
+            )}
           </div>
 
           {/* Subtle Footer inside Main Shell */}
@@ -1750,9 +1786,9 @@ export default function HomePage() {
                 },
                 { key: "chatbox" as NavKey, label: "PHQ-4", icon: Sparkles },
                 {
-                  key: "mahasiswa_tiket" as NavKey,
-                  label: "Tiket",
-                  icon: Ticket,
+                  key: "games" as NavKey,
+                  label: "Game",
+                  icon: Gamepad2,
                 },
                 { key: "selfhelp" as NavKey, label: "Relaksasi", icon: Wind },
               ] as const

@@ -19,10 +19,13 @@ import {
   Smartphone,
   UserPlus,
   CheckCircle2,
+  Gamepad2,
+  X,
 } from "lucide-react";
 import { generateCalmPseudonym } from "@/lib/triage-engine";
 import { StudentAccount } from "@/lib/types";
 import NarasaLogo from "./NarasaLogo";
+import MindfulGamesModule from "./MindfulGamesModule";
 
 export interface AuthenticatedSession {
   role: "mahasiswa" | "admin";
@@ -40,6 +43,7 @@ interface Props {
 
 export default function LoginPortal({ onLoginSuccess }: Props) {
   const [activeTab, setActiveTab] = useState<"mahasiswa" | "admin">("mahasiswa");
+  const [showGameModal, setShowGameModal] = useState<boolean>(false);
 
   // Mahasiswa Login / Daftar / Anonim State
   const [mhsEntryMode, setMhsEntryMode] = useState<
@@ -486,6 +490,31 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                   Download APK
                 </a>
               )}
+            </div>
+
+            {/* Zona Mini-Game Kognitif & Relaksasi Card */}
+            <div className="mt-3.5 rounded-[22px] sm:rounded-[24px] bg-gradient-to-r from-[#FCE8DF] to-[#FCFBF8] border-2 border-white p-3.5 sm:p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl bg-[#EE7854] text-white shadow-sm">
+                  <Gamepad2 className="h-5 w-5" />
+                </div>
+                <div>
+                  <div className="text-xs font-extrabold text-[#2D2A26]">
+                    Zona Game Fokus & Relaksasi Pikiran
+                  </div>
+                  <div className="text-[11px] font-semibold text-[#5F544E]">
+                    Memori Emosi, Tangkap Fokus & Tantangan CBT (BKPI & PIAUD)
+                  </div>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowGameModal(true)}
+                className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#EE7854] hover:bg-[#DC6642] px-4 py-2.5 text-xs font-extrabold text-white shadow-md transition active:scale-95"
+              >
+                <Gamepad2 className="h-3.5 w-3.5" />
+                Mainkan Game
+              </button>
             </div>
           </div>
 
@@ -1104,24 +1133,67 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
           {/* Footer Note inside Login Card */}
           <div className="mt-6 pt-4 border-t border-[#ECE8DF] flex flex-wrap items-center justify-between gap-2 text-[11px] font-semibold text-[#8C857B]">
             <span>🔒 Terenkripsi End-to-End AES-256-GCM • Prodi: BKPI & PIAUD</span>
-            {isApkMode ? (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#E2F1EC] px-3.5 py-1 text-[11px] font-extrabold text-[#2E7D67]">
-                <Smartphone className="h-3.5 w-3.5" />
-                Android App NARASA Aktif
-              </span>
-            ) : (
-              <a
-                href="/narasa-konseling-v2.apk"
-                download="NARASA-Konseling-v2.apk"
-                className="inline-flex items-center gap-1.5 rounded-full bg-[#E2F1EC] hover:bg-[#D1E8E0] px-3.5 py-1 text-[11px] font-extrabold text-[#2E7D67] transition"
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setShowGameModal(true)}
+                className="inline-flex items-center gap-1.5 rounded-full bg-[#FCE8DF] hover:bg-[#F8D7C8] px-3.5 py-1 text-[11px] font-extrabold text-[#C8522E] transition"
               >
-                <Download className="h-3.5 w-3.5" />
-                Download APK Android
-              </a>
-            )}
+                <Gamepad2 className="h-3.5 w-3.5" />
+                Main Game Fokus
+              </button>
+              {isApkMode ? (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#E2F1EC] px-3.5 py-1 text-[11px] font-extrabold text-[#2E7D67]">
+                  <Smartphone className="h-3.5 w-3.5" />
+                  Android App NARASA Aktif
+                </span>
+              ) : (
+                <a
+                  href="/narasa-konseling-v2.apk"
+                  download="NARASA-Konseling-v2.apk"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-[#E2F1EC] hover:bg-[#D1E8E0] px-3.5 py-1 text-[11px] font-extrabold text-[#2E7D67] transition"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  Download APK Android
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Fullscreen / Modal Game Hub when launched from Login Screen */}
+      {showGameModal && (
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs p-2.5 sm:p-6 overflow-y-auto flex items-start justify-center">
+          <div className="w-full max-w-[1060px] clay-shell rounded-[28px] sm:rounded-[34px] p-3.5 sm:p-6 my-2 sm:my-4 shadow-2xl border-2 border-white space-y-4">
+            <div className="flex items-center justify-between gap-3 border-b border-[#ECE8DF] pb-3">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#EE7854] text-white shadow-sm">
+                  <Gamepad2 className="h-5 w-5" />
+                </span>
+                <div>
+                  <div className="text-sm font-extrabold text-[#2D2A26]">
+                    Arena Permainan Kognitif & Relaksasi NARASA
+                  </div>
+                  <div className="text-[11px] text-[#6E6A63]">
+                    Dapat dimainkan langsung kapan saja untuk menyegarkan fokus
+                  </div>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowGameModal(false)}
+                className="inline-flex items-center gap-1.5 rounded-full bg-[#2D2A26] hover:bg-[#433F3A] px-4 py-2 text-xs font-extrabold text-white transition"
+              >
+                <X className="h-3.5 w-3.5" />
+                Kembali ke Login
+              </button>
+            </div>
+
+            <MindfulGamesModule />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
