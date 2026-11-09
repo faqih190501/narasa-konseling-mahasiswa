@@ -31,6 +31,12 @@ import {
   CheckCircle2,
   Download,
   Gamepad2,
+  Megaphone,
+  Calendar,
+  MapPin,
+  UserCheck,
+  ExternalLink,
+  Eye,
   Menu,
   X,
 } from "lucide-react";
@@ -44,12 +50,14 @@ import AdminAnalyticsDashboard from "@/components/AdminAnalyticsDashboard";
 import StudentAccountsManager from "@/components/StudentAccountsManager";
 import AdminLiveChatInbox from "@/components/AdminLiveChatInbox";
 import StudentDirectConsult from "@/components/StudentDirectConsult";
+import AdminSeminarManager from "@/components/AdminSeminarManager";
 import {
   Counselor,
   CounselorSchedule,
   CrisisEventLog,
   DecryptedTicketView,
   LiveChatMessage,
+  SeminarAnnouncement,
   StudentAccount,
 } from "@/lib/types";
 
@@ -57,6 +65,7 @@ type NavKey =
   | "dashboard"
   | "konsultasi_admin"
   | "balas_chat"
+  | "pengumuman_seminar"
   | "akun_mahasiswa"
   | "chatbox"
   | "prodi_konselor"
@@ -72,6 +81,9 @@ export default function HomePage() {
   const [activeNav, setActiveNav] = useState<NavKey>("dashboard");
 
   const [studentAccounts, setStudentAccounts] = useState<StudentAccount[]>([]);
+  const [seminarAnnouncements, setSeminarAnnouncements] = useState<
+    SeminarAnnouncement[]
+  >([]);
   const [counselors, setCounselors] = useState<Counselor[]>([]);
   const [schedules, setSchedules] = useState<CounselorSchedule[]>([]);
   const [ticketsAdminView, setTicketsAdminView] = useState<
@@ -101,6 +113,30 @@ export default function HomePage() {
       const res = await fetch("/api/state?role=admin");
       const data = await res.json();
       setStudentAccounts(data.student_accounts || []);
+
+      const srvSeminars: SeminarAnnouncement[] = Array.isArray(
+        data.seminar_announcements
+      )
+        ? data.seminar_announcements
+        : [];
+      let localSeminars: SeminarAnnouncement[] = [];
+      try {
+        const raw = localStorage.getItem("narasa_seminar_announcements_v1");
+        if (raw) localSeminars = JSON.parse(raw);
+      } catch {}
+
+      if (localSeminars.length > 0) {
+        const merged = [...localSeminars];
+        for (const s of srvSeminars) {
+          if (!merged.some((m) => m.id === s.id)) {
+            merged.push(s);
+          }
+        }
+        setSeminarAnnouncements(merged);
+      } else {
+        setSeminarAnnouncements(srvSeminars);
+      }
+
       setCounselors(data.counselors || []);
       setSchedules(data.schedules || []);
       setTicketsAdminView(data.tickets || []);
@@ -263,6 +299,13 @@ export default function HomePage() {
           iconColor: "text-[#D9603B]",
         },
         {
+          key: "pengumuman_seminar",
+          label: "Pengumuman Webinar",
+          icon: Megaphone,
+          badgeBg: "bg-[#D5E5F6]",
+          iconColor: "text-[#28568A]",
+        },
+        {
           key: "akun_mahasiswa",
           label: "Data Mahasiswa",
           icon: Users,
@@ -370,6 +413,7 @@ export default function HomePage() {
     dashboard: isMahasiswa ? "Beranda Ruang Aman Mahasiswa" : "Dashboard",
     konsultasi_admin: "Chat Konsultasi Langsung ke Admin BK",
     balas_chat: "Inbox Live Chat & Balas Pesan Mahasiswa",
+    pengumuman_seminar: "Kelola Pengumuman & Foto Poster Seminar / Webinar",
     akun_mahasiswa: "Manajemen Data & Akun Mahasiswa",
     chatbox: "Skrining Mandiri PHQ-4 & Triase Konseling",
     prodi_konselor: "Direktori Dosen BK & Konselor Sebaya",
@@ -1056,6 +1100,99 @@ export default function HomePage() {
                   </button>
                 </div>
 
+                {/* Pengumuman Seminar & Webinar Kampus (Tampil juga di Beranda Mahasiswa) */}
+                {seminarAnnouncements.length > 0 && (
+                  <div className="clay-card rounded-[28px] p-5 sm:p-6 space-y-4">
+                    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#ECE8DF] pb-3">
+                      <div className="flex items-center gap-2.5">
+                        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#2E7D67] text-white shadow-xs">
+                          <Megaphone className="h-4 w-4" />
+                        </span>
+                        <div>
+                          <h3 className="text-sm sm:text-base font-extrabold text-[#2D2A26]">
+                            Pengumuman Seminar & Webinar Kampus (BKPI & PIAUD)
+                          </h3>
+                          <p className="text-[11px] text-[#7A746C]">
+                            Informasi resmi seminar, webinar, dan workshop peningkatan kompetensi mahasiswa
+                          </p>
+                        </div>
+                      </div>
+                      <span className="rounded-full bg-[#E2F1EC] px-3 py-1 text-[11px] font-extrabold text-[#2E7D67]">
+                        {seminarAnnouncements.length} Kegiatan Aktif
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {seminarAnnouncements.slice(0, 4).map((sem) => (
+                        <div
+                          key={sem.id}
+                          className="rounded-[22px] bg-[#FCFBF8] border-2 border-[#ECE8DF] p-4 flex flex-col justify-between gap-3 shadow-xs"
+                        >
+                          <div className="space-y-2.5">
+                            {sem.image_data_url && (
+                              <div className="relative rounded-2xl overflow-hidden border border-[#E5E0D5] bg-[#F4EFE6] max-h-44">
+                                <img
+                                  src={sem.image_data_url}
+                                  alt={sem.title}
+                                  className="w-full h-40 object-cover"
+                                />
+                                <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5">
+                                  <span className="rounded-full bg-[#2E7D67]/95 px-2.5 py-0.5 text-[10px] font-extrabold text-white">
+                                    {sem.event_type}
+                                  </span>
+                                  <span className="rounded-full bg-white/95 px-2.5 py-0.5 text-[10px] font-extrabold text-[#6C4A32]">
+                                    {sem.target_prodi}
+                                  </span>
+                                </div>
+                              </div>
+                            )}
+                            <h4 className="text-xs sm:text-sm font-extrabold text-[#2D2A26] leading-snug">
+                              {sem.title}
+                            </h4>
+                            <p className="text-[11px] text-[#5F544E] leading-relaxed">
+                              {sem.description}
+                            </p>
+                          </div>
+
+                          <div className="space-y-2 pt-2 border-t border-[#ECE8DF]">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-[10.5px] font-bold text-[#4E5A54]">
+                              <div className="flex items-center gap-1.5 truncate">
+                                <UserCheck className="h-3.5 w-3.5 text-[#2E7D67] shrink-0" />
+                                <span className="truncate">{sem.speaker}</span>
+                              </div>
+                              <div className="flex items-center gap-1.5 truncate">
+                                <Calendar className="h-3.5 w-3.5 text-[#EE7854] shrink-0" />
+                                <span className="truncate">{sem.event_date}</span>
+                              </div>
+                              <div className="flex items-center gap-1.5 truncate">
+                                <Clock className="h-3.5 w-3.5 text-[#28568A] shrink-0" />
+                                <span className="truncate">{sem.event_time}</span>
+                              </div>
+                              <div className="flex items-center gap-1.5 truncate">
+                                <MapPin className="h-3.5 w-3.5 text-[#B8831D] shrink-0" />
+                                <span className="truncate">
+                                  {sem.location_or_link}
+                                </span>
+                              </div>
+                            </div>
+                            {sem.registration_link && (
+                              <a
+                                href={sem.registration_link}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center gap-1.5 rounded-full bg-[#2E7D67] hover:bg-[#236452] px-3.5 py-1.5 text-[11px] font-extrabold text-white shadow-xs transition"
+                              >
+                                <ExternalLink className="h-3 w-3" />
+                                Buka Link Pendaftaran / Webinar
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Direct 2-Way Consultation Room with Admin on Student Dashboard */}
                 <StudentDirectConsult
                   studentName={session.displayName}
@@ -1206,6 +1343,14 @@ export default function HomePage() {
                           >
                             <BarChart2 className="h-3.5 w-3.5 text-[#4E9682]" />
                             Input SOAP & PHQ-4
+                          </button>
+
+                          <button
+                            onClick={() => setActiveNav("pengumuman_seminar")}
+                            className="inline-flex items-center gap-2 rounded-full bg-[#2E7D67] hover:bg-[#236452] px-5 py-2.5 text-xs font-extrabold text-white shadow-sm transition active:scale-95"
+                          >
+                            <Megaphone className="h-3.5 w-3.5" />
+                            Tambah Pengumuman & Foto Webinar ({seminarAnnouncements.length})
                           </button>
                         </div>
                       </div>
@@ -1513,6 +1658,17 @@ export default function HomePage() {
               <StudentAccountsManager
                 studentAccounts={studentAccounts}
                 onDataChanged={loadState}
+              />
+            )}
+
+            {/* ============================================================
+                VIEW 1D-SEMINAR: KELOLA PENGUMUMAN & FOTO WEBINAR (ADMIN)
+               ============================================================ */}
+            {activeNav === "pengumuman_seminar" && !isMahasiswa && (
+              <AdminSeminarManager
+                announcements={seminarAnnouncements}
+                adminName={session.displayName}
+                onRefresh={loadState}
               />
             )}
 

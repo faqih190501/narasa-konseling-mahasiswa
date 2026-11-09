@@ -10,6 +10,7 @@ import {
   StudentAccount,
   CrisisEventLog,
   LiveChatMessage,
+  SeminarAnnouncement,
 } from "./types";
 import { encryptAES256 } from "./crypto";
 
@@ -22,6 +23,7 @@ export interface DatabaseSchema {
   intake_assessments: IntakeAssessment[];
   crisis_logs: CrisisEventLog[];
   live_chat_messages: LiveChatMessage[];
+  seminar_announcements: SeminarAnnouncement[];
   metrics: {
     total_chat_sessions_opened: number;
     total_consents_accepted: number;
@@ -608,6 +610,53 @@ function createInitialSeedData(): DatabaseSchema {
     },
   ];
 
+  const defaultPosterSvg1 =
+    "data:image/svg+xml;utf8," +
+    encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2E7D67"/><stop offset="55%" stop-color="#559A87"/><stop offset="100%" stop-color="#EE7854"/></linearGradient></defs><rect width="800" height="420" rx="24" fill="url(#g1)"/><circle cx="710" cy="80" r="110" fill="#FFFFFF" fill-opacity="0.12"/><circle cx="90" cy="360" r="130" fill="#FFFFFF" fill-opacity="0.1"/><rect x="44" y="38" width="210" height="34" rx="17" fill="#FCFBF8"/><text x="149" y="60" font-family="Segoe UI, Arial" font-size="14" font-weight="800" fill="#2E7D67" text-anchor="middle">WEBINAR NASIONAL BK</text><text x="44" y="130" font-family="Segoe UI, Arial" font-size="31" font-weight="800" fill="#FFFFFF">Kesehatan Mental Mahasiswa</text><text x="44" y="172" font-family="Segoe UI, Arial" font-size="27" font-weight="700" fill="#FDECC8">&amp; Ketangguhan Akademik di Era Digital</text><text x="44" y="230" font-family="Segoe UI, Arial" font-size="17" font-weight="600" fill="#EAF6F1">Pemateri: Dr. Hj. Siti Nurhaliza, M.Pd., Kons. &amp; Ahmad Fauzi, M.Psi., Psikolog</text><rect x="44" y="275" width="490" height="54" rx="14" fill="#FFFFFF" fill-opacity="0.18"/><text x="64" y="308" font-family="Segoe UI, Arial" font-size="16" font-weight="700" fill="#FFFFFF"> terbuka untuk Mahasiswa BKPI &amp; PIAUD • Free E-Sertifikat</text></svg>`
+    );
+
+  const defaultPosterSvg2 =
+    "data:image/svg+xml;utf8," +
+    encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420"><defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6C4A32"/><stop offset="50%" stop-color="#C86D44"/><stop offset="100%" stop-color="#F2B84B"/></linearGradient></defs><rect width="800" height="420" rx="24" fill="url(#g2)"/><circle cx="690" cy="330" r="120" fill="#FFFFFF" fill-opacity="0.12"/><rect x="44" y="38" width="240" height="34" rx="17" fill="#FCFBF8"/><text x="164" y="60" font-family="Segoe UI, Arial" font-size="14" font-weight="800" fill="#6C4A32" text-anchor="middle">SEMINAR PRAKTIKUM PIAUD &amp; BKPI</text><text x="44" y="130" font-family="Segoe UI, Arial" font-size="30" font-weight="800" fill="#FFFFFF">Pendampingan Regulasi Emosi</text><text x="44" y="172" font-family="Segoe UI, Arial" font-size="26" font-weight="700" fill="#FFF4D6">Anak Usia Dini &amp; Konseling Sebaya</text><text x="44" y="230" font-family="Segoe UI, Arial" font-size="17" font-weight="600" fill="#FFF9EB">Narasumber: Rina Kartika, M.Pd. • Aula Utama &amp; Live Zoom</text><rect x="44" y="275" width="470" height="54" rx="14" fill="#FFFFFF" fill-opacity="0.18"/><text x="64" y="308" font-family="Segoe UI, Arial" font-size="16" font-weight="700" fill="#FFFFFF">Kolaborasi Prodi BKPI &amp; PIAUD • Pendaftaran Gratis</text></svg>`
+    );
+
+  const seminar_announcements: SeminarAnnouncement[] = [
+    {
+      id: "sem-101",
+      title: "Webinar Kesehatan Mental & Strategi Mengatasi Academic Burnout",
+      event_type: "Webinar",
+      target_prodi: "Semua Prodi (BKPI & PIAUD)",
+      speaker: "Dr. Hj. Siti Nurhaliza, M.Pd., Kons. & Ahmad Fauzi, M.Psi., Psikolog",
+      event_date: "Sabtu, 14 November 2026",
+      event_time: "09.00 – 11.30 WIB",
+      location_or_link: "Zoom Cloud Meetings & Live YouTube NARASA",
+      registration_link: "https://meet.google.com/narasa-webinar-bk",
+      description:
+        "Kupas tuntas teknik regulasi emosi, manajemen kecemasan skripsi, serta pertolongan pertama psikologis (Psychological First Aid) bagi mahasiswa BKPI dan PIAUD.",
+      image_data_url: defaultPosterSvg1,
+      created_by: "Admin Utama NARASA",
+      created_at: "2026-11-08T08:00:00.000Z",
+    },
+    {
+      id: "sem-102",
+      title: "Seminar Kolaborasi: Regulasi Emosi Anak Usia Dini & Konseling Sebaya",
+      event_type: "Seminar",
+      target_prodi: "Semua Prodi (BKPI & PIAUD)",
+      speaker: "Rina Kartika, M.Pd. (Dosen BK & Praktisi Pendidikan)",
+      event_date: "Rabu, 18 November 2026",
+      event_time: "13.00 – 15.30 WIB",
+      location_or_link: "Aula Gedung Layanan Mahasiswa Lt. 2 & Hybrid Google Meet",
+      registration_link: "https://meet.google.com/narasa-seminar-piaud",
+      description:
+        "Seminar interaktif mengenai tahapan perkembangan sosial-emosional AUD serta praktik komunikasi empatik bagi calon pendidik PIAUD dan konselor BKPI.",
+      image_data_url: defaultPosterSvg2,
+      created_by: "Admin Utama NARASA",
+      created_at: "2026-11-08T09:00:00.000Z",
+    },
+  ];
+
   return {
     student_accounts,
     users_mahasiswa,
@@ -617,6 +666,7 @@ function createInitialSeedData(): DatabaseSchema {
     intake_assessments,
     crisis_logs,
     live_chat_messages,
+    seminar_announcements,
     metrics: {
       total_chat_sessions_opened: 48,
       total_consents_accepted: 44,
@@ -634,6 +684,10 @@ export function readDb(): DatabaseSchema {
     if (fs.existsSync(TMP_DB_FILE)) {
       const rawTmp = fs.readFileSync(TMP_DB_FILE, "utf8");
       const parsedTmp = JSON.parse(rawTmp) as DatabaseSchema;
+      if (!Array.isArray(parsedTmp.seminar_announcements)) {
+        parsedTmp.seminar_announcements =
+          createInitialSeedData().seminar_announcements;
+      }
       globalThis.__konselinMemoryDb = parsedTmp;
       return parsedTmp;
     }
@@ -642,8 +696,17 @@ export function readDb(): DatabaseSchema {
     if (fs.existsSync(DB_FILE)) {
       const raw = fs.readFileSync(DB_FILE, "utf8");
       const parsed = JSON.parse(raw) as DatabaseSchema;
+      let mutated = false;
       if (!Array.isArray(parsed.student_accounts)) {
         parsed.student_accounts = createInitialSeedData().student_accounts;
+        mutated = true;
+      }
+      if (!Array.isArray(parsed.seminar_announcements)) {
+        parsed.seminar_announcements =
+          createInitialSeedData().seminar_announcements;
+        mutated = true;
+      }
+      if (mutated) {
         writeDb(parsed);
       }
       globalThis.__konselinMemoryDb = parsed;

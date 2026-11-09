@@ -13,6 +13,7 @@ import {
   ModalityChoice,
   ProblemCategory,
   ScheduleModality,
+  SeminarAnnouncement,
   TicketStatus,
 } from "@/lib/types";
 
@@ -155,6 +156,7 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({
     student_accounts: db.student_accounts || [],
+    seminar_announcements: db.seminar_announcements || [],
     counselors: db.counselors,
     schedules: db.counselor_schedules,
     tickets: mappedTickets,
@@ -899,6 +901,86 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       ok: true,
       student_accounts: db.student_accounts,
+    });
+  }
+
+  // 15. Admin: Tambah Pengumuman Seminar / Webinar / Workshop BK (Beserta Foto/Poster)
+  if (action === "add_seminar_announcement") {
+    const {
+      title,
+      event_type = "Webinar",
+      target_prodi = "Semua Prodi (BKPI & PIAUD)",
+      speaker,
+      event_date,
+      event_time,
+      location_or_link,
+      registration_link = "",
+      description,
+      image_data_url = "",
+      created_by = "Admin Utama NARASA",
+    } = body;
+
+    if (!title || !String(title).trim()) {
+      return NextResponse.json(
+        { ok: false, error: "Judul pengumuman seminar / webinar wajib diisi." },
+        { status: 400 }
+      );
+    }
+
+    const newAnnouncement: SeminarAnnouncement = {
+      id: `sem-${Date.now()}`,
+      title: String(title).trim(),
+      event_type:
+        event_type === "Seminar" || event_type === "Workshop BK"
+          ? event_type
+          : "Webinar",
+      target_prodi:
+        target_prodi === "Khusus BKPI" || target_prodi === "Khusus PIAUD"
+          ? target_prodi
+          : "Semua Prodi (BKPI & PIAUD)",
+      speaker: String(speaker || "Tim Konselor & Dosen BK NARASA").trim(),
+      event_date: String(event_date || "Segera Hadir").trim(),
+      event_time: String(event_time || "09:00 - 11:30 WIB").trim(),
+      location_or_link: String(
+        location_or_link || "Zoom Meeting & Aula Kampus"
+      ).trim(),
+      registration_link: String(registration_link || "").trim(),
+      description: String(
+        description ||
+          "Silakan ikuti kegiatan pengembangan diri dan kesehatan mental mahasiswa BKPI & PIAUD bersama Unit Layanan BK NARASA."
+      ).trim(),
+      image_data_url: String(image_data_url || ""),
+      created_by: String(created_by || "Admin Utama NARASA"),
+      created_at: new Date().toISOString(),
+    };
+
+    if (!Array.isArray(db.seminar_announcements)) {
+      db.seminar_announcements = [];
+    }
+    db.seminar_announcements.unshift(newAnnouncement);
+    writeDb(db);
+
+    return NextResponse.json({
+      ok: true,
+      announcement: newAnnouncement,
+      seminar_announcements: db.seminar_announcements,
+    });
+  }
+
+  // 16. Admin: Hapus Pengumuman Seminar / Webinar
+  if (action === "delete_seminar_announcement") {
+    const { id } = body;
+    if (!Array.isArray(db.seminar_announcements)) {
+      db.seminar_announcements = [];
+    }
+    db.seminar_announcements = db.seminar_announcements.filter(
+      (item) => item.id !== id
+    );
+    writeDb(db);
+
+    return NextResponse.json({
+      ok: true,
+      seminar_announcements: db.seminar_announcements,
     });
   }
 

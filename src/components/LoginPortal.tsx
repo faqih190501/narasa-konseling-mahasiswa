@@ -21,10 +21,18 @@ import {
   CheckCircle2,
   Gamepad2,
   FileText,
+  Monitor,
+  Megaphone,
+  Calendar,
+  Clock,
+  MapPin,
+  ExternalLink,
+  ChevronLeft,
+  ChevronRight,
   X,
 } from "lucide-react";
 import { generateCalmPseudonym } from "@/lib/triage-engine";
-import { StudentAccount } from "@/lib/types";
+import { StudentAccount, SeminarAnnouncement } from "@/lib/types";
 import NarasaLogo from "./NarasaLogo";
 import MindfulGamesModule from "./MindfulGamesModule";
 
@@ -84,10 +92,23 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [studentAccounts, setStudentAccounts] = useState<StudentAccount[]>([]);
+  const [seminarAnnouncements, setSeminarAnnouncements] = useState<
+    SeminarAnnouncement[]
+  >([]);
+  const [activeSeminarIdx, setActiveSeminarIdx] = useState<number>(0);
+  const [selectedSeminarModal, setSelectedSeminarModal] =
+    useState<SeminarAnnouncement | null>(null);
   const [isApkMode, setIsApkMode] = useState<boolean>(false);
+  const [deferredPwaPrompt, setDeferredPwaPrompt] = useState<any>(null);
+  const [pcModeNotice, setPcModeNotice] = useState<string | null>(null);
 
   useEffect(() => {
     setPseudonym(generateCalmPseudonym());
+    const onBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPwaPrompt(e);
+    };
+    window.addEventListener("beforeinstallprompt", onBeforeInstallPrompt);
     try {
       const ua = navigator.userAgent || "";
       const params = new URLSearchParams(window.location.search);
@@ -101,6 +122,17 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
     try {
       const saved = localStorage.getItem("narasa_registered_students");
       if (saved) localAccounts = JSON.parse(saved);
+    } catch {}
+
+    let localSeminars: SeminarAnnouncement[] = [];
+    try {
+      const savedSem = localStorage.getItem("narasa_seminar_announcements_v1");
+      if (savedSem) {
+        localSeminars = JSON.parse(savedSem);
+        if (Array.isArray(localSeminars) && localSeminars.length > 0) {
+          setSeminarAnnouncements(localSeminars);
+        }
+      }
     } catch {}
 
     fetch("/api/state")
@@ -128,11 +160,65 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
           setMhsAngkatan(first.angkatan);
           setMhsPassword(first.password || "mahasiswa123");
         }
+
+        const serverSeminars: SeminarAnnouncement[] = Array.isArray(
+          d.seminar_announcements
+        )
+          ? d.seminar_announcements
+          : [];
+        if (localSeminars.length > 0) {
+          const mergedSeminars = [...localSeminars];
+          for (const srv of serverSeminars) {
+            if (!mergedSeminars.some((m) => m.id === srv.id)) {
+              mergedSeminars.push(srv);
+            }
+          }
+          setSeminarAnnouncements(mergedSeminars);
+        } else if (serverSeminars.length > 0) {
+          setSeminarAnnouncements(serverSeminars);
+        }
       })
       .catch(() => {
         if (localAccounts.length > 0) setStudentAccounts(localAccounts);
+        if (localSeminars.length > 0) setSeminarAnnouncements(localSeminars);
       });
+    return () => {
+      window.removeEventListener("beforeinstallprompt", onBeforeInstallPrompt);
+    };
   }, []);
+
+  const handleLaunchPcLaptopApp = async () => {
+    if (deferredPwaPrompt) {
+      try {
+        deferredPwaPrompt.prompt();
+        await deferredPwaPrompt.userChoice;
+        setDeferredPwaPrompt(null);
+        return;
+      } catch {}
+    }
+    try {
+      if (
+        !document.fullscreenElement &&
+        document.documentElement.requestFullscreen
+      ) {
+        await document.documentElement.requestFullscreen();
+        setPcModeNotice(
+          "Mode Layar Penuh PC / Laptop aktif! Anda juga dapat mengklik ikon Install (⊕) di bilah alamat Chrome/Edge untuk memasang NARASA di Desktop."
+        );
+      } else if (document.fullscreenElement && document.exitFullscreen) {
+        await document.exitFullscreen();
+        setPcModeNotice(null);
+      } else {
+        setPcModeNotice(
+          "Aplikasi siap digunakan di PC & Laptop! Klik ikon Install (⊕) pada kanan bilah alamat Chrome/Edge untuk memasang pintasan di Desktop/Taskbar."
+        );
+      }
+    } catch {
+      setPcModeNotice(
+        "Aplikasi aktif untuk PC & Laptop! Klik ikon Install (⊕) di bilah alamat Chrome/Edge untuk memasang ke Desktop."
+      );
+    }
+  };
 
   const handleSelectDemoMahasiswa = (
     demoNim: string,
@@ -462,34 +548,58 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
               </div>
             </div>
 
-            {/* Download Aplikasi Android (.APK) Card */}
-            <div className="mt-4 sm:mt-5 rounded-[22px] sm:rounded-[24px] bg-gradient-to-r from-[#E2F1EC] to-[#FCFBF8] border-2 border-white p-3.5 sm:p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl bg-[#2E7D67] text-white shadow-sm">
-                  <Smartphone className="h-5 w-5" />
+            {/* Dukungan Multi-Perangkat: PC, Laptop & Aplikasi Android (.APK) Card */}
+            <div className="mt-4 sm:mt-5 rounded-[22px] sm:rounded-[24px] bg-gradient-to-r from-[#E2F1EC] to-[#FCFBF8] border-2 border-white p-3.5 sm:p-4 shadow-sm space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl bg-[#2E7D67] text-white shadow-sm">
+                    <Monitor className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-extrabold text-[#2D2A26]">
+                      {isApkMode
+                        ? "Aplikasi NARASA Aktif ✓ (PC, Laptop & Android)"
+                        : "Tersedia untuk PC, Laptop & Handphone (Android .APK)"}
+                    </div>
+                    <div className="text-[11px] font-semibold text-[#4E5A54]">
+                      {isApkMode
+                        ? "Anda sedang mengakses NARASA melalui mode aplikasi resmi"
+                        : "Gunakan langsung di layar PC/Laptop (Windows/Mac) atau instal .APK di HP Android"}
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-xs font-extrabold text-[#2D2A26]">
-                    {isApkMode
-                      ? "Aplikasi Android NARASA Aktif ✓"
-                      : "Aplikasi Mobile NARASA (Android v1.2)"}
-                  </div>
-                  <div className="text-[11px] font-semibold text-[#4E5A54]">
-                    {isApkMode
-                      ? "Anda sedang mengakses NARASA melalui aplikasi mobile resmi"
-                      : "Installer .APK resmi bertanda tangan digital (Android 7.0 – 16)"}
-                  </div>
+                <div className="flex flex-wrap items-center gap-2 shrink-0">
+                  <button
+                    type="button"
+                    onClick={handleLaunchPcLaptopApp}
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-full bg-white hover:bg-[#F3F0E8] border border-[#C6E2D8] px-3.5 py-2 text-[11px] font-extrabold text-[#2E7D67] shadow-xs transition active:scale-95"
+                  >
+                    <Monitor className="h-3.5 w-3.5" />
+                    Mode PC / Laptop
+                  </button>
+                  {!isApkMode && (
+                    <a
+                      href="/narasa-konseling-v2.apk"
+                      download="NARASA-Konseling-v2.apk"
+                      className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-full bg-[#2E7D67] hover:bg-[#256654] px-3.5 py-2 text-[11px] font-extrabold text-white shadow-md transition active:scale-95"
+                    >
+                      <Download className="h-3.5 w-3.5" />
+                      Download APK HP
+                    </a>
+                  )}
                 </div>
               </div>
-              {!isApkMode && (
-                <a
-                  href="/narasa-konseling-v2.apk"
-                  download="NARASA-Konseling-v2.apk"
-                  className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#2E7D67] hover:bg-[#256654] px-4 py-2.5 text-xs font-extrabold text-white shadow-md transition active:scale-95"
-                >
-                  <Download className="h-3.5 w-3.5" />
-                  Download APK
-                </a>
+              {pcModeNotice && (
+                <div className="rounded-xl bg-white/90 border border-[#C6E2D8] px-3 py-2 text-[11px] font-semibold text-[#215A49] flex items-center justify-between gap-2">
+                  <span>💻 {pcModeNotice}</span>
+                  <button
+                    type="button"
+                    onClick={() => setPcModeNotice(null)}
+                    className="text-[10px] font-extrabold text-[#2E7D67] underline shrink-0"
+                  >
+                    Tutup
+                  </button>
+                </div>
               )}
             </div>
 
@@ -626,6 +736,153 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
                 </button>
               </div>
             </div>
+
+            {/* ============================================================
+                PAPAN PENGUMUMAN SEMINAR & WEBINAR KAMPUS (TAMPIL SAAT LOGIN)
+               ============================================================ */}
+            {seminarAnnouncements.length > 0 && (() => {
+              const currentSem =
+                seminarAnnouncements[
+                  activeSeminarIdx % seminarAnnouncements.length
+                ] || seminarAnnouncements[0];
+              return (
+                <div className="mt-4 rounded-[22px] sm:rounded-[26px] bg-gradient-to-br from-[#F4FBF8] via-[#FCFBF8] to-[#FCE8DF]/65 border-2 border-[#C8E4DA] p-3.5 sm:p-4 shadow-[0_10px_24px_rgba(46,125,103,0.08)] space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="flex h-7 w-7 items-center justify-center rounded-xl bg-[#2E7D67] text-white shadow-xs">
+                        <Megaphone className="h-3.5 w-3.5" />
+                      </span>
+                      <div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[11px] sm:text-xs font-extrabold text-[#2D2A26]">
+                            Pengumuman Seminar & Webinar Kampus
+                          </span>
+                          <span className="rounded-full bg-[#2E7D67] px-2 py-0.5 text-[9.5px] font-extrabold text-white">
+                            {currentSem.event_type}
+                          </span>
+                        </div>
+                        <p className="text-[10.5px] font-semibold text-[#5F544E]">
+                          Sasaran: {currentSem.target_prodi}
+                        </p>
+                      </div>
+                    </div>
+
+                    {seminarAnnouncements.length > 1 && (
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setActiveSeminarIdx(
+                              (prev) =>
+                                (prev - 1 + seminarAnnouncements.length) %
+                                seminarAnnouncements.length
+                            )
+                          }
+                          className="h-7 w-7 rounded-full bg-white border border-[#D5E6DF] flex items-center justify-center text-[#2E7D67] hover:bg-[#E2F1EC] transition"
+                          title="Pengumuman Sebelumnya"
+                        >
+                          <ChevronLeft className="h-3.5 w-3.5" />
+                        </button>
+                        <span className="text-[10.5px] font-extrabold text-[#2E7D67] px-1">
+                          {(activeSeminarIdx % seminarAnnouncements.length) + 1} /{" "}
+                          {seminarAnnouncements.length}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setActiveSeminarIdx(
+                              (prev) => (prev + 1) % seminarAnnouncements.length
+                            )
+                          }
+                          className="h-7 w-7 rounded-full bg-white border border-[#D5E6DF] flex items-center justify-center text-[#2E7D67] hover:bg-[#E2F1EC] transition"
+                          title="Pengumuman Berikutnya"
+                        >
+                          <ChevronRight className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Card Body: Poster/Foto Webinar + Info Detail */}
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+                    {currentSem.image_data_url && (
+                      <div
+                        onClick={() => setSelectedSeminarModal(currentSem)}
+                        className="sm:col-span-5 cursor-pointer group relative rounded-2xl overflow-hidden border-2 border-white shadow-sm bg-[#2D2A26]/5 max-h-40 flex items-center justify-center"
+                      >
+                        <img
+                          src={currentSem.image_data_url}
+                          alt={currentSem.title}
+                          className="w-full h-36 sm:h-38 object-cover group-hover:scale-103 transition duration-300"
+                        />
+                        <div className="absolute bottom-2 right-2 rounded-full bg-black/70 backdrop-blur-xs px-2.5 py-1 text-[10px] font-extrabold text-white flex items-center gap-1">
+                          <Eye className="h-3 w-3" />
+                          Perbesar Foto
+                        </div>
+                      </div>
+                    )}
+
+                    <div
+                      className={`${
+                        currentSem.image_data_url
+                          ? "sm:col-span-7"
+                          : "sm:col-span-12"
+                      } space-y-1.5`}
+                    >
+                      <h3 className="text-xs sm:text-[13.5px] font-extrabold text-[#2D2A26] leading-snug">
+                        {currentSem.title}
+                      </h3>
+                      <p className="text-[11px] text-[#4E5A54] line-clamp-2 leading-relaxed">
+                        {currentSem.description}
+                      </p>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 pt-1 text-[10.5px] font-bold text-[#2D2A26]">
+                        <div className="flex items-center gap-1.5 truncate">
+                          <UserCheck className="h-3.5 w-3.5 text-[#2E7D67] shrink-0" />
+                          <span className="truncate">{currentSem.speaker}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 truncate">
+                          <Calendar className="h-3.5 w-3.5 text-[#EE7854] shrink-0" />
+                          <span className="truncate">{currentSem.event_date}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 truncate">
+                          <Clock className="h-3.5 w-3.5 text-[#28568A] shrink-0" />
+                          <span className="truncate">{currentSem.event_time}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 truncate">
+                          <MapPin className="h-3.5 w-3.5 text-[#B8831D] shrink-0" />
+                          <span className="truncate">
+                            {currentSem.location_or_link}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="pt-1.5 flex flex-wrap items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedSeminarModal(currentSem)}
+                          className="inline-flex items-center gap-1.5 rounded-full bg-[#2E7D67] hover:bg-[#236452] px-3 py-1.5 text-[10.5px] font-extrabold text-white shadow-xs transition"
+                        >
+                          <Eye className="h-3 w-3" />
+                          Lihat Foto Poster & Detail
+                        </button>
+                        {currentSem.registration_link && (
+                          <a
+                            href={currentSem.registration_link}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1 rounded-full bg-white hover:bg-[#F2EFE8] border border-[#D5E6DF] px-3 py-1.5 text-[10.5px] font-extrabold text-[#2E7D67] transition"
+                          >
+                            <ExternalLink className="h-3 w-3" />
+                            Ikuti / Daftar Webinar
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* ============================================================
                 TAB 1: FORM LOGIN MAHASISWA (SSO SIAKAD, BUAT AKUN SENDIRI & MODE SAMARAN ANONIM)
@@ -1133,8 +1390,16 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
 
           {/* Footer Note inside Login Card */}
           <div className="mt-6 pt-4 border-t border-[#ECE8DF] flex flex-wrap items-center justify-between gap-2 text-[11px] font-semibold text-[#8C857B]">
-            <span>🔒 Terenkripsi End-to-End AES-256-GCM • Prodi: BKPI & PIAUD</span>
+            <span>🔒 AES-256-GCM • Support: PC, Laptop & HP Android • Prodi: BKPI & PIAUD</span>
             <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={handleLaunchPcLaptopApp}
+                className="inline-flex items-center gap-1.5 rounded-full bg-[#DCEBFA] hover:bg-[#C8E0F7] px-3.5 py-1 text-[11px] font-extrabold text-[#28568A] transition"
+              >
+                <Monitor className="h-3.5 w-3.5" />
+                Mode PC / Laptop
+              </button>
               <a
                 href="/Kesimpulan-Aplikasi-NARASA.pdf"
                 download="Kesimpulan-Aplikasi-NARASA-Konseling-Mahasiswa.pdf"
@@ -1200,6 +1465,88 @@ export default function LoginPortal({ onLoginSuccess }: Props) {
             </div>
 
             <MindfulGamesModule />
+          </div>
+        </div>
+      )}
+
+      {/* Modal Detail & Foto Poster Seminar / Webinar saat diklik di Halaman Login */}
+      {selectedSeminarModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs p-3 sm:p-6 overflow-y-auto flex items-center justify-center">
+          <div className="w-full max-w-2xl clay-shell rounded-[28px] sm:rounded-[32px] p-4 sm:p-6 my-4 shadow-2xl border-2 border-white space-y-4">
+            <div className="flex items-center justify-between gap-3 border-b border-[#ECE8DF] pb-3">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1 rounded-full bg-[#2E7D67] px-3 py-1 text-[11px] font-extrabold text-white">
+                  <Megaphone className="h-3.5 w-3.5" />
+                  {selectedSeminarModal.event_type}
+                </span>
+                <span className="rounded-full bg-[#FCE8DF] px-3 py-1 text-[11px] font-extrabold text-[#C8522E]">
+                  {selectedSeminarModal.target_prodi}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedSeminarModal(null)}
+                className="inline-flex items-center gap-1.5 rounded-full bg-[#2D2A26] hover:bg-[#433F3A] px-3.5 py-1.5 text-xs font-extrabold text-white transition"
+              >
+                <X className="h-3.5 w-3.5" />
+                Tutup
+              </button>
+            </div>
+
+            {selectedSeminarModal.image_data_url && (
+              <div className="rounded-2xl overflow-hidden border-2 border-white shadow-md bg-[#2D2A26]/5 flex items-center justify-center">
+                <img
+                  src={selectedSeminarModal.image_data_url}
+                  alt={selectedSeminarModal.title}
+                  className="max-h-[420px] w-full object-contain"
+                />
+              </div>
+            )}
+
+            <div className="space-y-2.5">
+              <h3 className="text-base sm:text-xl font-extrabold text-[#2D2A26] leading-snug">
+                {selectedSeminarModal.title}
+              </h3>
+              <p className="text-xs sm:text-[13px] text-[#4E5A54] leading-relaxed">
+                {selectedSeminarModal.description}
+              </p>
+
+              <div className="rounded-2xl bg-[#F6F4EF] border border-[#E5E0D5] p-3.5 grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs font-bold text-[#2D2A26]">
+                <div className="flex items-center gap-2">
+                  <UserCheck className="h-4 w-4 text-[#2E7D67] shrink-0" />
+                  <span>Pemateri: {selectedSeminarModal.speaker}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-[#EE7854] shrink-0" />
+                  <span>Tanggal: {selectedSeminarModal.event_date}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-[#28568A] shrink-0" />
+                  <span>Waktu: {selectedSeminarModal.event_time}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-[#B8831D] shrink-0" />
+                  <span>Tempat/Link: {selectedSeminarModal.location_or_link}</span>
+                </div>
+              </div>
+
+              <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
+                <span className="text-[11px] font-semibold text-[#7A746C]">
+                  Diterbitkan oleh: {selectedSeminarModal.created_by}
+                </span>
+                {selectedSeminarModal.registration_link && (
+                  <a
+                    href={selectedSeminarModal.registration_link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-[#2E7D67] hover:bg-[#236452] px-5 py-2.5 text-xs font-extrabold text-white shadow-md transition"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    Buka Tautan Pendaftaran / Room Webinar
+                  </a>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}

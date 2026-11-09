@@ -169,3 +169,20 @@ export interface DecryptedTicketView extends CounselingTicket {
   schedule_end: string;
 }
 
+export interface SeminarAnnouncement {
+  id: string;
+  title: string;
+  event_type: "Seminar" | "Webinar" | "Workshop BK";
+  target_prodi: "Semua Prodi (BKPI & PIAUD)" | "Khusus BKPI" | "Khusus PIAUD";
+  speaker: string;
+  event_date: string;
+  event_time: string;
+  location_or_link: string;
+  registration_link?: string;
+  description: string;
+  image_data_url?: string;
+  created_by: string;
+  created_at: string;
+}
+
+
